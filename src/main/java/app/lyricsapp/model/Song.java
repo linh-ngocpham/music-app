@@ -1,14 +1,14 @@
 package app.lyricsapp.model;
 
 public class Song {
-    private int trackIc;
+    private int trackId;
     private final int lyricId;
     private final String songName;
     private final int songRank;
     private final String artist;
 
     public Song(int trackId, int lyricId, String songName, int songRank, String artist){
-        this.trackIc = trackId;
+        this.trackId = trackId;
         this.artist = artist;
         this.lyricId = lyricId;
         this.songName = songName;
@@ -32,10 +32,10 @@ public class Song {
     }
 
     public int getTrackIc() {
-        return trackIc;
+        return trackId;
     }
 
     public void setTrackIc(int trackIc) {
-        this.trackIc = trackIc;
+        this.trackId = trackIc;
     }
 }
