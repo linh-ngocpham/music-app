@@ -31,7 +31,7 @@ public class Song {
         return lyricId;
     }
 
-    public int getTrackIc() {
+    public int getTrackId() {
         return trackId;
     }
 
