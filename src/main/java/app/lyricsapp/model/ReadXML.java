@@ -13,11 +13,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ReadXML {
-    public static void main(String[] args) throws ParserConfigurationException, SAXException
-    {
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         List<Song> songList = new ArrayList<>();
         try {
             File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
@@ -48,7 +48,7 @@ public class ReadXML {
         }
         catch(IOException e) {
             System.out.println(e);
-        }
+        }/*
         try {
             File file1 = new File("src/main/java/app/lyricsapp/model/query2.xml");
             DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
@@ -72,15 +72,12 @@ public class ReadXML {
                     System.out.println("LyricRank : " + eElement1.getElementsByTagName("LyricRank").item(0).getTextContent());
                     System.out.println("LyricCorrectUrl : " + eElement1.getElementsByTagName("LyricCorrectUrl").item(0).getTextContent());
                     System.out.println("Lyric : " + eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
-
-
                 }
             }
         }
         catch(IOException e) {
             System.out.println(e);
-        }
-
+        }*/
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choisir un nom de chanson ou un nom d'artiste: ");
         String input = scanner.nextLine();
@@ -94,6 +91,28 @@ public class ReadXML {
                 System.out.println("Artist: " + song.getArtist());
                 System.out.println("Song: " + song.getSongName());
                 System.out.println("SongRank: " + song.getSongRank());
+                if(song.getLyric() == null && song.getLyricCorrectUrl() == null) {
+                    File file1 = new File("src/main/java/app/lyricsapp/model/query2.xml");
+                    DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder db1 = dbf1.newDocumentBuilder();
+                    Document document = db1.parse(file1);
+                    document.getDocumentElement().normalize();
+                    NodeList nList1 = document.getElementsByTagName("GetLyricResult");
+                    for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
+                        Node nNode1 = nList1.item(temp1);
+                        if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
+                            Element eElement1 = (Element) nNode1;
+                            if (song.getLyricId() == Integer.parseInt(eElement1.getElementsByTagName("LyricId").item(0).getTextContent())
+                                    && Objects.equals(song.getArtist(), eElement1.getElementsByTagName("LyricArtist").item(0).getTextContent())) {
+                                song.setLyricCorrectUrl(eElement1.getElementsByTagName("LyricCorrectUrl").item(0).getTextContent());
+                                song.setLyric(eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
+                                System.out.println("Lyric : " + song.getLyric());
+                                System.out.println("LyricCorrectUrl : " + song.getLyricCorrectUrl());
+                            }
+
+                        }
+                    }
+                }
             }
         }
     }

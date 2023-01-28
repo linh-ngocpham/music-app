@@ -9,6 +9,9 @@ public class Song {
     private final String LyricChecksum;
     private final String ArtistUrl;
     private final String SongUrl;
+    private String lyricCorrectUrl;
+    private String lyric;
+
 
     public Song(int trackId, int lyricId, String songName, int songRank, String artist, String lyricChecksum, String artistUrl, String songUrl){
         this.trackId = trackId;
@@ -19,6 +22,8 @@ public class Song {
         this.LyricChecksum = lyricChecksum;
         ArtistUrl = artistUrl;
         SongUrl = songUrl;
+        lyricCorrectUrl = null;
+        lyric = null;
     }
 
     public String getArtist() {
@@ -51,6 +56,22 @@ public class Song {
 
     public int getTrackId() {
         return trackId;
+    }
+
+    public String getLyricCorrectUrl() {
+        return lyricCorrectUrl;
+    }
+
+    public String getLyric() {
+        return lyric;
+    }
+
+    public void setLyricCorrectUrl(String lyricCorrectUrl) {
+        this.lyricCorrectUrl = lyricCorrectUrl;
+    }
+
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
     }
 
     public void setTrackId(int trackId) {
