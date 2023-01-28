@@ -11,10 +11,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class ReadXML {
     public static void main(String[] args) throws ParserConfigurationException, SAXException
     {
+        List<Song> songList = new ArrayList<>();
         try {
             File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -26,19 +30,19 @@ public class ReadXML {
             System.out.println("----------------------------");
             for (int temp = 0; temp < nList.getLength()-1; temp++) {
                 Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                nNode.getNodeName();
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
-                    System.out.println("Track ID : " + eElement.getElementsByTagName("TrackId").item(0).getTextContent());
-                    System.out.println("Lyric Check Sum : " + eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent());
-                    System.out.println("Lyric Id : " + eElement.getElementsByTagName("LyricId").item(0).getTextContent());
-                    System.out.println("Song URL : " + eElement.getElementsByTagName("SongUrl").item(0).getTextContent());
-                    System.out.println("Artist URL : " + eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent());
-                    System.out.println("Artist : " + eElement.getElementsByTagName("Artist").item(0).getTextContent());
-                    System.out.println("Song : " + eElement.getElementsByTagName("Song").item(0).getTextContent());
-                    System.out.println("Song Rank : " + eElement.getElementsByTagName("SongRank").item(0).getTextContent());
-
-
+                    int trackId = Integer.parseInt(eElement.getElementsByTagName("TrackId").item(0).getTextContent());
+                    String lyricChecksum = eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent();
+                    int lyricId = Integer.parseInt(eElement.getElementsByTagName("LyricId").item(0).getTextContent());
+                    String songUrl = eElement.getElementsByTagName("SongUrl").item(0).getTextContent();
+                    String artistUrl = eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent();
+                    String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
+                    String songName = eElement.getElementsByTagName("Song").item(0).getTextContent();
+                    int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
+                    Song song = new Song(trackId, lyricId, songName,songRank,artist, lyricChecksum, artistUrl, songUrl);
+                    songList.add(song);
                 }
             }
         }
@@ -75,6 +79,22 @@ public class ReadXML {
         }
         catch(IOException e) {
             System.out.println(e);
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Choisir un nom de chanson ou un nom d'artiste: ");
+        String input = scanner.nextLine();
+        for (Song song : songList) {
+            if (input.equals(song.getSongName()) || input.equals(song.getArtist())) {
+                System.out.println("TrackId: " + song.getTrackId());
+                System.out.println("LyricChecksum: " + song.getLyricChecksum());
+                System.out.println("LyricId: " + song.getLyricId());
+                System.out.println("SongUrl: " + song.getSongUrl());
+                System.out.println("ArtistUrl: " + song.getArtistUrl());
+                System.out.println("Artist: " + song.getArtist());
+                System.out.println("Song: " + song.getSongName());
+                System.out.println("SongRank: " + song.getSongRank());
+            }
         }
     }
 }
