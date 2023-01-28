@@ -32,7 +32,7 @@ public class Song {
     }
 
     public int getTrackId() {
-        return trackIc;
+        return trackId;
     }
 
     public void setTrackId(int trackId) {
