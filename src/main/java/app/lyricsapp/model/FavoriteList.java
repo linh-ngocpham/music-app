@@ -18,3 +18,6 @@ public class FavoriteList {
         this.favoritesSongsID.remove(song.getLyricId());
     }
 }
+
+//print list
+//is in list
