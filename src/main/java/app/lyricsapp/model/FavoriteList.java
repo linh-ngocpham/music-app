@@ -4,20 +4,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FavoriteList {
-    private Set<Integer> favoritesSongsID;
+    private Set<Song> favoritesSongs;
 
     public FavoriteList(){
-        this.favoritesSongsID = new HashSet<>();
+        this.favoritesSongs = new HashSet<>();
     }
 
     public void add(Song song){
-        this.favoritesSongsID.add(song.getLyricId());
+        this.favoritesSongs.add(song);
     }
 
     public void remove(Song song){
-        this.favoritesSongsID.remove(song.getLyricId());
+        this.favoritesSongs.remove(song);
+    }
+
+    public Set<Song> getList(){
+        return favoritesSongs;
+    }
+
+    public boolean contains(Song song){
+        return favoritesSongs.contains(song);
     }
 }
-
-//print list
-//is in list
