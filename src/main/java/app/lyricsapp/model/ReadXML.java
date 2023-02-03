@@ -17,6 +17,92 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class ReadXML {
+
+    public static void readXMLArtist(Song artistName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+        File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(file);
+        document.getDocumentElement().normalize();
+        NodeList nList = document.getElementsByTagName("SearchLyricResult");
+        System.out.println("----------------------------");
+        for (int temp = 0; temp < nList.getLength() - 1; temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                if (Objects.equals(artistName.getArtist(), eElement.getElementsByTagName("Artist").item(0).getTextContent())) {
+                    int trackId = Integer.parseInt(eElement.getElementsByTagName("TrackId").item(0).getTextContent());
+                    String lyricChecksum = eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent();
+                    int lyricId = Integer.parseInt(eElement.getElementsByTagName("LyricId").item(0).getTextContent());
+                    String songUrl = eElement.getElementsByTagName("SongUrl").item(0).getTextContent();
+                    String artistUrl = eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent();
+                    String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
+                    String songName = eElement.getElementsByTagName("Song").item(0).getTextContent();
+                    int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
+                    if(!songList.contains(new Song(trackId, lyricId, songName, songRank, artist, lyricChecksum, artistUrl, songUrl))){
+                        Song song = new Song(trackId, lyricId, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                        songList.add(song);
+                    }
+                }
+            }
+        }
+        for (Song song : songList) {
+            System.out.println("Numéro : " + (songList.indexOf(song) + 1));
+            System.out.println("TrackId: " + song.getTrackId());
+            System.out.println("LyricChecksum: " + song.getLyricChecksum());
+            System.out.println("LyricId: " + song.getLyricId());
+            System.out.println("SongUrl: " + song.getSongUrl());
+            System.out.println("ArtistUrl: " + song.getArtistUrl());
+            System.out.println("Artist: " + song.getArtist());
+            System.out.println("Song: " + song.getSongName());
+            System.out.println("SongRank: " + song.getSongRank());
+        }
+        System.out.println("--------------------------------------");
+    }
+    public static void readXMLSongName(Song songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+        File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(file);
+        document.getDocumentElement().normalize();
+        NodeList nList = document.getElementsByTagName("SearchLyricResult");
+        System.out.println("----------------------------");
+        for (int temp = 0; temp < nList.getLength() - 1; temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                if (Objects.equals(songName, eElement.getElementsByTagName("Artist").item(0).getTextContent())) {
+                    int trackId = Integer.parseInt(eElement.getElementsByTagName("TrackId").item(0).getTextContent());
+                    String lyricChecksum = eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent();
+                    int lyricId = Integer.parseInt(eElement.getElementsByTagName("LyricId").item(0).getTextContent());
+                    String songUrl = eElement.getElementsByTagName("SongUrl").item(0).getTextContent();
+                    String artistUrl = eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent();
+                    String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
+                    int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
+                    if(!songList.contains(new Song(trackId, lyricId, songName.getSongName(), songRank, artist, lyricChecksum, artistUrl, songUrl))){
+                        Song song = new Song(trackId, lyricId, songName.getSongName(), songRank, artist, lyricChecksum, artistUrl, songUrl);
+                        songList.add(song);
+                    }
+                }
+            }
+        }
+        for (Song song : songList) {
+            System.out.println("Numéro : " + (songList.indexOf(song) + 1));
+            System.out.println("TrackId: " + song.getTrackId());
+            System.out.println("LyricChecksum: " + song.getLyricChecksum());
+            System.out.println("LyricId: " + song.getLyricId());
+            System.out.println("SongUrl: " + song.getSongUrl());
+            System.out.println("ArtistUrl: " + song.getArtistUrl());
+            System.out.println("Artist: " + song.getArtist());
+            System.out.println("Song: " + song.getSongName());
+            System.out.println("SongRank: " + song.getSongRank());
+        }
+        System.out.println("--------------------------------------");
+    }
+
+
+
+
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
         List<Song> songList = new ArrayList<>();
         try {
@@ -48,7 +134,7 @@ public class ReadXML {
         }
         catch(IOException e) {
             System.out.println(e);
-        }/*
+        }
         try {
             File file1 = new File("src/main/java/app/lyricsapp/model/query2.xml");
             DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
@@ -77,7 +163,7 @@ public class ReadXML {
         }
         catch(IOException e) {
             System.out.println(e);
-        }*/
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choisir un nom de chanson ou un nom d'artiste: ");
         String input = scanner.nextLine();
