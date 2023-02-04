@@ -26,6 +26,11 @@ public class FavoriteList {
         return favoritesSongs.contains(song);
     }
 
+    public String getSongFavorites(int index){
+        String[] favoriteListTemp= this.favoritesSongs.toArray(new String[this.favoritesSongs.size()]);
+        return favoriteListTemp[index];
+    }
+
     public void toStringFavoritesList() {
         for(Song song : this.favoritesSongs){
             System.out.println("TrackId: " + song.getTrackId());

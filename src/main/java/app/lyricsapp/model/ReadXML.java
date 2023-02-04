@@ -39,8 +39,8 @@ public class ReadXML {
                     String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                     String songName = eElement.getElementsByTagName("Song").item(0).getTextContent();
                     int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
-                    if(!songList.contains(new Song(trackId, lyricId, songName, songRank, artist, lyricChecksum, artistUrl, songUrl))){
-                        Song song = new Song(trackId, lyricId, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                    Song song = new Song(trackId, lyricId, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                    if(!songList.contains(song)){
                         songList.add(song);
                     }
                 }

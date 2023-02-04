@@ -25,17 +25,17 @@ public class RunCLI {
         System.out.println("2 - Gestion des favoris");
         System.out.println("3 - Quitter le programme");
         System.out.print("Votre choix : ");
-        int input = scanner.nextInt();
-        if(input == 1 || input == 2 || input == 3){
+        String input = scanner.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
             switch (input) {
-                case 1:
+                case "1":
                     System.out.println("Vous avez choisis la recherche des paroles d'une musique");
                     searchSong();
                     break;
-                case 2:
+                case "2":
                     displayFavoritesList();
                     break;
-                case 3:
+                case "3":
                     System.exit(0);
                     break;
             }
@@ -55,25 +55,33 @@ public class RunCLI {
         System.out.println("3 - Recherche par paroles");
         System.out.println("4 - retour");
         System.out.print("Votre choix : ");
-        int input = scanner.nextInt();
+        String input = scanner.nextLine();
         //Choix de l'utilisateur
-        switch (input) {
-            case 1:
-                System.out.println("Vous avez choisis : Recherche avec le nom de l'artiste");
-                searchSongArtist();
-                break;
-            case 2:
-                System.out.println("Vous avez choisis : Recherche avec le nom de la musique");
-                searchSongName();
-                break;
-            case 3:
-                System.out.println("Vous avez choisis : Recherche avec les paroles");
-                //searchSongLyric();
-                break;
-            case 4:
-                runCLI();
-                break;
+        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3") || Objects.equals(input, "4")){
+            switch (input) {
+                case "1":
+                    System.out.println("Vous avez choisis : Recherche avec le nom de l'artiste");
+                    searchSongArtist();
+                    break;
+                case "2":
+                    System.out.println("Vous avez choisis : Recherche avec le nom de la musique");
+                    searchSongName();
+                    break;
+                case "3":
+                    System.out.println("Vous avez choisis : Recherche avec les paroles");
+                    //searchSongLyric();
+                    break;
+                case "4":
+                    runCLI();
+                    break;
+            }
         }
+        else{
+            System.out.println("Commande inconnue");
+            System.out.println( "Veuillez réessayer s'il vous plait.");
+            searchSong();
+        }
+
     }
 
     public static void searchSongArtist() throws ParserConfigurationException, IOException, SAXException {
@@ -105,7 +113,7 @@ public class RunCLI {
             runCLI();
         }
         int temp = Integer.parseInt(index) - 1;
-        if(songList.size() - 1 < temp || temp < 0){
+        if(songList.size() < temp || temp < 0){
             System.out.println("Commande incorrecte");
             getSongFromSongList();
         }
@@ -117,14 +125,21 @@ public class RunCLI {
         Scanner scanner = new Scanner(System.in);
         System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
         System.out.println("2 - Retour au Menu Principal");
-        int input = scanner.nextInt();
-        switch(input){
-            case 1:
-                searchSong();
-                break;
-            case 2:
-                runCLI();
-                break;
+        String input = scanner.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            switch(input){
+                case "1":
+                    searchSong();
+                    break;
+                case "2":
+                    runCLI();
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande inconnue");
+            System.out.println( "Veuillez réessayer s'il vous plait.");
+            postSearchMenu();
         }
     }
 
@@ -138,10 +153,10 @@ public class RunCLI {
             System.out.println("1 - Ajouter aux favoris");
         }
         System.out.println("2 - Retour");
-        int input = scanner.nextInt();
-        if(input == 1 || input == 2){
+        String input = scanner.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
             switch(input) {
-                case 1:
+                case "1":
                     if(favoriteList.contains(song)) {
                         favoriteList.remove(song);
                     }
@@ -149,7 +164,7 @@ public class RunCLI {
                         favoriteList.add(song);
                     }
                     break;
-                case 2:
+                case "2":
                     break;
             }
         }
@@ -162,11 +177,49 @@ public class RunCLI {
 
     public static void displayFavoritesList() throws ParserConfigurationException, IOException, SAXException {
         favoriteList.toStringFavoritesList();
-
+        selectFavoriteSong(favoriteList);
     }
 
-    public static void getSongFromFavoriteList(FavoriteList favoriteList){
+    public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
+        System.out.println("1 - Souhaitez-Vous affichez une musique de vos favoris ?");
+        System.out.println("2 - retourner aux menu principal");
+        Scanner choice = new Scanner(System.in);
+        String input = choice.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            switch (input){
+                case "1":
+                    getSongFromFavoritesSong(favoriteList);
+                    break;
+                case "2":
+                    runCLI();
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande Incorrecte");
+            System.out.println("Veuillez réessayer s'il vous plait.");
+            selectFavoriteSong(favoriteList);
+        }
+    }
 
+    public static void getSongFromFavoritesSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
+        System.out.println("Choississez le numéro de la musique");
+        System.out.println("Sinon, taper retour");
+        Scanner choice = new Scanner(System.in);
+        String input = choice.nextLine();
+        if(Objects.equals(input, "retour")){
+            selectFavoriteSong(favoriteList);
+        }
+        int temp = Integer.parseInt(input) - 1;
+        if(songList.size() > temp && temp  >= 0){
+            favoriteList.getSongFavorites(temp);
+            selectFavoriteSong(favoriteList);
+        }
+        else{
+            System.out.println("Commande Incorrecte");
+            System.out.println("Retour");
+            selectFavoriteSong(favoriteList);
+        }
     }
 
 
