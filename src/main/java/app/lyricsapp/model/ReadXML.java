@@ -71,7 +71,7 @@ public class ReadXML {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
-                if (Objects.equals(songName, eElement.getElementsByTagName("Artist").item(0).getTextContent())) {
+                if (Objects.equals(songName.getSongName(), eElement.getElementsByTagName("Song").item(0).getTextContent())) {
                     int trackId = Integer.parseInt(eElement.getElementsByTagName("TrackId").item(0).getTextContent());
                     String lyricChecksum = eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent();
                     int lyricId = Integer.parseInt(eElement.getElementsByTagName("LyricId").item(0).getTextContent());
@@ -79,8 +79,8 @@ public class ReadXML {
                     String artistUrl = eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent();
                     String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                     int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
-                    if(!songList.contains(new Song(trackId, lyricId, songName.getSongName(), songRank, artist, lyricChecksum, artistUrl, songUrl))){
-                        Song song = new Song(trackId, lyricId, songName.getSongName(), songRank, artist, lyricChecksum, artistUrl, songUrl);
+                    Song song = new Song(trackId, lyricId, songName.getSongName(), songRank, artist, lyricChecksum, artistUrl, songUrl);
+                    if(!songList.contains(song)){
                         songList.add(song);
                     }
                 }
