@@ -33,6 +33,7 @@ public class RunCLI {
                     searchSong();
                     break;
                 case 2:
+                    displayFavoritesList();
                     break;
                 case 3:
                     System.exit(0);
@@ -114,7 +115,6 @@ public class RunCLI {
     }
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("1 - Voulez-vous ajouter/supprimmer aux favoris ?");
         System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
         System.out.println("2 - Retour au Menu Principal");
         int input = scanner.nextInt();
@@ -160,9 +160,17 @@ public class RunCLI {
         }
     }
 
+    public static void displayFavoritesList() throws ParserConfigurationException, IOException, SAXException {
+        favoriteList.toStringFavoritesList();
+
+    }
+
+    public static void getSongFromFavoriteList(FavoriteList favoriteList){
+
+    }
+
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         runCLI();
     }
-
 }
