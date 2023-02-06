@@ -1,13 +1,16 @@
 package app.lyricsapp.model;
 
+import com.sun.javafx.fxml.BeanAdapter;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class FavoriteList {
-    private Set<Song> favoritesSongs;
+    private ArrayList<Song> favoritesSongs;
 
     public FavoriteList(){
-        this.favoritesSongs = new HashSet<>();
+        this.favoritesSongs = new ArrayList<>();
     }
 
     public void add(Song song){
@@ -18,7 +21,7 @@ public class FavoriteList {
         this.favoritesSongs.remove(song);
     }
 
-    public Set<Song> getList(){
+    public ArrayList<Song> getList(){
         return favoritesSongs;
     }
 
@@ -26,10 +29,6 @@ public class FavoriteList {
         return favoritesSongs.contains(song);
     }
 
-    public String getSongFavorites(int index){
-        String[] favoriteListTemp= this.favoritesSongs.toArray(new String[this.favoritesSongs.size()]);
-        return favoriteListTemp[index];
-    }
 
     public void toStringFavoritesList() {
         for(Song song : this.favoritesSongs){

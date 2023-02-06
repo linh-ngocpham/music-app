@@ -12,12 +12,27 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class ReadXML {
+
+    public static InputStream search(String artist, String song) throws IOException{
+        String url = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?" +
+                "artist=" + artist +
+                "&song=" + song;
+        return connect(url).getInputStream();
+    }
+
+    public static HttpURLConnection connect(String url) throws IOException{
+        URL url2 = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) url2.openConnection();
+        return con;
+    }
 
     public static void readXMLArtist(Song artistName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
@@ -89,6 +104,50 @@ public class ReadXML {
         }
         for (Song song : songList) {
             System.out.println("Numéro : " + (songList.indexOf(song) + 1));
+            System.out.println("TrackId: " + song.getTrackId());
+            System.out.println("LyricChecksum: " + song.getLyricChecksum());
+            System.out.println("LyricId: " + song.getLyricId());
+            System.out.println("SongUrl: " + song.getSongUrl());
+            System.out.println("ArtistUrl: " + song.getArtistUrl());
+            System.out.println("Artist: " + song.getArtist());
+            System.out.println("Song: " + song.getSongName());
+            System.out.println("SongRank: " + song.getSongRank());
+        }
+        System.out.println("--------------------------------------");
+    }
+
+    public static void readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+        File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
+        songList.clear();
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(search(artistName, songName));
+        document.getDocumentElement().normalize();
+        NodeList nList = document.getElementsByTagName("SearchLyricResult");
+        System.out.println("----------------------------");
+        for (int temp = 0; temp < nList.getLength() - 1; temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                String title = eElement.getElementsByTagName("Song").item(0).getTextContent();
+                int trackId = Integer.parseInt(eElement.getElementsByTagName("TrackId").item(0).getTextContent());
+                if(eElement.getElementsByTagName("LyricChecksum").item(0) != null){
+                    String lyricChecksum = eElement.getElementsByTagName("LyricChecksum").item(0).getTextContent();
+                }
+                int lyricId = Integer.parseInt(eElement.getElementsByTagName("LyricId").item(0).getTextContent());
+                String songUrl = eElement.getElementsByTagName("SongUrl").item(0).getTextContent();
+                String artistUrl = eElement.getElementsByTagName("ArtistUrl").item(0).getTextContent();
+                String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
+                int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
+                Song song = new Song(trackId, lyricId, title, songRank, artist, "", artistUrl, songUrl);
+                if(!songList.contains(song)) {
+                    songList.add(song);
+                }
+
+            }
+        }
+        for (Song song : songList) {
+            System.out.println("NumÃ©ro : " + (songList.indexOf(song) + 1));
             System.out.println("TrackId: " + song.getTrackId());
             System.out.println("LyricChecksum: " + song.getLyricChecksum());
             System.out.println("LyricId: " + song.getLyricId());
