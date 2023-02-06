@@ -1,13 +1,16 @@
 package app.lyricsapp.model;
 
+import com.sun.javafx.fxml.BeanAdapter;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class FavoriteList {
-    private Set<Song> favoritesSongs;
+    private ArrayList<Song> favoritesSongs;
 
     public FavoriteList(){
-        this.favoritesSongs = new HashSet<>();
+        this.favoritesSongs = new ArrayList<>();
     }
 
     public void add(Song song){
@@ -18,11 +21,25 @@ public class FavoriteList {
         this.favoritesSongs.remove(song);
     }
 
-    public Set<Song> getList(){
+    public ArrayList<Song> getList(){
         return favoritesSongs;
     }
 
     public boolean contains(Song song){
         return favoritesSongs.contains(song);
+    }
+
+
+    public void toStringFavoritesList() {
+        for(Song song : this.favoritesSongs){
+            System.out.println("TrackId: " + song.getTrackId());
+            System.out.println("LyricChecksum: " + song.getLyricChecksum());
+            System.out.println("LyricId: " + song.getLyricId());
+            System.out.println("SongUrl: " + song.getSongUrl());
+            System.out.println("ArtistUrl: " + song.getArtistUrl());
+            System.out.println("Artist: " + song.getArtist());
+            System.out.println("Song: " + song.getSongName());
+            System.out.println("SongRank: " + song.getSongRank());
+        }
     }
 }

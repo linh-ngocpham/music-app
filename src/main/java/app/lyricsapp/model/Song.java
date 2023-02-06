@@ -2,13 +2,13 @@ package app.lyricsapp.model;
 
 public class Song {
     private int trackId;
-    private final int lyricId;
-    private final String songName;
-    private final int songRank;
-    private final String artist;
-    private final String LyricChecksum;
-    private final String ArtistUrl;
-    private final String SongUrl;
+    private int lyricId;
+    private String songName;
+    private int songRank;
+    private String artist;
+    private String LyricChecksum;
+    private String ArtistUrl;
+    private String SongUrl;
     private String lyricCorrectUrl;
     private String lyric;
 
@@ -25,6 +25,7 @@ public class Song {
         lyricCorrectUrl = null;
         lyric = null;
     }
+    public Song(){}
 
     public String getArtist() {
         return artist;
@@ -66,6 +67,34 @@ public class Song {
         return lyric;
     }
 
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setLyricId(int lyricId) {
+        this.lyricId = lyricId;
+    }
+
+    public void setArtistUrl(String artistUrl) {
+        ArtistUrl = artistUrl;
+    }
+
+    public void setLyricChecksum(String lyricChecksum) {
+        LyricChecksum = lyricChecksum;
+    }
+
+    public void setSongName(String songName) {
+        this.songName = songName;
+    }
+
+    public void setSongRank(int songRank) {
+        this.songRank = songRank;
+    }
+
+    public void setSongUrl(String songUrl) {
+        SongUrl = songUrl;
+    }
+
     public void setLyricCorrectUrl(String lyricCorrectUrl) {
         this.lyricCorrectUrl = lyricCorrectUrl;
     }
@@ -76,5 +105,17 @@ public class Song {
 
     public void setTrackId(int trackId) {
         this.trackId = trackId;
+    }
+
+    public String toString() {
+        System.out.println("TrackId: " + this.getTrackId());
+        System.out.println("LyricChecksum: " + this.getLyricChecksum());
+        System.out.println("LyricId: " + this.getLyricId());
+        System.out.println("SongUrl: " + this.getSongUrl());
+        System.out.println("ArtistUrl: " + this.getArtistUrl());
+        System.out.println("Artist: " + this.getArtist());
+        System.out.println("Song: " + this.getSongName());
+        System.out.println("SongRank: " + this.getSongRank());
+        return null;
     }
 }
