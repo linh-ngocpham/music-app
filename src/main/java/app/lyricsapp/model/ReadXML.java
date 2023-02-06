@@ -22,7 +22,7 @@ import java.util.Scanner;
 public class ReadXML {
 
     public static InputStream search(String artist, String song) throws IOException{
-        String url = "http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?" +
+        String url = "http://api.chartlyrics.com/apiv1.asmx/SearchLyric?" +
                 "artist=" + artist +
                 "&song=" + song;
         return connect(url).getInputStream();
