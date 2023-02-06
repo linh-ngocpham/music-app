@@ -29,7 +29,6 @@ public class FavoriteList {
         return favoritesSongs.contains(song);
     }
 
-
     public void toStringFavoritesList() {
         for(Song song : this.favoritesSongs){
             System.out.println("TrackId: " + song.getTrackId());
