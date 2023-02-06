@@ -210,9 +210,23 @@ public class RunCLI {
     public static void editFavoritesSongList(int index, FavoriteList favoritesList) throws ParserConfigurationException, IOException, SAXException {
         System.out.println("1 - Souhaitez-Vous la suprimmer la musique de vos favoris ?");
         System.out.println("2 - retour");
-        selectFavoriteSong(favoritesList);
         Scanner choice = new Scanner(System.in);
-        if(Objects.equals(choice, "1") || Objects.equals(choice, "2")){
+        String input = choice.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            switch(input){
+                case "1":
+                    favoritesList.getList().remove(index);
+                    selectFavoriteSong(favoritesList);
+                    break;
+                case "2":
+                    selectFavoriteSong(favoritesList);
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande Incorrecte");
+            System.out.println("Veuillez réessayer s'il vous plait.");
+
         }
     }
 
