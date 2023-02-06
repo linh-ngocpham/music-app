@@ -1,6 +1,7 @@
 package app.lyricsapp.controller;
 
 import app.lyricsapp.model.FavoriteList;
+import app.lyricsapp.model.Lyric;
 import app.lyricsapp.model.Song;
 import org.xml.sax.SAXException;
 
@@ -99,11 +100,17 @@ public class RunCLI {
         String songName = scanner.nextLine();
         Song song = new Song();
         song.setSongName(songName);
-        readXMLSongName(song, songList); //affiche les musique correspondant aux noms d'artistes données
+        readXMLSongName( songList); //affiche les musique correspondant aux noms d'artistes données
         getSongFromSongList();
         postSearchMenu();
     }
+    public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
+        Scanner sc = new Scanner(System.in);
+        String lyrics= sc.nextLine();
+        Lyric lyric=new Lyric();
+        lyric.setLyric(lyrics);
 
+    }
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
         System.out.println("Choississez le numéro de la musique");
         System.out.println("Sinon, retourner aux menu principal : Menu");

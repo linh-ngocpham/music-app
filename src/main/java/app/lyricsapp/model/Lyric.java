@@ -9,6 +9,7 @@ public class Lyric {
         this.song = song;
         this.lyric = lyric;
     }
+    public Lyric(){}
 
     public Song getSong() {
         return song;
