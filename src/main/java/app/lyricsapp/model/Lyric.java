@@ -9,6 +9,7 @@ public class Lyric {
         this.song = song;
         this.lyric = lyric;
     }
+
     public Lyric(){}
 
     public Song getSong() {
@@ -26,5 +27,4 @@ public class Lyric {
     public void setLyric(String lyric) {
         this.lyric = lyric;
     }
-
 }
