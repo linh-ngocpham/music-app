@@ -109,7 +109,6 @@ public class RunCLI {
         }
 
         int temp = Integer.parseInt(index) - 1;
-
         if(songList.size() < temp || temp < 0){
             System.out.println("Commande incorrecte");
             getSongFromSongList();
@@ -206,9 +205,12 @@ public class RunCLI {
             switch(input){
                 case "1":
                     favoritesList.getList().remove(index);
+                    System.out.println("Musique retiré de vos favoris");
+                    favoritesList.toStringFavoritesList();
                     selectFavoriteSong(favoritesList);
                     break;
                 case "2":
+                    favoritesList.toStringFavoritesList();
                     selectFavoriteSong(favoritesList);
                     break;
             }
@@ -216,7 +218,7 @@ public class RunCLI {
         else{
             System.out.println("Commande Incorrecte");
             System.out.println("Veuillez réessayer s'il vous plait.");
-
+            editFavoritesSongList(index, favoritesList);
         }
     }
 
