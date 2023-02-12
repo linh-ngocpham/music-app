@@ -108,15 +108,15 @@ public class Song {
     }
 
     public String toString() {
-        System.out.println("TrackId: " + this.getTrackId());
-        System.out.println("LyricChecksum: " + this.getLyricChecksum());
-        System.out.println("LyricId: " + this.getLyricId());
-        System.out.println("SongUrl: " + this.getSongUrl());
-        System.out.println("ArtistUrl: " + this.getArtistUrl());
-        System.out.println("Artist: " + this.getArtist());
-        System.out.println("Song: " + this.getSongName());
-        System.out.println("SongRank: " + this.getSongRank());
-
+        System.out.println( this.getArtist() + " - " + this.getSongName() + "    " + this.getSongRank() + "/10");
+        //System.out.println("TrackId: " + this.getTrackId());
+        //System.out.println("LyricChecksum: " + this.getLyricChecksum());
+        //System.out.println("LyricId: " + this.getLyricId());
+        //System.out.println("SongUrl: " + this.getSongUrl());
+        //System.out.println("ArtistUrl: " + this.getArtistUrl());
+        //System.out.println("Artist: " + this.getArtist());
+        //System.out.println("Song: " + this.getSongName());
+        //System.out.println("SongRank: " + this.getSongRank());
         return null;
     }
 }

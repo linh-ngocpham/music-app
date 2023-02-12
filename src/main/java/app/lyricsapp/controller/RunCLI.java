@@ -78,9 +78,11 @@ public class RunCLI {
         System.out.println("---------------------------------------");
         System.out.println("Saississez le nom de l'artiste :");
         Scanner scanner = new Scanner(System.in);
-        String artistName = scanner.nextLine();
+        String input1 = scanner.nextLine();
+        String artistName = input1.replaceAll(" ", "%20");
         System.out.println("Saississez le nom de la musique :");
-        String song = scanner.nextLine();
+        String input2 = scanner.nextLine();
+        String song = input2.replaceAll(" ", "%20");
         readXMLSong(artistName,song, songList); //affiche les musique correspondant aux noms de la musique données
         getSongFromSongList();
         postSearchMenu();
@@ -90,7 +92,8 @@ public class RunCLI {
         System.out.println("---------------------------------------");
         System.out.println("Saississez un morceau de paroles de la musique :");
         Scanner scanner = new Scanner(System.in);
-        String lyric = scanner.nextLine();
+        String input = scanner.nextLine();
+        String lyric = input.replaceAll(" ", "%20");
         readXMLSongLyric(lyric, songList); //affiche les musique correspondant aux noms d'artistes données
         getSongFromSongList();
         postSearchMenu();
@@ -106,7 +109,6 @@ public class RunCLI {
         }
 
         int temp = Integer.parseInt(index) - 1;
-
         if(songList.size() < temp || temp < 0){
             System.out.println("Commande incorrecte");
             getSongFromSongList();
@@ -130,7 +132,8 @@ public class RunCLI {
                     runCLI();
                     break;
             }
-        } else{
+        }
+        else{
             System.out.println("Commande inconnue");
             System.out.println( "Veuillez réessayer s'il vous plait.");
             postSearchMenu();
@@ -202,9 +205,12 @@ public class RunCLI {
             switch(input){
                 case "1":
                     favoritesList.getList().remove(index);
+                    System.out.println("Musique retiré de vos favoris");
+                    favoritesList.toStringFavoritesList();
                     selectFavoriteSong(favoritesList);
                     break;
                 case "2":
+                    favoritesList.toStringFavoritesList();
                     selectFavoriteSong(favoritesList);
                     break;
             }
@@ -212,7 +218,7 @@ public class RunCLI {
         else{
             System.out.println("Commande Incorrecte");
             System.out.println("Veuillez réessayer s'il vous plait.");
-
+            editFavoritesSongList(index, favoritesList);
         }
     }
 
