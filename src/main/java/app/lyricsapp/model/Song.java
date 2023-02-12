@@ -107,7 +107,7 @@ public class Song {
         this.trackId = trackId;
     }
 
-    public String toString() {
+    public void toStringOne() {
         System.out.println( this.getArtist() + " - " + this.getSongName() + "    " + this.getSongRank() + "/10");
         //System.out.println("TrackId: " + this.getTrackId());
         //System.out.println("LyricChecksum: " + this.getLyricChecksum());
@@ -117,6 +117,18 @@ public class Song {
         //System.out.println("Artist: " + this.getArtist());
         //System.out.println("Song: " + this.getSongName());
         //System.out.println("SongRank: " + this.getSongRank());
-        return null;
+    }
+
+    public void toStringTwo() {
+        System.out.println( this.getArtist() + " - " + this.getSongName() + "    " + this.getSongRank() + "/10");
+        System.out.println(this.getLyric());
+        //System.out.println("TrackId: " + this.getTrackId());
+        //System.out.println("LyricChecksum: " + this.getLyricChecksum());
+        //System.out.println("LyricId: " + this.getLyricId());
+        //System.out.println("SongUrl: " + this.getSongUrl());
+        //System.out.println("ArtistUrl: " + this.getArtistUrl());
+        //System.out.println("Artist: " + this.getArtist());
+        //System.out.println("Song: " + this.getSongName());
+        //System.out.println("SongRank: " + this.getSongRank());
     }
 }

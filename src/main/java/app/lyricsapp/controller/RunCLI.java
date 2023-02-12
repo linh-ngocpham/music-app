@@ -142,7 +142,15 @@ public class RunCLI {
 
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        if(favoriteList.contains(song)){
+        int check = 0;
+        for(Song favSong : favoriteList.getList()){
+            if (Objects.equals(song.getSongName(), favSong.getSongName()) && Objects.equals(song.getArtist(), favSong.getArtist())){
+                check = 1;
+                break;
+            }
+        }
+        if(check == 1){
+            System.out.println();
             System.out.println("Cette musique est déja présente dans les favoris");
             System.out.println("1 - Suprimer des favoris");
         } else{
@@ -153,7 +161,7 @@ public class RunCLI {
         if(Objects.equals(input, "1") || Objects.equals(input, "2")){
             switch(input) {
                 case "1":
-                    if(favoriteList.contains(song)) {
+                    if(check == 1) {
                         favoriteList.remove(song);
                     }
                     else{
@@ -235,7 +243,7 @@ public class RunCLI {
         int temp = Integer.parseInt(input) - 1;
 
         if(songList.size() > temp && temp  >= 0){
-            favoriteList.getList().get(temp).toString();
+            favoriteList.getList().get(temp).toStringTwo();
             editFavoritesSongList(temp,favoriteList);
         } else{
             System.out.println("Commande Incorrecte");
