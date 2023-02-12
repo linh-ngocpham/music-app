@@ -31,6 +31,10 @@ public class ReadXML {
         return connect(url).getInputStream();
     }
 
+    public static InputStream getsong(Song song) throws IOException {
+    String url="http://api.chartlyrics.com/apiv1.asmx/GetLyric?"+"lyricId="+song.getLyricId()+"&lyricCheckSum="+song.getLyricChecksum();
+    return connect(url).getInputStream();
+    }
     public static HttpURLConnection connect(String url) throws IOException{
         URL url2 = new URL(url);
         HttpURLConnection con = (HttpURLConnection) url2.openConnection();
@@ -255,6 +259,30 @@ public class ReadXML {
                     System.out.println("Lyric : " + eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
                 }
             }
+        } catch(IOException | ParserConfigurationException e) {
+            System.out.println(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void getLyricsApi(Song songs) {
+        try {
+            DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db1 = dbf1.newDocumentBuilder();
+            Document document = db1.parse(getsong(songs));
+            document.getDocumentElement().normalize();
+            //System.out.println("Root Element :" + document.getDocumentElement().getNodeName());
+            NodeList nList1 = document.getElementsByTagName("GetLyricResult");
+            System.out.println("----------------------------");
+            for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
+                Node nNode1 = nList1.item(temp1);
+                if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement1 = (Element) nNode1;
+                    songs.setLyric(eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
+                }
+            }
+            System.out.println("Lyric : " + songs.getLyric());
+
         } catch(IOException | ParserConfigurationException e) {
             System.out.println(e);
         } catch (SAXException e) {

@@ -114,7 +114,7 @@ public class RunCLI {
             getSongFromSongList();
         }
         Song displaySong = songList.get(temp);
-        displaySong.toString();
+        getLyricsApi(displaySong);
         favorites(displaySong);
     }
 
