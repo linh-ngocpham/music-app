@@ -32,8 +32,11 @@ public class ReadXML {
     }
 
     public static InputStream getsong(Song song) throws IOException {
-    String url="http://api.chartlyrics.com/apiv1.asmx/GetLyric?"+"lyricId="+song.getLyricId()+"&lyricCheckSum="+song.getLyricChecksum();
-    return connect(url).getInputStream();
+        String artist = song.getArtist().replaceAll(" ", "%20");
+        String songName = song.getSongName().replaceAll(" ", "%20");
+        String url="http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?"+ "artist=" + artist + "&song=" + songName;
+                //+"lyricId="+song.getLyricId()+"&lyricCheckSum="+song.getLyricChecksum();
+        return connect(url).getInputStream();
     }
     public static HttpURLConnection connect(String url) throws IOException{
         URL url2 = new URL(url);
