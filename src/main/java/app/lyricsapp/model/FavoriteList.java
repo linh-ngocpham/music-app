@@ -50,8 +50,8 @@ public class FavoriteList {
         }
     }
     public void save(){
-        File file = new File("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
-        FavoriteList.clearFile("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
+        File file = new File("src/main/java/app/lyricsapp/model/favorites.txt");
+        FavoriteList.clearFile("src/main/java/app/lyricsapp/model/favorites.txt");
         try {
             FileWriter writer = new FileWriter(file);
             for(Song song : favoritesSongs){
@@ -75,7 +75,7 @@ public class FavoriteList {
 
     public void recuperate(){
         try {
-            FileReader fileReader = new FileReader("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
+            FileReader fileReader = new FileReader("src/main/java/app/lyricsapp/model/favorites.txt");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             int trackID = 0;
