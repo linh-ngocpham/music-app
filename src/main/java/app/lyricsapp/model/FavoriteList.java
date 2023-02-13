@@ -2,6 +2,7 @@ package app.lyricsapp.model;
 
 import com.sun.javafx.fxml.BeanAdapter;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -46,6 +47,108 @@ public class FavoriteList {
             //System.out.println("Artist: " + song.getArtist());
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
+        }
+    }
+    public void save(){
+        File file = new File("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
+        FavoriteList.clearFile("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
+        try {
+            FileWriter writer = new FileWriter(file);
+            for(Song song : favoritesSongs){
+                writer.write("Song:\n");
+                writer.write("TrackId:" + song.getTrackId() + "\n");
+                writer.write("LyricChecksum:" + song.getLyricChecksum() + "\n");
+                writer.write("LyricId:" + song.getLyricId() + "\n");
+                writer.write("SongUrl:" + song.getSongUrl() + "\n");
+                writer.write("ArtistUrl:" + song.getArtistUrl() + "\n");
+                writer.write("Artist:" + song.getArtist() + "\n");
+                writer.write("SongName:" + song.getSongName() + "\n");
+                writer.write("SongRank:" + song.getSongRank() + "\n");
+            }
+            System.out.println("Text saved to file.");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to file.");
+            e.printStackTrace();
+        }
+    }
+
+    public void recuperate(){
+        try {
+            FileReader fileReader = new FileReader("C:\\Users\\cnc cnc\\IdeaProjects\\equipe_ac_pigl_lyricsapp\\src\\main\\java\\app\\lyricsapp\\model\\favorites.txt");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            int trackID = 0;
+            String lyricChecksum = "";
+            int lyricID = 0;
+            String songUrl = "";
+            String artistUrl = "";
+            String artist = "";
+            String songName = "";
+            int songRank = 0;
+
+            Song currentSong = null;
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.startsWith("Song:")) {
+                    if (currentSong != null) {
+                        currentSong = new Song(trackID, lyricID, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                        favoritesSongs.add(currentSong);
+                        trackID = 0;
+                        lyricChecksum = "";
+                        lyricID = 0;
+                        songUrl = "";
+                        artistUrl = "";
+                        artist = "";
+                        songName = "";
+                        songRank = 0;
+                    }
+                    else{
+                        currentSong = new Song();
+                    }
+                } else if (line.startsWith("TrackID:")) {
+                    trackID = Integer.parseInt(line.substring(8));
+                } else if (line.startsWith("LyricChecksum:")) {
+                    lyricChecksum = line.substring(14);
+                } else if (line.startsWith("LyricID:")) {
+                    lyricID = Integer.parseInt(line.substring(8));
+                } else if (line.startsWith("SongUrl:")) {
+                    songUrl = line.substring(8);
+                } else if (line.startsWith("ArtistUrl:")) {
+                    artistUrl = line.substring(10);
+                } else if (line.startsWith("Artist:")) {
+                    artist = line.substring(7);
+                } else if (line.startsWith("SongName:")) {
+                    songName = line.substring(9);
+                } else if (line.startsWith("SongRank:")) {
+                    songRank = Integer.parseInt(line.substring(9));
+                }
+            }
+
+            if (currentSong != null) {
+                currentSong = new Song(trackID, lyricID, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);;
+                favoritesSongs.add(currentSong);
+            }
+
+            bufferedReader.close();
+            fileReader.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void clearFile(String fileName){
+        try{
+            FileWriter fw = new FileWriter(fileName, false);
+            PrintWriter pw = new PrintWriter(fw, false);
+            pw.flush();
+            pw.close();
+            fw.close();
+        }catch(Exception exception){
+            System.out.println("Exception have been caught");
         }
     }
 }

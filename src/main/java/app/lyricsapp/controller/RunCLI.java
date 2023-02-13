@@ -89,6 +89,7 @@ public class RunCLI {
                     displayFavoritesList();
                     break;
                 case "3":
+                    favoriteList.save();
                     System.exit(0);
                     break;
             }
@@ -363,6 +364,7 @@ public class RunCLI {
     }
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+        favoriteList.recuperate();
         runCLI();
     }
 }
