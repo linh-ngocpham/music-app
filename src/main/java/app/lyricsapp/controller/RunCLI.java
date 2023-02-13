@@ -16,9 +16,42 @@ import static app.lyricsapp.model.ReadXML.*;
 public class RunCLI {
     static FavoriteList favoriteList = new FavoriteList();
     static List<Song> songList = new ArrayList<>();
+    private static ArrayList<String> banWord = new ArrayList<String>();
+    private static final String banWordString = "about,after,all,also,an,and,another," +
+                                            "any,are,as,at,be,because,been,before," +
+                                            "being,between,both,but,by,came,can,come," +
+                                            "could,did,do,does,each,else,for,from,get," +
+                                            "got,had,has,have,he,her,here,him,himself," +
+                                            "his,how,if,in,into,is,it,its,just,like," +
+                                            "make,many,me,might,more,most,much,must," +
+                                            "my,never,no,now,of,on,only,or,other,our," +
+                                            "out,over,re,said,same,see,should,since," +
+                                            "so,some,still,such,take,than,that,the," +
+                                            "their,them,then,there,these,they,this," +
+                                            "those,through,to,too,under,up,use,very," +
+                                            "want,was,way,we,well,were,what,when," +
+                                            "where,which,while,who,will,with,would,you,your";
+    public static void banWordList(String banWordString){
+        ArrayList<String> tempList = new ArrayList<>();
+        String temp = null;
+        for(int i = 0; i < banWordString.length(); i ++){
+            if(banWordString.charAt(i) == ','){
+                tempList.add(temp);
+                temp = null;
+            }
+            else {
+                temp += banWordString.charAt(i);
+            }
+        }
+        banWord = tempList;
+    }
+
     public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
+        banWordList(banWordString);
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Menu Principal");
+        System.out.println("----------------------------------------");
+        System.out.println("--           Menu Principal           --");
+        System.out.println("----------------------------------------");
         System.out.println("1 - Recherche des paroles d'une musique");
         System.out.println("2 - Gestion de vos favoris");
         System.out.println("3 - Quitter le programme");
@@ -46,10 +79,12 @@ public class RunCLI {
 
     public static void searchSong() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        // Affichage Menu Principal
+        // Affichage Menu des recherches
+        System.out.println("------------------------------------------------------------------");
         System.out.println("1 - Recherche avec le nom de l'artiste et le nom de la musique");
         System.out.println("2 - Recherche par paroles");
         System.out.println("3 - retour");
+        System.out.println("------------------------------------------------------------------");
         System.out.print("Votre choix : ");
         String input = scanner.nextLine();
         //Choix de l'utilisateur
@@ -68,6 +103,7 @@ public class RunCLI {
                     break;
             }
         } else{
+            System.out.println("------------------------------------------------------------------");
             System.out.println("Commande inconnue");
             System.out.println( "Veuillez réessayer s'il vous plait.");
             searchSong();
@@ -75,13 +111,24 @@ public class RunCLI {
     }
 
     public static void searchSongArtistAndSongName() throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("---------------------------------------");
+        System.out.println("------------------------------------------------------------------");
         System.out.println("Saississez le nom de l'artiste :");
         Scanner scanner = new Scanner(System.in);
         String input1 = scanner.nextLine();
+        //TODO : effectuer les changement des caractères spéciaux avant l'appel à API
         String artistName = input1.replaceAll(" ", "%20");
         System.out.println("Saississez le nom de la musique :");
         String input2 = scanner.nextLine();
+        for(String banWord : banWord){
+            if(Objects.equals(input1, banWord)){
+                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
+                searchSongArtistAndSongName();
+            }
+            if(Objects.equals(input2, banWord)){
+                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
+                searchSongArtistAndSongName();
+            }
+        }
         String song = input2.replaceAll(" ", "%20");
         readXMLSong(artistName,song, songList); //affiche les musique correspondant aux noms de la musique données
         getSongFromSongList();
@@ -89,10 +136,16 @@ public class RunCLI {
     }
 
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
-        System.out.println("---------------------------------------");
+        System.out.println("------------------------------------------------------------------");
         System.out.println("Saississez un morceau de paroles de la musique :");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
+        for(String banWord : banWord) {
+            if (Objects.equals(input, banWord)) {
+                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
+                searchSongLyric();
+            }
+        }
         String lyric = input.replaceAll(" ", "%20");
         readXMLSongLyric(lyric, songList); //affiche les musique correspondant aux noms d'artistes données
         getSongFromSongList();
@@ -100,6 +153,7 @@ public class RunCLI {
     }
 
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
+        System.out.println("------------------------------------------------------------------");
         System.out.println("Choississez le numéro de la musique");
         System.out.println("Sinon, retourner aux menu principal : Menu");
         Scanner choice = new Scanner(System.in);
@@ -120,6 +174,7 @@ public class RunCLI {
 
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
         System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
         System.out.println("2 - Retour au Menu Principal");
         String input = scanner.nextLine();
@@ -142,6 +197,7 @@ public class RunCLI {
 
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
         int check = 0;
         for(Song favSong : favoriteList.getList()){
             if (Objects.equals(song.getSongName(), favSong.getSongName()) && Objects.equals(song.getArtist(), favSong.getArtist())){
@@ -172,6 +228,7 @@ public class RunCLI {
                     break;
             }
         } else {
+            System.out.println("------------------------------------------------------------------");
             System.out.println("Commande Incorrecte");
             System.out.println("Veuillez réessayer s'il vous plait.");
             favorites(song);
@@ -184,11 +241,26 @@ public class RunCLI {
     }
 
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("1 - Souhaitez-Vous affichez une musique de vos favoris ?");
-        System.out.println("2 - retourner aux menu principal");
+        System.out.println("------------------------------------------------------------------");
+        if(favoriteList.getList().isEmpty()){
+            System.out.println("Votre liste de favoris ne contient aucune musique");
+            System.out.println("1 - retourner aux menu principal");
+        }
+        else{
+            System.out.println("1 - Souhaitez-Vous affichez une musique de vos favoris ?");
+            System.out.println("2 - retourner aux menu principal");
+        }
+        
         Scanner choice = new Scanner(System.in);
         String input = choice.nextLine();
-        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+        if(favoriteList.getList().isEmpty() && Objects.equals(input, "1")){
+            switch (input){
+                case "1":
+                    runCLI();
+                    break;
+            }
+        }
+        else if((Objects.equals(input, "1") || Objects.equals(input, "2")) && !favoriteList.getList().isEmpty()){
             switch (input){
                 case "1":
                     getSongFromFavoritesSong(favoriteList);
@@ -197,7 +269,8 @@ public class RunCLI {
                     runCLI();
                     break;
             }
-        } else{
+        } 
+        else{
             System.out.println("Commande Incorrecte");
             System.out.println("Veuillez réessayer s'il vous plait.");
             selectFavoriteSong(favoriteList);
@@ -205,7 +278,8 @@ public class RunCLI {
     }
 
     public static void editFavoritesSongList(int index, FavoriteList favoritesList) throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("1 - Souhaitez-Vous la suprimmer la musique de vos favoris ?");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("1 - Suprimmer de vos favoris");
         System.out.println("2 - retour");
         Scanner choice = new Scanner(System.in);
         String input = choice.nextLine();
@@ -231,17 +305,15 @@ public class RunCLI {
     }
 
     public static void getSongFromFavoritesSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("Choississez le numéro de la musique");
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("Choississez la musique");
         System.out.println("Sinon, taper retour");
         Scanner choice = new Scanner(System.in);
         String input = choice.nextLine();
-
         if(Objects.equals(input, "retour")){
             selectFavoriteSong(favoriteList);
         }
-
         int temp = Integer.parseInt(input) - 1;
-
         if(songList.size() > temp && temp  >= 0){
             favoriteList.getList().get(temp).toStringTwo();
             editFavoritesSongList(temp,favoriteList);

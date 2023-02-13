@@ -4,6 +4,7 @@ import com.sun.javafx.fxml.BeanAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class FavoriteList {
@@ -18,7 +19,12 @@ public class FavoriteList {
     }
 
     public void remove(Song song){
-        this.favoritesSongs.remove(song);
+        for(Song songFav : this.favoritesSongs){
+            if(Objects.equals(song.getArtist(),songFav.getArtist()) && Objects.equals(song.getSongName(),songFav.getSongName())){
+                this.favoritesSongs.remove(songFav);
+                break;
+            }
+        }
     }
 
     public ArrayList<Song> getList(){
