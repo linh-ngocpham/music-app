@@ -6,10 +6,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 import static app.lyricsapp.model.ReadXML.*;
 
@@ -33,17 +30,42 @@ public class RunCLI {
                                             "where,which,while,who,will,with,would,you,your";
     public static void banWordList(String banWordString){
         ArrayList<String> tempList = new ArrayList<>();
-        String temp = null;
+        String temp = "";
         for(int i = 0; i < banWordString.length(); i ++){
             if(banWordString.charAt(i) == ','){
                 tempList.add(temp);
-                temp = null;
+                temp = "";
             }
             else {
                 temp += banWordString.charAt(i);
             }
         }
         banWord = tempList;
+    }
+
+    public static String replaceAllAPI(String inputString){
+        String temp = inputString;
+        temp = temp.replaceAll(":", "%3A");
+        temp = temp.replaceAll("/", "%2F");
+        temp = temp.replaceAll("\\?", "%3F");
+        temp = temp.replaceAll("#", "%23");
+        temp = temp.replaceAll("\\[", "%5B");
+        temp = temp.replaceAll("]", "%5D");
+        temp = temp.replaceAll("@", "%40");
+        temp = temp.replaceAll("!", "%21");
+        temp = temp.replaceAll("\\$", "%24");
+        temp = temp.replaceAll("&", "%26");
+        temp = temp.replaceAll("'", "%27");
+        temp = temp.replaceAll("\\(", "%28");
+        temp = temp.replaceAll("\\)", "%29");
+        temp = temp.replaceAll("\\*", "%2A");
+        temp = temp.replaceAll("\\+", "%2B");
+        temp = temp.replaceAll(",", "%2C");
+        temp = temp.replaceAll(";", "%3B");
+        temp = temp.replaceAll("=", "%3D");
+        temp = temp.replaceAll("%", "%25");
+        temp = temp.replaceAll(" ", "%20");
+        return temp;
     }
 
     public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
@@ -112,41 +134,57 @@ public class RunCLI {
 
     public static void searchSongArtistAndSongName() throws ParserConfigurationException, IOException, SAXException {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Saississez le nom de l'artiste :");
         Scanner scanner = new Scanner(System.in);
-        String input1 = scanner.nextLine();
-        //TODO : effectuer les changement des caractères spéciaux avant l'appel à API
-        String artistName = input1.replaceAll(" ", "%20");
-        System.out.println("Saississez le nom de la musique :");
-        String input2 = scanner.nextLine();
-        for(String banWord : banWord){
-            if(Objects.equals(input1, banWord)){
-                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
-                searchSongArtistAndSongName();
+        String input1 = null;
+        boolean validInput1 = true;
+        while (validInput1) {
+            System.out.println("Saississez le nom de l'artiste :");
+            input1 = scanner.nextLine().toLowerCase();
+            String[] strInput1 = input1.split(" ");
+            if(!banWord.containsAll(List.of(strInput1))){
+                validInput1 = false;
             }
-            if(Objects.equals(input2, banWord)){
-                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
-                searchSongArtistAndSongName();
+            else{
+                System.out.println("Le nom de l'artiste contient que des mots interdits");
             }
         }
-        String song = input2.replaceAll(" ", "%20");
-        readXMLSong(artistName,song, songList); //affiche les musique correspondant aux noms de la musique données
+        String artistName = replaceAllAPI(input1);
+        String input2 = null;
+        boolean validInput2 = true;
+        while (validInput2) {
+            System.out.println("Saississez le nom de la musique :");
+            input2 = scanner.nextLine().toLowerCase();
+            String[] strInput2 = input2.split(" ");
+            if(!banWord.containsAll(List.of(strInput2))){
+                validInput2 = false;
+            }
+            else{
+                System.out.println("Le nom de la musique contient que des mots interdits");
+            }
+        }
+        String song = replaceAllAPI(input2);
+        readXMLSong(artistName, song, songList); //affiche les musique correspondant aux noms de la musique données
         getSongFromSongList();
         postSearchMenu();
     }
 
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Saississez un morceau de paroles de la musique :");
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        for(String banWord : banWord) {
-            if (Objects.equals(input, banWord)) {
-                System.out.println("Mot Interdit : " + banWord + " dans le nom de la musique");
-                searchSongLyric();
+        String input = null;
+        boolean validInput = true;
+        while (validInput) {
+            System.out.println("Saississez un morceau de paroles de la musique :");
+            input = scanner.nextLine().toLowerCase();
+            String[] strInput = input.split(" ");
+            if(!banWord.containsAll(List.of(strInput))){
+                validInput = false;
+            }
+            else{
+                System.out.println("Les paroles entré contient que des mots interdits");
             }
         }
-        String lyric = input.replaceAll(" ", "%20");
+        String lyric = replaceAllAPI(input);
         readXMLSongLyric(lyric, songList); //affiche les musique correspondant aux noms d'artistes données
         getSongFromSongList();
         postSearchMenu();
