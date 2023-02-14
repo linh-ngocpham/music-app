@@ -23,7 +23,7 @@ public class LyricsApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/app/lyricsapp/view/lyricsapp.fxml"));
-        primaryStage.setTitle("LyricsApp");
+        primaryStage.setTitle("Cherchez une musique !");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
