@@ -20,10 +20,10 @@ public class Song {
         this.songName = songName;
         this.songRank = songRank;
         this.LyricChecksum = lyricChecksum;
-        ArtistUrl = artistUrl;
-        SongUrl = songUrl;
-        lyricCorrectUrl = null;
-        lyric = null;
+        this.ArtistUrl = artistUrl;
+        this.SongUrl = songUrl;
+        this.lyricCorrectUrl = null;
+        this.lyric = null;
     }
     public Song(){}
 

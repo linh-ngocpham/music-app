@@ -64,6 +64,7 @@ public class FavoriteList {
                 writer.write("Artist:" + song.getArtist() + "\n");
                 writer.write("SongName:" + song.getSongName() + "\n");
                 writer.write("SongRank:" + song.getSongRank() + "\n");
+                //writer.write("Lyric:" + song.getLyric() + "\n");
             }
             System.out.println("Text saved to file.");
             writer.close();
@@ -86,6 +87,7 @@ public class FavoriteList {
             String artist = "";
             String songName = "";
             int songRank = 0;
+            //String lyric = "";
 
             Song currentSong = null;
 
@@ -93,7 +95,16 @@ public class FavoriteList {
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.startsWith("Song:")) {
                     if (currentSong != null) {
-                        currentSong = new Song(trackID, lyricID, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                        currentSong = new Song();
+                        currentSong.setTrackId(trackID);
+                        currentSong.setLyricId(lyricID);
+                        currentSong.setSongName(songName);
+                        currentSong.setSongRank(songRank);
+                        currentSong.setArtist(artist);
+                        currentSong.setLyricChecksum(lyricChecksum);
+                        currentSong.setArtistUrl(artistUrl);
+                        currentSong.setSongUrl(songUrl);
+                        //currentSong.setLyric(lyric);
                         favoritesSongs.add(currentSong);
                         trackID = 0;
                         lyricChecksum = "";
@@ -103,15 +114,16 @@ public class FavoriteList {
                         artist = "";
                         songName = "";
                         songRank = 0;
+                        //lyric = "";
                     }
                     else{
                         currentSong = new Song();
                     }
-                } else if (line.startsWith("TrackID:")) {
+                } else if (line.startsWith("TrackId:")) {
                     trackID = Integer.parseInt(line.substring(8));
                 } else if (line.startsWith("LyricChecksum:")) {
                     lyricChecksum = line.substring(14);
-                } else if (line.startsWith("LyricID:")) {
+                } else if (line.startsWith("LyricId:")) {
                     lyricID = Integer.parseInt(line.substring(8));
                 } else if (line.startsWith("SongUrl:")) {
                     songUrl = line.substring(8);
@@ -123,11 +135,14 @@ public class FavoriteList {
                     songName = line.substring(9);
                 } else if (line.startsWith("SongRank:")) {
                     songRank = Integer.parseInt(line.substring(9));
-                }
+                } /*else if (line.startsWith("Lyric:")){
+                    lyric = line.substring(6);
+                }*/
             }
 
             if (currentSong != null) {
-                currentSong = new Song(trackID, lyricID, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);;
+                currentSong = new Song(trackID, lyricID, songName, songRank, artist, lyricChecksum, artistUrl, songUrl);
+                //currentSong.setLyric(lyric);
                 favoritesSongs.add(currentSong);
             }
 

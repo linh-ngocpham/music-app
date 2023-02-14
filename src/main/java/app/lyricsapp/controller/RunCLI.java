@@ -354,7 +354,13 @@ public class RunCLI {
         }
         int temp = Integer.parseInt(input) - 1;
         if(songList.size() > temp && temp  >= 0){
-            favoriteList.getList().get(temp).toStringTwo();
+            if(favoriteList.getList().get(temp).getLyric() == null){
+                favoriteList.getList().get(temp).toStringOne();
+                getLyricsApi(favoriteList.getList().get(temp));
+            }
+            else{
+                favoriteList.getList().get(temp).toStringTwo();
+            }
             editFavoritesSongList(temp,favoriteList);
         } else{
             System.out.println("Commande Incorrecte");
