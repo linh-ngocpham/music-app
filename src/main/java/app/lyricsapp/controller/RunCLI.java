@@ -353,7 +353,7 @@ public class RunCLI {
             selectFavoriteSong(favoriteList);
         }
         int temp = Integer.parseInt(input) - 1;
-        if(songList.size() > temp && temp  >= 0){
+        if(favoriteList.getList().size() > temp && temp  >= 0){
             if(favoriteList.getList().get(temp).getLyric() == null){
                 favoriteList.getList().get(temp).toStringOne();
                 getLyricsApi(favoriteList.getList().get(temp));
