@@ -164,9 +164,15 @@ public class RunCLI {
             }
         }
         String song = replaceAllAPI(input2);
-        readXMLSong(artistName, song, songList); //affiche les musique correspondant aux noms de la musique données
-        getSongFromSongList();
-        postSearchMenu();
+        readXMLSong(artistName, song, songList);//affiche les musique correspondant aux noms de la musique données
+        if(songList.isEmpty()){
+            System.out.println("Aucune musique n'a été trouvé \n" + "retour aux menu précédent");
+            searchSong();
+        }
+        else{
+            getSongFromSongList();
+            postSearchMenu();
+        }
     }
 
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
@@ -187,8 +193,15 @@ public class RunCLI {
         }
         String lyric = replaceAllAPI(input);
         readXMLSongLyric(lyric, songList); //affiche les musique correspondant aux noms d'artistes données
-        getSongFromSongList();
-        postSearchMenu();
+        if(songList.isEmpty()){
+            System.out.println("Aucune musique n'a été trouvé \n" + "retour aux menu précédent");
+            searchSong();
+        }
+        else{
+            getSongFromSongList();
+            postSearchMenu();
+        }
+
     }
 
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
