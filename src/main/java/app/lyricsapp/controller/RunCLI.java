@@ -272,7 +272,8 @@ public class RunCLI {
 
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("------------------------------------------------------------------");
+        boolean validInput = true;
+        String input = null;
         int check = 0;
         for(Song favSong : favoriteList.getList()){
             if (Objects.equals(song.getSongName(), favSong.getSongName()) && Objects.equals(song.getArtist(), favSong.getArtist())){
@@ -280,34 +281,36 @@ public class RunCLI {
                 break;
             }
         }
-        if(check == 1){
-            System.out.println();
-            System.out.println("Cette musique est déja présente dans les favoris");
-            System.out.println("1 - Suprimer des favoris");
-        } else{
-            System.out.println("1 - Ajouter aux favoris");
-        }
-        System.out.println("2 - Retour");
-        String input = scanner.nextLine();
-        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
-            switch(input) {
-                case "1":
-                    if(check == 1) {
-                        favoriteList.remove(song);
-                    }
-                    else{
-                        favoriteList.add(song);
-                        System.out.println("La musique : " + song.getArtist() + " - " + song.getSongName() + " a été ajouté aux favoris.");
-                    }
-                    break;
-                case "2":
-                    break;
-            }
-        } else {
+        while(validInput){
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Commande Incorrecte");
-            System.out.println("Veuillez réessayer s'il vous plait.");
-            favorites(song);
+            if(check == 1){
+                System.out.println();
+                System.out.println("Cette musique est déja présente dans les favoris");
+                System.out.println("1 - Suprimer des favoris");
+            } else{
+                System.out.println("1 - Ajouter aux favoris");
+            }
+            System.out.println("2 - Retour");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+                validInput = false;
+            } else {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("Commande Incorrecte");
+                System.out.println("Veuillez réessayer s'il vous plait.");
+            }
+        }
+        switch(input) {
+            case "1":
+                if (check == 1) {
+                    favoriteList.remove(song);
+                } else {
+                    favoriteList.add(song);
+                    System.out.println("La musique : " + song.getArtist() + " - " + song.getSongName() + " a été ajouté aux favoris.");
+                }
+                break;
+            case "2":
+                break;
         }
     }
 
@@ -317,6 +320,7 @@ public class RunCLI {
     }
 
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
         if(favoriteList.getList().isEmpty()){
             System.out.println("Votre liste de favoris ne contient aucune musique");
@@ -326,8 +330,6 @@ public class RunCLI {
             System.out.println("1 - Souhaitez-Vous affichez une musique de vos favoris ?");
             System.out.println("2 - retourner aux menu principal");
         }
-        
-        Scanner choice = new Scanner(System.in);
         String input = choice.nextLine();
         if(favoriteList.getList().isEmpty() && Objects.equals(input, "1")){
             switch (input){
@@ -374,6 +376,7 @@ public class RunCLI {
             }
         }
         else{
+            System.out.println("------------------------------------------------------------------");
             System.out.println("Commande Incorrecte");
             System.out.println("Veuillez réessayer s'il vous plait.");
             editFavoritesSongList(index, favoritesList);
