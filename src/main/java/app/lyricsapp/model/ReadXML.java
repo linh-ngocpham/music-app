@@ -52,7 +52,6 @@ public class ReadXML {
         Document document = db.parse(search(artistName, songName));
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("SearchLyricResult");
-        System.out.println("----------------------------");
         for (int temp = 0; temp < nList.getLength() - 1; temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -87,7 +86,7 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("--------------------------------------");
+        System.out.println("------------------------------------------------------------------");
     }
 
     public static void readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
@@ -97,7 +96,6 @@ public class ReadXML {
         Document document = db.parse(search(lyric));
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("SearchLyricResult");
-        System.out.println("----------------------------");
         for (int temp = 0; temp < nList.getLength() - 1; temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -130,7 +128,7 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("--------------------------------------");
+        System.out.println("------------------------------------------------------------------");
     }
 
     /*Méthode de mise sous forme d'objet de chaque song et de listage de chaque objets song + systeme de recherche à partir d'un nom d'artiste ou d'un titre de musique*/

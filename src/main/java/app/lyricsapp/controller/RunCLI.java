@@ -111,7 +111,7 @@ public class RunCLI {
         System.out.print("Votre choix : ");
         String input = scanner.nextLine();
         //Choix de l'utilisateur
-        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3") || Objects.equals(input, "4")) {
+        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
             switch (input) {
                 case "1":
                     System.out.println("Vous avez choisis : Recherche avec le nom de l'artiste");
@@ -142,7 +142,7 @@ public class RunCLI {
             System.out.println("Saississez le nom de l'artiste :");
             input1 = scanner.nextLine().toLowerCase();
             String[] strInput1 = input1.split(" ");
-            if(!banWord.containsAll(List.of(strInput1))){
+            if(!banWord.containsAll(List.of(strInput1)) && (input1.length() <= 75)){
                 validInput1 = false;
             }
             else{
@@ -156,7 +156,7 @@ public class RunCLI {
             System.out.println("Saississez le nom de la musique :");
             input2 = scanner.nextLine().toLowerCase();
             String[] strInput2 = input2.split(" ");
-            if(!banWord.containsAll(List.of(strInput2))){
+            if(!banWord.containsAll(List.of(strInput2)) && (input2.length() <= 125)){
                 validInput2 = false;
             }
             else{
@@ -184,11 +184,11 @@ public class RunCLI {
             System.out.println("Saississez un morceau de paroles de la musique :");
             input = scanner.nextLine().toLowerCase();
             String[] strInput = input.split(" ");
-            if(!banWord.containsAll(List.of(strInput))){
+            if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
                 validInput = false;
             }
             else{
-                System.out.println("Les paroles entré contient que des mots interdits");
+                System.out.println("Les paroles entré contient que des mots interdits ou ");
             }
         }
         String lyric = replaceAllAPI(input);
@@ -210,7 +210,7 @@ public class RunCLI {
         System.out.println("Sinon, retourner aux menu principal : Menu");
         Scanner choice = new Scanner(System.in);
         String index = choice.nextLine();
-        if(Objects.equals(index, "menu") || Objects.equals(index, "Menu")){
+        if(Objects.equals(index.toLowerCase(), "menu")){
             runCLI();
         }
 
@@ -274,6 +274,7 @@ public class RunCLI {
                     }
                     else{
                         favoriteList.add(song);
+                        System.out.println("La musique : " + song.getArtist() + " - " + song.getSongName() + " a été ajouté aux favoris.");
                     }
                     break;
                 case "2":
