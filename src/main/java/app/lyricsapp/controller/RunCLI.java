@@ -70,66 +70,78 @@ public class RunCLI {
 
     public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
         banWordList(banWordString);
+        boolean validInput = true;
         Scanner scanner = new Scanner(System.in);
         System.out.println("----------------------------------------");
         System.out.println("--           Menu Principal           --");
         System.out.println("----------------------------------------");
-        System.out.println("1 - Recherche des paroles d'une musique");
-        System.out.println("2 - Gestion de vos favoris");
-        System.out.println("3 - Quitter le programme");
-        System.out.print("Votre choix : ");
-        String input = scanner.nextLine();
-        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
-            switch (input) {
-                case "1":
-                    System.out.println("Vous avez choisis la recherche des paroles d'une musique");
-                    searchSong();
-                    break;
-                case "2":
-                    displayFavoritesList();
-                    break;
-                case "3":
-                    favoriteList.save();
-                    System.exit(0);
-                    break;
+        String input = null;
+        while(validInput){
+            System.out.println("1 - Recherche des paroles d'une musique");
+            System.out.println("2 - Gestion de vos favoris");
+            System.out.println("3 - Quitter le programme");
+            System.out.print("Votre choix : ");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
+                validInput = false;
             }
-        } else{
-            System.out.println("Commande inconnue");
-            System.out.println( "Veuillez réessayer s'il vous plait.");
-            runCLI();
+            else {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("Commande inconnue");
+                System.out.println("Veuillez réessayer s'il vous plait.");
+            }
+        }
+        switch (input) {
+            case "1":
+                System.out.println("Vous avez choisis la recherche des paroles d'une musique");
+                searchSong();
+                break;
+            case "2":
+                displayFavoritesList();
+                break;
+            case "3":
+                favoriteList.save();
+                System.exit(0);
+                break;
         }
     }
 
+
     public static void searchSong() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        // Affichage Menu des recherches
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("1 - Recherche avec le nom de l'artiste et le nom de la musique");
-        System.out.println("2 - Recherche par paroles");
-        System.out.println("3 - retour");
-        System.out.println("------------------------------------------------------------------");
-        System.out.print("Votre choix : ");
-        String input = scanner.nextLine();
-        //Choix de l'utilisateur
-        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
-            switch (input) {
-                case "1":
-                    System.out.println("Vous avez choisis : Recherche avec le nom de l'artiste");
-                    searchSongArtistAndSongName();
-                    break;
-                case "2":
-                    System.out.println("Vous avez choisis : Recherche avec les paroles");
-                    searchSongLyric();
-                    break;
-                case "3":
-                    runCLI();
-                    break;
-            }
-        } else{
+        boolean validInput = true;
+        String input = null;
+        while(validInput){
+            // Affichage Menu des recherches
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Commande inconnue");
-            System.out.println( "Veuillez réessayer s'il vous plait.");
-            searchSong();
+            System.out.println("1 - Recherche avec le nom de l'artiste et le nom de la musique");
+            System.out.println("2 - Recherche par paroles");
+            System.out.println("3 - retour");
+            System.out.println("------------------------------------------------------------------");
+            System.out.print("Votre choix : ");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
+                validInput = false;
+            }
+            else {
+                System.out.println("------------------------------------------------------------------");
+                System.out.println("Commande inconnue");
+                System.out.println( "Veuillez réessayer s'il vous plait.");
+            }
+        }
+        //Choix de l'utilisateur
+        switch (input) {
+            case "1":
+                System.out.println("Vous avez choisis : Recherche avec le nom de l'artiste");
+                searchSongArtistAndSongName();
+                break;
+            case "2":
+                System.out.println("Vous avez choisis : Recherche avec les paroles");
+                searchSongLyric();
+                break;
+            case "3":
+                runCLI();
+                break;
         }
     }
 
@@ -176,11 +188,12 @@ public class RunCLI {
     }
 
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
-        System.out.println("------------------------------------------------------------------");
+
         Scanner scanner = new Scanner(System.in);
         String input = null;
         boolean validInput = true;
         while (validInput) {
+            System.out.println("------------------------------------------------------------------");
             System.out.println("Saississez un morceau de paroles de la musique :");
             input = scanner.nextLine().toLowerCase();
             String[] strInput = input.split(" ");
@@ -205,19 +218,25 @@ public class RunCLI {
     }
 
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("Choississez le numéro de la musique");
-        System.out.println("Sinon, retourner aux menu principal : Menu");
+        boolean validInput = true;
         Scanner choice = new Scanner(System.in);
-        String index = choice.nextLine();
-        if(Objects.equals(index.toLowerCase(), "menu")){
-            runCLI();
-        }
+        int temp = 0;
+        while(validInput){
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("Choississez le numéro de la musique");
+            System.out.println("Sinon, retourner aux menu principal : Menu");
 
-        int temp = Integer.parseInt(index) - 1;
-        if(songList.size() < temp || temp < 0){
-            System.out.println("Commande incorrecte");
-            getSongFromSongList();
+            String index = choice.nextLine();
+            if(Objects.equals(index.toLowerCase(), "menu")) {
+                runCLI();
+            }
+            temp = Integer.parseInt(index) - 1;
+            if(songList.size() < temp || temp < 0){
+                System.out.println("Commande incorrecte");
+            }
+            else{
+                validInput = false;
+            }
         }
         Song displaySong = songList.get(temp);
         getLyricsApi(displaySong);
@@ -226,24 +245,28 @@ public class RunCLI {
 
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("------------------------------------------------------------------");
-        System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
-        System.out.println("2 - Retour au Menu Principal");
-        String input = scanner.nextLine();
-        if(Objects.equals(input, "1") || Objects.equals(input, "2")){
-            switch(input){
-                case "1":
-                    searchSong();
-                    break;
-                case "2":
-                    runCLI();
-                    break;
+        boolean validInput = true;
+        String input = null;
+        while(validInput){
+            System.out.println("------------------------------------------------------------------");
+            System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
+            System.out.println("2 - Retour au Menu Principal");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+                validInput = false;
+            }
+            else{
+                System.out.println("Commande inconnue");
+                System.out.println( "Veuillez réessayer s'il vous plait.");
             }
         }
-        else{
-            System.out.println("Commande inconnue");
-            System.out.println( "Veuillez réessayer s'il vous plait.");
-            postSearchMenu();
+        switch(input){
+            case "1":
+                searchSong();
+                break;
+            case "2":
+                runCLI();
+                break;
         }
     }
 

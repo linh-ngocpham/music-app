@@ -128,7 +128,6 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("------------------------------------------------------------------");
     }
 
     /*Méthode de mise sous forme d'objet de chaque song et de listage de chaque objets song + systeme de recherche à partir d'un nom d'artiste ou d'un titre de musique*/
