@@ -1,0 +1,7 @@
+#presentationText {
+    -fx-background-color : gray;
+    -fx-background-radius : 25px;
+    -fx-border-radius : 25px;
+    -fx-text-fill : white;
+    -fx-font-size : 14;
+}

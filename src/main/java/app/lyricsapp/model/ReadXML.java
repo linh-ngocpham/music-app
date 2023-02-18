@@ -32,8 +32,11 @@ public class ReadXML {
     }
 
     public static InputStream getsong(Song song) throws IOException {
-    String url="http://api.chartlyrics.com/apiv1.asmx/GetLyric?"+"lyricId="+song.getLyricId()+"&lyricCheckSum="+song.getLyricChecksum();
-    return connect(url).getInputStream();
+        String artist = song.getArtist().replaceAll(" ", "%20");
+        String songName = song.getSongName().replaceAll(" ", "%20");
+        String url="http://api.chartlyrics.com/apiv1.asmx/SearchLyricDirect?"+ "artist=" + artist + "&song=" + songName;
+                //+"lyricId="+song.getLyricId()+"&lyricCheckSum="+song.getLyricChecksum();
+        return connect(url).getInputStream();
     }
     public static HttpURLConnection connect(String url) throws IOException{
         URL url2 = new URL(url);
@@ -49,7 +52,6 @@ public class ReadXML {
         Document document = db.parse(search(artistName, songName));
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("SearchLyricResult");
-        System.out.println("----------------------------");
         for (int temp = 0; temp < nList.getLength() - 1; temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -84,7 +86,7 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("--------------------------------------");
+        System.out.println("------------------------------------------------------------------");
     }
 
     public static void readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
@@ -94,7 +96,6 @@ public class ReadXML {
         Document document = db.parse(search(lyric));
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("SearchLyricResult");
-        System.out.println("----------------------------");
         for (int temp = 0; temp < nList.getLength() - 1; temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -127,7 +128,6 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("--------------------------------------");
     }
 
     /*Méthode de mise sous forme d'objet de chaque song et de listage de chaque objets song + systeme de recherche à partir d'un nom d'artiste ou d'un titre de musique*/
