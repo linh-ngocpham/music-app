@@ -176,7 +176,7 @@ public class RunCLI {
             }
         }
         String song = replaceAllAPI(input2);
-        readXMLSong(artistName, song, songList);//affiche les musique correspondant aux noms de la musique données
+        readXMLSong(artistName, song, songList);    //affiche les musique correspondant aux noms de la musique données
         if(songList.isEmpty()){
             System.out.println("Aucune musique n'a été trouvé \n" + "retour aux menu précédent");
             searchSong();
