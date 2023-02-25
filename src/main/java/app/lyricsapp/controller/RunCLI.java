@@ -221,21 +221,25 @@ public class RunCLI {
         boolean validInput = true;
         Scanner choice = new Scanner(System.in);
         int temp = 0;
-        while(validInput){
+        while(validInput) {
             System.out.println("------------------------------------------------------------------");
             System.out.println("Choisissez le numéro de la musique");
             System.out.println("Sinon, retourner aux menu principal : Menu");
-
             String index = choice.nextLine();
-            if(Objects.equals(index.toLowerCase(), "menu")) {
+            if (Objects.equals(index.toLowerCase(), "menu")) {
                 runCLI();
-            }
-            temp = Integer.parseInt(index) - 1;
-            if(songList.size() < temp || temp < 0){
-                System.out.println("Commande incorrecte");
+            } else if(index.matches("[0-9]+")) {
+                temp = Integer.parseInt(index) - 1;
+                if (songList.size() < temp || temp < 0) {
+                    System.out.println("Commande incorrecte");
+                } else {
+                    validInput = false;
+                }
             }
             else{
-                validInput = false;
+                System.out.println("Commande incorrecte");
+                System.out.println("Retour");
+                searchSong();
             }
         }
         Song displaySong = songList.get(temp);
