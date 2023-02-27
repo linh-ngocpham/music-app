@@ -31,6 +31,10 @@ public class FavoriteList {
         }
     }
 
+    public boolean isEmpty(){
+        return favoritesSongs.isEmpty();
+    }
+
     public ArrayList<Song> getList(){
         return favoritesSongs;
     }
