@@ -91,12 +91,15 @@ public class LyricsAppController implements Initializable {
             displayFavoriteList();
             presentationTile.setVisible(false);
             displayFavoritesButton.setVisible(false);
+            backMenu.setLayoutX(60.0);
+            backMenu.setLayoutY(59.0);
             backMenu.setVisible(true);
             searchChoiceBox.setVisible(false);
             titleSearchField.setVisible(false);
             artistSearchField.setVisible(false);
             lyricsSearchField.setVisible(false);
             favoritesLabel.setVisible(true);
+            playlistButton.setVisible(true);
             e.consume(); // consume the event so it doesn't propagate further
         });
 
@@ -113,6 +116,20 @@ public class LyricsAppController implements Initializable {
             favoritesLabel.setVisible(false);
             vbox.getChildren().clear();
             searchChoiceBox.setValue("Titre/Artiste");
+            playlistButton.setVisible(true);
+        });
+
+        playlistButton.setOnAction(event -> {
+            playlistButton.setVisible(false);
+            searchChoiceBox.setVisible(false);
+            titleSearchField.setVisible(false);
+            artistSearchField.setVisible(false);
+            lyricsSearchField.setVisible(false);
+            presentationTile.setVisible(false);
+            displayFavoritesButton.setVisible(true);
+            backMenu.setLayoutX(22.0);
+            backMenu.setLayoutY(108.0);
+            backMenu.setVisible(true);
         });
     }
 
@@ -230,7 +247,8 @@ public class LyricsAppController implements Initializable {
         labelTest.setText("");
         vbox.getChildren().clear();
         Map<String, Integer> artistCounts = new HashMap<>();
-        for (Song song : songList) {
+        System.out.println(favoriteList);
+        for (Song song : favoriteList.getList()) {
             if (favoriteList.contains(song)) {
                 String artist = song.getArtist();
                 int count = artistCounts.getOrDefault(artist, 0) + 1;
@@ -309,7 +327,9 @@ public class LyricsAppController implements Initializable {
             labelFavArtist.setText("");
         }
     }
+    private void displayPlaylist(){
 
+    }
 /*
     private void displayFavoriteList() {
         labelTest.setText("");
