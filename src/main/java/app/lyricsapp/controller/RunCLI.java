@@ -5,13 +5,18 @@ import app.lyricsapp.model.Song;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 import static app.lyricsapp.model.ReadXML.*;
 
-public class RunCLI {
+public class RunCLI { //TODO : faire en sorte que, pour chaque modification d'une playlist, elle est sauvegardé directement dans les fichiers.
+    static List<FavoriteList> playlists = new ArrayList<>();
     static FavoriteList favoriteList = new FavoriteList();
+    public List<FavoriteList> getPlaylists() {
+        return playlists;
+    }
     static List<Song> songList = new ArrayList<>();
     private static ArrayList<String> banWord = new ArrayList<String>();
     private static final String banWordString = "about,after,all,also,an,and,another," +
@@ -97,10 +102,11 @@ public class RunCLI {
                 searchSong();
                 break;
             case "2":
-                displayFavoritesList();
+                manageFavorites();
                 break;
             case "3":
-                favoriteList.save();
+                favoriteList.saveAll(playlists);
+                favoriteList.saveFavorites(favoriteList);
                 System.exit(0);
                 break;
         }
@@ -188,7 +194,6 @@ public class RunCLI {
     }
 
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
-
         Scanner scanner = new Scanner(System.in);
         String input = null;
         boolean validInput = true;
@@ -221,26 +226,30 @@ public class RunCLI {
         boolean validInput = true;
         Scanner choice = new Scanner(System.in);
         int temp = 0;
-        while(validInput){
+        while(validInput) {
             System.out.println("------------------------------------------------------------------");
             System.out.println("Choisissez le numéro de la musique");
             System.out.println("Sinon, retourner aux menu principal : Menu");
-
             String index = choice.nextLine();
-            if(Objects.equals(index.toLowerCase(), "menu")) {
+            if (Objects.equals(index.toLowerCase(), "menu")) {
                 runCLI();
-            }
-            temp = Integer.parseInt(index) - 1;
-            if(songList.size() < temp || temp < 0){
-                System.out.println("Commande incorrecte");
+            } else if(index.matches("[0-9]+")) {
+                temp = Integer.parseInt(index) - 1;
+                if (songList.size() < temp || temp < 0) {
+                    System.out.println("Commande incorrecte");
+                } else {
+                    validInput = false;
+                }
             }
             else{
-                validInput = false;
+                System.out.println("Commande incorrecte");
+                System.out.println("Retour");
+                searchSong();
             }
         }
         Song displaySong = songList.get(temp);
         getLyricsApi(displaySong);
-        favorites(displaySong);
+        choosePlaylistForFavorites(displaySong);
     }
 
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
@@ -269,7 +278,77 @@ public class RunCLI {
                 break;
         }
     }
+    public static void choosePlaylistForFavorites(Song song) throws ParserConfigurationException, IOException, SAXException {
+        System.out.println("Choose the playlist you want to save in :\n");
+        System.out.println("0/ " + favoriteList.getPlaylistName());
+        for (int i = 0; i < playlists.size(); i++) {
+            System.out.println((i+1) + "/ " + playlists.get(i).getPlaylistName());
+        }
+        int input = -1;
+        while (input < 0 || input > playlists.size()){
+            Scanner choice = new Scanner(System.in);
+            String text = choice.nextLine();
+            if(text.matches("[0-9]+")) {
+                input = Integer.parseInt(text);
+            }
+            else{
+                System.out.println("Entré incorrecte");
+                System.out.println("Veuillez réesayer s'il vous plait");
+            }
+        }
+        if(input == 0){
+            favorites(song);
+        }
+        else{
+            favoritesFromPlaylist(song, playlists.get(input-1));
+        }
+    }
 
+    public static void favoritesFromPlaylist(Song song, FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner scanner = new Scanner(System.in);
+        int check = 0;
+        for(Song favSong : playlist.getList()){
+            if (Objects.equals(song.getSongName(), favSong.getSongName()) && Objects.equals(song.getArtist(), favSong.getArtist())){
+                check = 1;
+                break;
+            }
+        }
+        boolean validInput = true;
+        String input = "";
+        while(validInput){
+            System.out.println("------------------------------------------------------------------");
+            if(check == 1){
+                System.out.println();
+                System.out.println("Cette musique est déja présente dans les favoris");
+                System.out.println("1 - Suprimer des favoris");
+            } else{
+                System.out.println("1 - Ajouter aux favoris");
+            }
+            System.out.println("2 - Retour");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+                validInput = false;
+            }
+            else{
+                System.out.println("Commande Incorrecte");
+                System.out.println("Veuillez réessayer s'il vous plait.");
+            }
+        }
+        switch(input) {
+            case "1":
+                if(check == 1) {
+                    playlist.remove(song);
+                    favoriteList.saveAll(playlists);
+                }
+                else{
+                    playlist.add(song);
+                    favoriteList.saveAll(playlists);
+                }
+                break;
+            case "2":
+                break;
+        }
+    }
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -304,8 +383,10 @@ public class RunCLI {
             case "1":
                 if (check == 1) {
                     favoriteList.remove(song);
+                    favoriteList.saveFavorites(favoriteList);
                 } else {
                     favoriteList.add(song);
+                    favoriteList.saveFavorites(favoriteList);
                     System.out.println("La musique : " + song.getArtist() + " - " + song.getSongName() + " a été ajoutée aux favoris.");
                 }
                 break;
@@ -313,7 +394,115 @@ public class RunCLI {
                 break;
         }
     }
+    public static void manageFavorites() throws ParserConfigurationException, IOException, SAXException {
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = true;
+        String input = "";
+        while(validInput){
+            System.out.println("----------------------------------------");
+            System.out.println("1 - Créer une playlist");
+            System.out.println("2 - Gestion des playlist");
+            System.out.println("3 - retour");
+            System.out.print("Votre choix : ");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
+                validInput = false;
+            }
+            else{
+                System.out.println("Commande inconnue");
+                System.out.println( "Veuillez réessayer s'il vous plait.");
+            }
+        }
+        switch (input) {
+            case "1":
+                createPlaylist();
+                break;
+            case "2":
+                displayPlaylists();
+                break;
+            case "3":
+                runCLI();
+                break;
+        }
+    }
 
+    public static void createPlaylist() throws IOException, ParserConfigurationException, SAXException {
+        Scanner scanner = new Scanner(System.in);
+        boolean validInput = true;
+        String input = "";
+        while(validInput){
+            System.out.println("----------------------------------------");
+            System.out.println("Quelle nom voulez-vous donner à la playlist ?");
+            System.out.println("9/ Retour");
+            input = scanner.nextLine();
+            if(Objects.equals(input,"9")){
+                manageFavorites();
+            }
+            if(input != null && input.length() < 50){
+                validInput = false;
+            }
+            else{
+                if(input == null){
+                    System.out.println("Entrée vide");
+                }
+                else{
+                    System.out.println("Nom de la playlist trop long.");
+                    System.out.println("Le nom ne doit pas dépasser la limite de 50 caractères.");
+                }
+                System.out.println( "Veuillez réessayer s'il vous plait.");
+            }
+        }
+        File file = new File("src/main/java/app/lyricsapp/model/favorites" + playlists.size() + ".txt");
+        file.createNewFile();
+        playlists.add(new FavoriteList(input));
+        favoriteList.saveAll(playlists);
+        System.out.println(playlists.get(playlists.size()-1).getPlaylistName() + " a été créée.");
+        System.out.println("Retour aux menu précedent");
+        manageFavorites();
+    }
+
+    public static void displayPlaylists() throws ParserConfigurationException, IOException, SAXException{
+        if(!playlists.isEmpty()) {
+            System.out.println("Choisissez votre playlist :");
+            for (int i = 0; i < playlists.size() + 1; i++) {
+                if(i == 0){
+                    System.out.println(i + "/ " + favoriteList.getPlaylistName());
+                }
+                else{
+                    System.out.println(i + "/ " + playlists.get(i-1).getPlaylistName());
+                }
+            }
+            System.out.println((playlists.size() + 1) + "/ Retour");
+            int input = -1;
+            while (input < 0 || input > playlists.size()+1){
+                Scanner choice = new Scanner(System.in);
+                String textInput = choice.nextLine();
+                if(textInput.matches("[0-9]+")){
+                    input = Integer.parseInt(textInput);
+                }
+                else{
+                    System.out.println("Commande inconnue");
+                    System.out.println( "Veuillez réessayer s'il vous plait.");
+                }
+            }
+            if(input == 0){
+                favoriteList.toStringFavoritesList();
+                selectFavoriteSong(favoriteList);
+            }
+            else if(input == playlists.size() + 1) {
+                manageFavorites();
+            }
+            else{
+                playlists.get(input-1).toStringFavoritesList();
+                selectFavoriteSong(playlists.get(input-1));
+            }
+        }
+        else {
+            System.out.println("Liked :");
+            favoriteList.toStringFavoritesList();
+            selectFavoriteSong(favoriteList);
+        }
+    }
     public static void displayFavoritesList() throws ParserConfigurationException, IOException, SAXException {
         favoriteList.toStringFavoritesList();
         selectFavoriteSong(favoriteList);
@@ -383,6 +572,8 @@ public class RunCLI {
             case "1":
                 favoritesList.getList().remove(index);
                 System.out.println("Musique retirée de vos favoris");
+                favoriteList.saveAll(playlists);
+                favoriteList.saveFavorites(favoriteList);
                 favoritesList.toStringFavoritesList();
                 selectFavoriteSong(favoritesList);
                 break;
@@ -427,7 +618,8 @@ public class RunCLI {
     }
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        favoriteList.recuperate();
+        favoriteList.recuperateFavorites();
+        favoriteList.recuperateAll(playlists);
         runCLI();
     }
 }
