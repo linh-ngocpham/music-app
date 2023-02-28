@@ -15,18 +15,18 @@
     </stylesheets>
     <children>
         <Label fx:id="label" layoutX="100.0" layoutY="150.0" prefHeight="25.0" prefWidth="100.0" wrapText="true" />
-        <TextField fx:id="lyricsSearchField" layoutX="283.0" layoutY="14.0" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : des paroles" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField fx:id="lyricsSearchField" layoutX="283.0" layoutY="14.0" prefHeight="35.0" prefWidth="450.0" promptText="Enter : lyrics" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor></TextField>
         <AnchorPane prefHeight="477.0" prefWidth="260.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button id="lyricsappButton" fx:id="lyricsappButton" layoutX="22.0" layoutY="48.0" mnemonicParsing="false" onAction="#switchToSceneLyricsApp" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Retour à l'acceuil">
+                <Button id="lyricsappButton" fx:id="lyricsappButton" layoutX="22.0" layoutY="48.0" mnemonicParsing="false" onAction="#switchToSceneLyricsAppEng" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Back to home page">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button id="favoritesButton" fx:id="favoritesButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onAction="#switchToSceneFavorites" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Vos Favoris">
+                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onAction="#switchToScenePlaylistEng" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Your Playlists">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -39,19 +39,19 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </ChoiceBox>
-                <TextField editable="false" prefHeight="60.0" prefWidth="216.0" scaleZ="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent;" text="Langage : FR" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="22.0">
+                <TextField editable="false" prefHeight="60.0" prefWidth="216.0" scaleZ="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent;" text="Language : ENG" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="22.0">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
             </children>
         </AnchorPane>
-        <TextField fx:id="artistSearchField" layoutX="283.0" layoutY="58.0" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : un nom d'artiste" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField fx:id="artistSearchField" layoutX="283.0" layoutY="58.0" prefHeight="35.0" prefWidth="450.0" promptText="Enter : an artist name" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <TextField fx:id="titleSearchField" layoutX="283.0" layoutY="14.0" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : le titre de la musique" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField fx:id="titleSearchField" layoutX="283.0" layoutY="14.0" prefHeight="35.0" prefWidth="450.0" promptText="Enter : the music's title" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>

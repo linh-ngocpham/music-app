@@ -3,10 +3,7 @@ package app.lyricsapp.model;
 import com.sun.javafx.fxml.BeanAdapter;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 public class FavoriteList {
     private ArrayList<Song> favoritesSongs;
@@ -26,6 +23,10 @@ public class FavoriteList {
                 break;
             }
         }
+    }
+
+    public boolean isEmpty() {
+        return favoritesSongs.isEmpty();
     }
 
     public ArrayList<Song> getList(){

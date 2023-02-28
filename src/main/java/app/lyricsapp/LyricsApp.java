@@ -15,6 +15,9 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.io.FileInputStream;
+
 
 public class LyricsApp extends Application {
     @Override
@@ -23,6 +26,9 @@ public class LyricsApp extends Application {
         primaryStage.setTitle("Cherchez une musique !");
         primaryStage.sizeToScene();
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
+        Image Image = new Image(new FileInputStream("src/main/java/app/lyricsapp/logo.png"));
+        primaryStage.getIcons().add(Image);
         primaryStage.show();
     }
 
