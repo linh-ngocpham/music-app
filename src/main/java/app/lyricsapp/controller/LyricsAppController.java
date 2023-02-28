@@ -320,7 +320,7 @@ public class LyricsAppController implements Initializable {
                 favArtist = "";
             }
         }
-
+        //
         if (!favArtist.isEmpty()) {
             labelFavArtist.setText("Artiste Favoris: " + favArtist);
         } else {
