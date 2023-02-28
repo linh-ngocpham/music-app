@@ -78,6 +78,6 @@
                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="54.0" prefWidth="424.0" scaleZ="15.0" style="-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;" text="Application overview" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0" />
             </children>
         </AnchorPane>
-        <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="14.0" prefHeight="117.0" prefWidth="561.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Favoris" textAlignment="CENTER" wrapText="true" />
+        <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="14.0" prefHeight="117.0" prefWidth="561.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Your Favorites" textAlignment="CENTER" wrapText="true" />
     </children>
 </AnchorPane>

@@ -12,8 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +19,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.w3c.dom.Document;
@@ -30,14 +27,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
@@ -224,6 +217,9 @@ public class LyricsAppController implements Initializable {
     private void displayFavoriteList() {
         if (favoriteList.isEmpty()) {
             labelTest.setText("Vous n'avez aucune musique favorite");
+            if (switchLanguage()) {
+                labelTest.setText("Your favoriste list is empty");
+            }
             vbox.getChildren().clear();
             return; // exit the method if there are no favorite songs
         }
@@ -470,7 +466,7 @@ public class LyricsAppController implements Initializable {
         playlistStage.show();
     }
 
-    public void switchLanguage() {
+    public boolean switchLanguage() {
         languageChoiceBox.setOnAction(event -> {
             String language = languageChoiceBox.getValue();
             String fxmlFile = "/app/lyricsapp/view/lyricsapp.fxml"; // par défaut "Langage : FR"
@@ -487,6 +483,7 @@ public class LyricsAppController implements Initializable {
                 e.printStackTrace();
             }
         });
+        return true;
     }
 
     private void clearSearchFields() {
