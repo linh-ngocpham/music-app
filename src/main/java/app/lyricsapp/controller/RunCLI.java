@@ -11,7 +11,7 @@ import java.util.*;
 
 import static app.lyricsapp.model.ReadXML.*;
 
-public class RunCLI { //TODO : faire en sorte que, pour chaque modification d'une playlist, elle est sauvegardé directement dans les fichiers.
+public class RunCLI {
     static List<FavoriteList> playlists = new ArrayList<>();
     static FavoriteList favoriteList = new FavoriteList();
     public List<FavoriteList> getPlaylists() {
