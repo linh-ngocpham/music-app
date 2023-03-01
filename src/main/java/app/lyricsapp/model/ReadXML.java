@@ -86,7 +86,6 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("------------------------------------------------------------------");
     }
 
     public static void readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
@@ -172,7 +171,6 @@ public class ReadXML {
             //System.out.println("Song: " + song.getSongName());
             //System.out.println("SongRank: " + song.getSongRank());
         }
-        System.out.println("------------------------------------------------------------------");
     }
 
     public static void readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
