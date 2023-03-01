@@ -30,7 +30,14 @@ public class FavoriteList {
             }
         }
     }
-
+    public static void removeFromPlaylist(FavoriteList list,Song song){
+        for(Song songFav : list.getList()){
+            if(Objects.equals(song.getArtist(),songFav.getArtist()) && Objects.equals(song.getSongName(),songFav.getSongName())){
+                list.remove(songFav);
+                break;
+            }
+        }
+    }
     public boolean isEmpty(){
         return favoritesSongs.isEmpty();
     }
