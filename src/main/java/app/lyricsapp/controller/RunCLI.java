@@ -406,7 +406,7 @@ public class RunCLI {
             if(check == 1){
                 System.out.println();
                 System.out.println("Cette musique est déjà présente dans les favoris");
-                System.out.println("1 - Supprimer à cette playlist");
+                System.out.println("1 - Supprimer de cette playlist");
             } else{
                 System.out.println("1 - Ajouter à cette playlist");
             }
@@ -517,7 +517,7 @@ public class RunCLI {
         boolean validInput = true;
         String input = "";
         while(validInput){
-            System.out.println("----------------------------------------");
+            System.out.println("------------------------------------------------------------------");
             System.out.println("Quelle nom voulez-vous donner à la playlist ?");
             System.out.println("9/ Retour");
             input = scanner.nextLine();
@@ -552,13 +552,13 @@ public class RunCLI {
             System.out.println("Choisissez votre playlist :");
             for (int i = 0; i < playlists.size() + 1; i++) {
                 if(i == 0){
-                    System.out.println(i + "/ " + favoriteList.getPlaylistName());
+                    System.out.println(i + " - " + favoriteList.getPlaylistName());
                 }
                 else{
-                    System.out.println(i + "/ " + playlists.get(i-1).getPlaylistName());
+                    System.out.println(i + " - " + playlists.get(i-1).getPlaylistName());
                 }
             }
-            System.out.println((playlists.size() + 1) + "/ Retour");
+            System.out.println((playlists.size() + 1) + " - Retour");
             int input = -1;
             while (input < 0 || input > playlists.size()+1){
                 Scanner choice = new Scanner(System.in);
@@ -579,6 +579,7 @@ public class RunCLI {
                 manageFavorites();
             }
             else{
+                System.out.println("------------------------------------------------------------------");
                 playlists.get(input-1).toStringFavoritesList();
                 selectFavoriteSong(playlists.get(input-1));
             }
@@ -622,7 +623,7 @@ public class RunCLI {
         }
         if(favoriteList.getList().isEmpty()){
             if (input.equals("1")) {
-                runCLI();
+                manageFavorites();
             }
         } else{
             switch (input){
@@ -630,9 +631,37 @@ public class RunCLI {
                     getSongFromFavoritesSong(favoriteList);
                     break;
                 case "2":
-                    runCLI();
+                    manageFavorites();
                     break;
             }
+        }
+    }
+
+    public static void editPlaylist(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("1 - Changer le nom de la playlist");
+        System.out.println("2 - Supprimer la playlist : " + playlist.getPlaylistName());
+        System.out.println("3 - Retour");
+        String input = choice.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
+            switch(input){
+                case "1":
+                    //TODO : mettre la fonction du Changement de nom
+                    //editNamePlaylistCLI();
+                    break;
+                case "2":
+                    //deletePlaylistCLI();
+                    break;
+                case "3":
+                    selectFavoriteSong(playlist);
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande inconnue");
+            System.out.println( "Retour aux menu précédent");
+            selectFavoriteSong(playlist);
         }
     }
 
