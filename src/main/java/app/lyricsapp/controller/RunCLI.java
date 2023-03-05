@@ -599,7 +599,7 @@ public class RunCLI {
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validInput = true;
-        String input = null;
+        String input = null ;
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
