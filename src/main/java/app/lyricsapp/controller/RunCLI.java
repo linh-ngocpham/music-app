@@ -1,5 +1,8 @@
 package app.lyricsapp.controller;
 
+import app.lyricsapp.EngLanguage;
+import app.lyricsapp.FrenchLanguage;
+import app.lyricsapp.Language;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import org.xml.sax.SAXException;
@@ -11,7 +14,7 @@ import java.util.*;
 
 import static app.lyricsapp.model.ReadXML.*;
 
-public class RunCLI {
+public class  RunCLI {
     static List<FavoriteList> playlists = new ArrayList<>();
     static FavoriteList favoriteList = new FavoriteList();
     public List<FavoriteList> getPlaylists() {
@@ -19,6 +22,8 @@ public class RunCLI {
     }
     static List<Song> songList = new ArrayList<>();
     private static ArrayList<String> banWord = new ArrayList<String>();
+
+    private static Language current_language = null;
     private static final String banWordString = "about,after,all,also,an,and,another," +
             "any,are,as,at,be,because,been,before," +
             "being,between,both,but,by,came,can,come," +
@@ -77,28 +82,56 @@ public class RunCLI {
         banWordList(banWordString);
         boolean validInput = true;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("----------------------------------------");
-        System.out.println("--           Menu Principal           --");
-        System.out.println("----------------------------------------");
         String input = null;
+
+        // Language Menu
+        System.out.println("----------------------------------------");
+        System.out.println("--           Language choice:          --");
+        System.out.println("----------------------------------------");
         while(validInput){
-            System.out.println("1 - Recherche des paroles d'une musique");
-            System.out.println("2 - Gestion de vos favoris");
-            System.out.println("3 - Quitter le programme");
-            System.out.print("Votre choix : ");
+            System.out.println("1. French");
+            System.out.println("2. English");
+            input = scanner.nextLine();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") ) {
+                validInput = false;
+                switch (input) {
+                    case "1":
+                        current_language = new FrenchLanguage();
+                        break;
+                    case "2":
+                        current_language = new EngLanguage();
+                        break;
+                }
+            }
+            else {
+                System.out.println("Invalid Choice.");
+            }
+        }
+
+        // Main menu
+        System.out.println("----------------------------------------");
+        System.out.println("--           "+current_language.mainMenu+"           --");
+        System.out.println("----------------------------------------");
+        input = null;
+        validInput = true;
+        while(validInput){
+            System.out.println(current_language.findByLyric);
+            System.out.println(current_language.favoris);
+            System.out.println(current_language.exit);
+            System.out.print(current_language.choice);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
                 validInput = false;
             }
             else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Commande inconnue");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch (input) {
             case "1":
-                System.out.println("Vous avez choisi la recherche des paroles d'une musique");
+                System.out.println(current_language.searchedByMusic);
                 searchSong();
                 break;
             case "2":
@@ -120,29 +153,30 @@ public class RunCLI {
         while(validInput){
             // Affichage Menu des recherches
             System.out.println("------------------------------------------------------------------");
-            System.out.println("1 - Recherche avec le nom de l'artiste et le nom de la musique");
-            System.out.println("2 - Recherche par paroles");
-            System.out.println("3 - Retour");
+            System.out.println(current_language.searchedByArtistMusic);
+            System.out.println(current_language.searchedByLyrics);
+            System.out.println(current_language.returnToMain);
             System.out.println("------------------------------------------------------------------");
-            System.out.print("Votre choix : ");
+            System.out.print(current_language.choice);
+
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
                 validInput = false;
             }
             else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Commande inconnue");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         //Choix de l'utilisateur
         switch (input) {
             case "1":
-                System.out.println("Vous avez choisi : Recherche avec le nom de l'artiste");
+                System.out.println(current_language.searchedByArtist);
                 searchSongArtistAndSongName();
                 break;
             case "2":
-                System.out.println("Vous avez choisi : Recherche avec les paroles");
+                System.out.println(current_language.searchedWithLyrics);
                 searchSongLyric();
                 break;
             case "3":
@@ -157,34 +191,34 @@ public class RunCLI {
         String input1 = null;
         boolean validInput1 = true;
         while (validInput1) {
-            System.out.println("Saisissez le nom de l'artiste :");
+            System.out.println(current_language.enterArtistName);
             input1 = scanner.nextLine().toLowerCase();
             String[] strInput1 = input1.split(" ");
             if(!banWord.containsAll(List.of(strInput1)) && (input1.length() <= 75)){
                 validInput1 = false;
             }
             else{
-                System.out.println("Le nom de l'artiste ne contient que des mots interdits");
+                System.out.println(current_language.errorArtistName);
             }
         }
         String artistName = replaceAllAPI(input1);
         String input2 = null;
         boolean validInput2 = true;
         while (validInput2) {
-            System.out.println("Saisissez le nom de la musique :");
+            System.out.println(current_language.errorArtistName);
             input2 = scanner.nextLine().toLowerCase();
             String[] strInput2 = input2.split(" ");
             if(!banWord.containsAll(List.of(strInput2)) && (input2.length() <= 125)){
                 validInput2 = false;
             }
             else{
-                System.out.println("Le nom de la musique ne contient que des mots interdits");
+                System.out.println(current_language.errorArtistName);
             }
         }
         String song = replaceAllAPI(input2);
         readXMLSong(artistName, song, songList);    //affiche les musique correspondant aux noms de la musique données
         if(songList.isEmpty()){
-            System.out.println("Aucune musique n'a été trouvé \n" + "Retour au menu précédent");
+            System.out.println(current_language.noFoundMusic);
             searchSong();
         }
         else{
@@ -199,20 +233,20 @@ public class RunCLI {
         boolean validInput = true;
         while (validInput) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Saisissez un morceau de paroles de la musique :");
+            System.out.println(current_language.enterLyrics);
             input = scanner.nextLine().toLowerCase();
             String[] strInput = input.split(" ");
             if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
                 validInput = false;
             }
             else{
-                System.out.println("Les paroles entrées ne contiennent que des mots interdits ou ");
+                System.out.println(current_language.errorArtistName);
             }
         }
         String lyric = replaceAllAPI(input);
         readXMLSongLyric(lyric, songList); //affiche les musiques correspondantes aux noms d'artistes donnés
         if(songList.isEmpty()){
-            System.out.println("Aucune musique n'a été trouvé \n" + "Retour au menu précédent");
+            System.out.println(current_language.noFoundMusic);
             searchSong();
         }
         else{
@@ -228,22 +262,22 @@ public class RunCLI {
         int temp = 0;
         while(validInput) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Choisissez le numéro de la musique");
-            System.out.println("Sinon, retourner aux menu principal : Menu");
+            System.out.println(current_language.choseByMusicNumber);
+            System.out.println(current_language.returnToMain);
             String index = choice.nextLine();
             if (Objects.equals(index.toLowerCase(), "menu")) {
                 runCLI();
             } else if(index.matches("[0-9]+")) {
                 temp = Integer.parseInt(index) - 1;
                 if (songList.size() < temp || temp < 0) {
-                    System.out.println("Commande incorrecte");
+                    System.out.println(current_language.invaliedCommande);
                 } else {
                     validInput = false;
                 }
             }
             else{
-                System.out.println("Commande incorrecte");
-                System.out.println("Retour");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.exit);
                 searchSong();
             }
         }
@@ -258,15 +292,15 @@ public class RunCLI {
         String input = null;
         while(validInput){
             System.out.println("------------------------------------------------------------------");
-            System.out.println("1 - Voulez-vous faire une nouvelle recherche ?");
-            System.out.println("2 - Retour au Menu Principal");
+            System.out.println(current_language.newResearch);
+            System.out.println(current_language.returnToMain);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2")){
                 validInput = false;
             }
             else{
-                System.out.println("Commande inconnue");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch(input){
@@ -279,7 +313,7 @@ public class RunCLI {
         }
     }
     public static void choosePlaylistForFavorites(Song song) throws ParserConfigurationException, IOException, SAXException {
-        System.out.println("Choose the playlist you want to save in :\n");
+        System.out.println(current_language.choseByMusicNumber2);
         System.out.println("0/ " + favoriteList.getPlaylistName());
         for (int i = 0; i < playlists.size(); i++) {
             System.out.println((i+1) + "/ " + playlists.get(i).getPlaylistName());
@@ -292,8 +326,8 @@ public class RunCLI {
                 input = Integer.parseInt(text);
             }
             else{
-                System.out.println("Entré incorrecte");
-                System.out.println("Veuillez réesayer s'il vous plait");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         if(input == 0){
@@ -319,19 +353,19 @@ public class RunCLI {
             System.out.println("------------------------------------------------------------------");
             if(check == 1){
                 System.out.println();
-                System.out.println("Cette musique est déja présente dans les favoris");
-                System.out.println("1 - Suprimer des favoris");
+                System.out.println(current_language.exited);
+                System.out.println(current_language.delete);
             } else{
-                System.out.println("1 - Ajouter aux favoris");
+                System.out.println(current_language.addToFavotis);
             }
-            System.out.println("2 - Retour");
+            System.out.println(current_language.returnToMain);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2")){
                 validInput = false;
             }
             else{
-                System.out.println("Commande Incorrecte");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch(input) {
@@ -364,19 +398,19 @@ public class RunCLI {
             System.out.println("------------------------------------------------------------------");
             if(check == 1){
                 System.out.println();
-                System.out.println("Cette musique est déjà présente dans les favoris");
-                System.out.println("1 - Suprimmer des favoris");
+                System.out.println(current_language.exited);
+                System.out.println(current_language.delete);
             } else{
-                System.out.println("1 - Ajouter aux favoris");
+                System.out.println(current_language.addToFavotis);
             }
-            System.out.println("2 - Retour");
+            System.out.println(current_language.returnToMain);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2")){
                 validInput = false;
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Commande Incorrecte");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch(input) {
@@ -400,17 +434,17 @@ public class RunCLI {
         String input = "";
         while(validInput){
             System.out.println("----------------------------------------");
-            System.out.println("1 - Créer une playlist");
-            System.out.println("2 - Gestion des playlist");
-            System.out.println("3 - retour");
-            System.out.print("Votre choix : ");
+            System.out.println(current_language.creatPlaylist);
+            System.out.println(current_language.playlistManag);
+            System.out.println(current_language.returnToMain);
+            System.out.print(current_language.choice);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
                 validInput = false;
             }
             else{
-                System.out.println("Commande inconnue");
-                System.out.println( "Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch (input) {
@@ -432,8 +466,8 @@ public class RunCLI {
         String input = "";
         while(validInput){
             System.out.println("----------------------------------------");
-            System.out.println("Quelle nom voulez-vous donner à la playlist ?");
-            System.out.println("9/ Retour");
+            System.out.println(current_language.namePlaylist);
+            System.out.println(current_language.returnToMain);
             input = scanner.nextLine();
             if(Objects.equals(input,"9")){
                 manageFavorites();
@@ -443,13 +477,13 @@ public class RunCLI {
             }
             else{
                 if(input == null){
-                    System.out.println("Entrée vide");
+                    System.out.println(current_language.emptyEntry);
                 }
                 else{
-                    System.out.println("Nom de la playlist trop long.");
-                    System.out.println("Le nom ne doit pas dépasser la limite de 50 caractères.");
+                    System.out.println(current_language.errorNamePlaylist);
+                    System.out.println(current_language.errorNamePlaylist1);
                 }
-                System.out.println( "Veuillez réessayer s'il vous plait.");
+                System.out.println( current_language.reDo);
             }
         }
         File file = new File("src/main/java/app/lyricsapp/model/favorites" + playlists.size() + ".txt");
@@ -457,13 +491,13 @@ public class RunCLI {
         playlists.add(new FavoriteList(input));
         favoriteList.saveAll(playlists);
         System.out.println(playlists.get(playlists.size()-1).getPlaylistName() + " a été créée.");
-        System.out.println("Retour aux menu précedent");
+        System.out.println(current_language.returnToMain);
         manageFavorites();
     }
 
     public static void displayPlaylists() throws ParserConfigurationException, IOException, SAXException{
         if(!playlists.isEmpty()) {
-            System.out.println("Choisissez votre playlist :");
+            System.out.println(current_language.choosePlaylist);
             for (int i = 0; i < playlists.size() + 1; i++) {
                 if(i == 0){
                     System.out.println(i + "/ " + favoriteList.getPlaylistName());
@@ -472,7 +506,7 @@ public class RunCLI {
                     System.out.println(i + "/ " + playlists.get(i-1).getPlaylistName());
                 }
             }
-            System.out.println((playlists.size() + 1) + "/ Retour");
+            System.out.println((playlists.size() + 1) + current_language.returnToMain);
             int input = -1;
             while (input < 0 || input > playlists.size()+1){
                 Scanner choice = new Scanner(System.in);
@@ -481,8 +515,8 @@ public class RunCLI {
                     input = Integer.parseInt(textInput);
                 }
                 else{
-                    System.out.println("Commande inconnue");
-                    System.out.println( "Veuillez réessayer s'il vous plait.");
+                    System.out.println(current_language.invaliedCommande);
+                    System.out.println( current_language.reDo);
                 }
             }
             if(input == 0){
@@ -515,12 +549,12 @@ public class RunCLI {
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
-                System.out.println("Votre liste de favoris ne contient aucune musique");
-                System.out.println("1 - Retourner aux menu principal");
+                System.out.println(current_language.emptyFavoris);
+                System.out.println(current_language.returnToMain);
             }
             else{
-                System.out.println("1 - Souhaitez-vous afficher une musique de vos favoris ?");
-                System.out.println("2 - Retourner aux menu principal");
+                System.out.println(current_language.displayFavoris);
+                System.out.println(current_language.returnToMain);
             }
             input = choice.nextLine();
             if(favoriteList.getList().isEmpty() && Objects.equals(input, "1")){
@@ -530,8 +564,8 @@ public class RunCLI {
                 validInput = false;
             }
             else{
-                System.out.println("Commande Incorrecte");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         if(favoriteList.getList().isEmpty()){
@@ -556,22 +590,22 @@ public class RunCLI {
         String input = null;
         while(validinput){
             System.out.println("------------------------------------------------------------------");
-            System.out.println("1 - Suprimmer de vos favoris");
-            System.out.println("2 - Retour");
+            System.out.println(current_language.delete);
+            System.out.println(current_language.returnToMain);
             input = choice.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2")){
                 validinput = false;
             }
             else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Commande Incorrecte");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
         switch(input){
             case "1":
                 favoritesList.getList().remove(index);
-                System.out.println("Musique retirée de vos favoris");
+                System.out.println(current_language.removeSuceed);
                 favoriteList.saveAll(playlists);
                 favoriteList.saveFavorites(favoriteList);
                 favoritesList.toStringFavoritesList();
@@ -586,8 +620,8 @@ public class RunCLI {
 
     public static void getSongFromFavoritesSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         System.out.println("------------------------------------------------------------------");
-        System.out.println("Choisissez la musique");
-        System.out.println("Sinon, taper retour");
+        System.out.println(current_language.chooseMusic);
+        System.out.println(current_language.returnToMain);
         Scanner choice = new Scanner(System.in);
         String input = choice.nextLine();
         if(Objects.equals(input, "retour")){
@@ -605,14 +639,14 @@ public class RunCLI {
                 editFavoritesSongList(temp,favoriteList);
             } else{
                 System.out.println("------------------------------------------------------------------");
-                System.out.println("Commande Incorrecte");
-                System.out.println("Retour");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.returnToMain);
                 selectFavoriteSong(favoriteList);
             }
         } else{
             System.out.println("------------------------------------------------------------------");
-            System.out.println("Commande Incorrecte");
-            System.out.println("Retour");
+            System.out.println(current_language.invaliedCommande);
+            System.out.println(current_language.returnToMain);
             selectFavoriteSong(favoriteList);
         }
     }
