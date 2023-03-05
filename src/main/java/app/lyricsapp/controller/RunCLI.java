@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static app.lyricsapp.model.FavoriteList.deletePlaylist;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class RunCLI {
@@ -651,7 +652,7 @@ public class RunCLI {
                     //editNamePlaylistCLI();
                     break;
                 case "2":
-                    //deletePlaylistCLI();
+                    deletePlaylistCLI(playlist);
                     break;
                 case "3":
                     selectFavoriteSong(playlist);
@@ -660,6 +661,28 @@ public class RunCLI {
         }
         else{
             System.out.println("Commande inconnue");
+            System.out.println( "Retour aux menu précédent");
+            selectFavoriteSong(playlist);
+        }
+    }
+
+    public static void deletePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
+        System.out.print("êtes-vous sûr de supprimer la playlist " + playlist.getPlaylistName() + " ? (y/n) : ");
+        String input = choice.nextLine();
+        if(Objects.equals(input, "y") || Objects.equals(input, "n")){
+            switch(input){
+                case "y":
+                    deletePlaylist(playlist, playlists);
+                case "n":
+                    System.out.println( "Retour aux menu précédent");
+                    selectFavoriteSong(playlist);
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande incorrecte");
             System.out.println( "Retour aux menu précédent");
             selectFavoriteSong(playlist);
         }
