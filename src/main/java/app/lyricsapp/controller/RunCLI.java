@@ -406,7 +406,7 @@ public class RunCLI {
             if(check == 1){
                 System.out.println();
                 System.out.println("Cette musique est déjà présente dans les favoris");
-                System.out.println("1 - Supprimer à cette playlist");
+                System.out.println("1 - Supprimer de cette playlist");
             } else{
                 System.out.println("1 - Ajouter à cette playlist");
             }

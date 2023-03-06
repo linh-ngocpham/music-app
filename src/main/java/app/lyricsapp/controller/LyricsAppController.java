@@ -34,25 +34,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-import static app.lyricsapp.controller.RunCLI.playlists;
-import static app.lyricsapp.controller.RunCLI.replaceAllAPI;
+import static app.lyricsapp.controller.RunCLI.*;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class LyricsAppController implements Initializable {
 
     @FXML private Button favoritesButton, lyricsappButton, playlistButton, displayFavoritesButton, backMenu;
     @FXML private ChoiceBox<String> searchChoiceBox, languageChoiceBox;
-    @FXML private TextField titleSearchField, artistSearchField, lyricsSearchField, playListName;
+    @FXML private TextField titleSearchField, artistSearchField, lyricsSearchField;
     @FXML private AnchorPane presentationTile, infoAnchorPane;
-    @FXML private Label labelTest, favoritesLabel, labelFavArtist;
-    @FXML private VBox vbox, favoritesVBox;
+    @FXML private Label labelTest, favoritesLabel, labelFavArtist, playlistLabel, titleArtistLabel;
+    @FXML private VBox vbox;
     private String[] searchSelection = {"Paroles", "Titre/Artiste"};
     private String[] searchSelectionEng = {"Lyrics", "Title/Artist"};
     private String[] languageSelection = {"Langage : FR", "Language : ENG"};
     private static List<Song> songList = new ArrayList<>();
-    static FavoriteList list2 = new FavoriteList();
+    static FavoriteList favoriteList = new FavoriteList();
     private Map<String, Integer> artistCounts = new HashMap<>();
 
+    //todo: enregistrement dans les playlists!!
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,21 +80,24 @@ public class LyricsAppController implements Initializable {
         switchLanguage();
         backMenu.setVisible(false);
         favoritesLabel.setVisible(false);
+        playlistLabel.setVisible(false);
+        titleArtistLabel.setVisible(false);
 
         displayFavoritesButton.setOnAction(e -> {
-            displayFavoriteList();
             presentationTile.setVisible(false);
             displayFavoritesButton.setVisible(false);
-            backMenu.setLayoutX(60.0);
+            backMenu.setLayoutX(35.0);
             backMenu.setLayoutY(59.0);
             backMenu.setVisible(true);
             searchChoiceBox.setVisible(false);
             titleSearchField.setVisible(false);
             artistSearchField.setVisible(false);
             lyricsSearchField.setVisible(false);
+            playlistLabel.setVisible(false);
             favoritesLabel.setVisible(true);
             playlistButton.setVisible(true);
-            e.consume(); // consume the event so it doesn't propagate further
+            titleArtistLabel.setVisible(false);
+            displayFavoriteList();
         });
 
         backMenu.setOnAction(event -> {
@@ -108,6 +111,8 @@ public class LyricsAppController implements Initializable {
             artistSearchField.setVisible(true);
             lyricsSearchField.setVisible(true);
             favoritesLabel.setVisible(false);
+            playlistLabel.setVisible(false);
+            titleArtistLabel.setVisible(false);
             vbox.getChildren().clear();
             searchChoiceBox.setValue("Titre/Artiste");
             playlistButton.setVisible(true);
@@ -124,11 +129,15 @@ public class LyricsAppController implements Initializable {
             lyricsSearchField.setVisible(false);
             presentationTile.setVisible(false);
             displayFavoritesButton.setVisible(true);
-            backMenu.setLayoutX(22.0);
-            backMenu.setLayoutY(108.0);
+            playlistLabel.setVisible(true);
+            backMenu.setLayoutX(35.0);
+            backMenu.setLayoutY(120.0);
             backMenu.setVisible(true);
             displayPlaylist();
         });
+
+        favoriteList.recuperateFavorites();
+        favoriteList.recuperateAll(playlists);
     }
 
     @FXML
@@ -168,6 +177,8 @@ public class LyricsAppController implements Initializable {
                     songs.setLyric(eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
                 }
             }
+            titleArtistLabel.setVisible(true);
+            titleArtistLabel.setText(songs.getSongName() + ", " + songs.getArtist());
             labelTest.setText(songs.getLyric());
 
         } catch(IOException | ParserConfigurationException e) {
@@ -202,6 +213,7 @@ public class LyricsAppController implements Initializable {
                 addToFavorites(song);
                 e.consume(); // consume the event so it doesn't propagate further
             });
+            favoritesAddButton.setId("button");
             favoritesAddButton.setPrefWidth(50);
             favoritesAddButton.setPrefHeight(20);
             favoritesAddButton.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
@@ -209,8 +221,14 @@ public class LyricsAppController implements Initializable {
             Button playlistAddButton = new Button("playlist");
             playlistAddButton.setOnAction(e -> {
                 addToPlaylist(song);
+                try {
+                    favoriteList.saveAll(playlists);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
                 e.consume(); // consume the event so it doesn't propagate further
             });
+            playlistAddButton.setId("button");
             playlistAddButton.setPrefWidth(50);
             playlistAddButton.setPrefHeight(20);
             playlistAddButton.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
@@ -226,7 +244,11 @@ public class LyricsAppController implements Initializable {
                 Button backButton = new Button("Back");
                 backButton.setPrefHeight(50);
                 backButton.setPrefWidth(100);
-                backButton.setOnAction(event -> displayResults(result));
+                backButton.setOnAction(event -> {
+                    titleArtistLabel.setVisible(false);
+                    displayResults(result);
+                    event.consume();
+                });
                 vbox.getChildren().addAll(new Label(""), backButton); // Add an empty label before the button to create space
                 backButton.setId("backButton");
                 VBox.setMargin(backButton, new Insets(-35, 0, 0, 0)); // Set top margin of 10 pixels
@@ -237,19 +259,16 @@ public class LyricsAppController implements Initializable {
     }
 
     private void displayFavoriteList() {
-        if (list2.isEmpty()) {
+        if (favoriteList.isEmpty()) {
             labelTest.setText("Vous n'avez aucune musique favorite");
-            if (switchLanguage()) {
-                labelTest.setText("Your favoriste list is empty");
-            }
             vbox.getChildren().clear();
             return; // exit the method if there are no favorite songs
         }
         labelTest.setText("");
         vbox.getChildren().clear();
         Map<String, Integer> artistCounts = new HashMap<>();
-        for (Song song : list2.getList()) {
-            if (list2.contains(song)) {
+        for (Song song : favoriteList.getList()) {
+            if (favoriteList.contains(song)) {
                 String artist = song.getArtist();
                 int count = artistCounts.getOrDefault(artist, 0) + 1;
                 artistCounts.put(artist, count);
@@ -269,6 +288,7 @@ public class LyricsAppController implements Initializable {
                 Button removeButton = new Button("Remove from favorites");
                 removeButton.setOnAction(e -> {
                     removeFromFavorites(song);
+                    favoriteList.saveFavorites(favoriteList);
                     displayFavoriteList(); // regenerate the buttons after removing the song from favorites
                     e.consume();
                 });
@@ -279,6 +299,11 @@ public class LyricsAppController implements Initializable {
                 Button playlistAddButton = new Button("playlist");
                 playlistAddButton.setOnAction(e -> {
                     addToPlaylist(song);
+                    try {
+                        favoriteList.saveAll(playlists);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     e.consume(); // consume the event so it doesn't propagate further
                 });
                 playlistAddButton.setPrefWidth(50);
@@ -331,12 +356,9 @@ public class LyricsAppController implements Initializable {
 
     public void displayPlaylistContent(FavoriteList list2){
         if (list2.isEmpty()) {
-            labelTest.setText("Vous n'avez aucune musique favorite");
-            if (switchLanguage()) {
-                labelTest.setText("Your favoriste list is empty");
-            }
+            labelTest.setText("Vous n'avez aucune musique dans cette playlist");
             vbox.getChildren().clear();
-            return; // exit the method if there are no favorite songs
+            return;
         }
         labelTest.setText("");
         vbox.getChildren().clear();
@@ -362,8 +384,11 @@ public class LyricsAppController implements Initializable {
                 Button removeButton = new Button("Remove from this playlist");
                 removeButton.setOnAction(e -> {
                     FavoriteList.removeFromPlaylist(list2,song);
-                    //removeFromFavorites(song);
-                    //displayFavoriteList();
+                    try {
+                        favoriteList.saveAll(playlists);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     // regenerate the buttons after removing the song from favorites
                     displayPlaylistContent(list2);
                     e.consume();
@@ -430,6 +455,11 @@ public class LyricsAppController implements Initializable {
         Button create = new Button("create");
         TextField playListName= new TextField();
         create.setOnAction(e -> {
+            try {
+                favoriteList.saveAll(playlists);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             String name= playListName.getText();
             FavoriteList list  = new FavoriteList(name);
             playlists.add(list);
@@ -440,8 +470,10 @@ public class LyricsAppController implements Initializable {
         create.setPrefWidth(50);
         create.setPrefHeight(20);
         HBox hBox = new HBox();
-        HBox.setMargin(create,new Insets(0,0,0,30));
-        hBox.getChildren().addAll(new Label("Vous n'avez aucune playlist, voulez vous créer une ?"),create,playListName);
+        HBox.setMargin(create,new Insets(0,0,0,170));
+        HBox.setMargin(playListName,new Insets(-4,0,0,15));
+        Label labelPlay = new Label("Vous n'avez aucune playlist");
+        hBox.getChildren().addAll(labelPlay,create,playListName);
         create.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
         vbox.getChildren().addAll(hBox);
         /*if (favoriteList.isEmpty()) {
@@ -474,73 +506,9 @@ public class LyricsAppController implements Initializable {
             });
         }
     }
-/*
-    private void displayFavoriteList() {
-        labelTest.setText("");
-        vbox.getChildren().clear();
 
-
-        for (Song song : songList) {
-            if (favoriteList.contains(song)) {
-                Button button = new Button(song.getArtist() + " - " + song.getSongName());
-                button.setPrefWidth(Double.MAX_VALUE);
-                button.setAlignment(Pos.BASELINE_LEFT);
-                button.setId("button");
-                button.setStyle("-fx-background-radius: 10;");
-                button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
-                button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
-                button.setPrefHeight(90);
-
-                // Create a VBox container for the "Remove from favorites" button
-                VBox buttonBox = new VBox();
-                buttonBox.setAlignment(Pos.BASELINE_LEFT);
-
-                Button removeButton = new Button("Remove from favorites");
-                removeButton.setOnAction(e -> {
-                    removeFromFavorites(song);
-                    displayFavoriteList(); // regenerate the buttons after removing the song from favorites
-                    e.consume();
-                });
-                removeButton.setPrefWidth(150);
-                removeButton.setPrefHeight(20);
-                removeButton.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
-
-                Button playlistButton = new Button("playlist");
-                playlistButton.setOnAction(e -> {
-                    addToPlaylist(song);
-                    e.consume(); // consume the event so it doesn't propagate further
-                });
-                playlistButton.setPrefWidth(50);
-                playlistButton.setPrefHeight(20);
-                playlistButton.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
-
-                buttonBox.getChildren().add(removeButton);
-                buttonBox.setMargin(removeButton, new Insets(-10, 0, 0, 0));
-
-                button.setGraphic(buttonBox);
-                button.setOnAction(e -> {
-                    getLyricsApi(song);
-                    vbox.getChildren().clear();
-                    vbox.setAlignment(Pos.TOP_RIGHT); // Set alignment of VBox to top right
-                    Button backButton = new Button("Back");
-                    backButton.setPrefHeight(50);
-                    backButton.setPrefWidth(100);
-                    backButton.setOnAction(event -> displayFavoriteList());
-                    vbox.getChildren().addAll(new Label(""), backButton); // Add an empty label before the button to create space
-                    backButton.setId("backButton");
-                    VBox.setMargin(backButton, new Insets(-35, 0, 0, 0)); // Set top margin of 10 pixels
-                });
-                vbox.getChildren().add(button);
-
-
-            }
-
-        }
-        vbox.setSpacing(10);
-    }
-*/
     public void removeFromFavorites(Song song) {
-        list2.remove(song);
+        favoriteList.remove(song);
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
         successAlert.setTitle("Remove from favorites");
         successAlert.setHeaderText(null);
@@ -562,7 +530,7 @@ public class LyricsAppController implements Initializable {
     }
 
     public static void addToFavorites(Song song) {
-        boolean isAlreadyInFavorites = list2.getList().contains(song);
+        boolean isAlreadyInFavorites = favoriteList.getList().contains(song);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Add to favorites");
@@ -580,18 +548,20 @@ public class LyricsAppController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == addButton) {
             if (!isAlreadyInFavorites) {
-                list2.add(song);
+                favoriteList.add(song);
                 Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Add to favorites");
                 successAlert.setHeaderText(null);
+                favoriteList.saveFavorites(favoriteList);
                 successAlert.setContentText("Added " + song.getArtist() + " - " + song.getSongName() + " to favorites.");
                 successAlert.showAndWait();
             }
         } else if (result.get().getText().equals("Remove")) {
-            list2.remove(song);
+            favoriteList.remove(song);
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Remove from favorites");
             successAlert.setHeaderText(null);
+            favoriteList.saveFavorites(favoriteList);
             successAlert.setContentText("Removed " + song.getArtist() + " - " + song.getSongName() + " from favorites.");
             successAlert.showAndWait();
         }
@@ -617,6 +587,11 @@ public class LyricsAppController implements Initializable {
         // Create a button for adding the song to the selected playlist
         Button addButton = new Button("Add");
         addButton.setOnAction(event -> {
+            try {
+                favoriteList.saveAll(playlists);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             String selectedPlaylist = playlistChoiceBox.getValue();
             searchInPlaylistByName(selectedPlaylist).add(song);
             // Implement logic for adding the song to the selected playlist
