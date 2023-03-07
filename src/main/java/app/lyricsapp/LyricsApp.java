@@ -1,7 +1,10 @@
 package app.lyricsapp;
 
+import app.lyricsapp.controller.LyricsAppController;
+import app.lyricsapp.controller.RunCLI;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,9 +17,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import javax.swing.*;
 import java.io.FileInputStream;
+import java.io.IOException;
+
+import static app.lyricsapp.controller.LyricsAppController.favoriteList;
+import static app.lyricsapp.controller.RunCLI.playlists;
 
 
 public class LyricsApp extends Application {
@@ -29,6 +37,18 @@ public class LyricsApp extends Application {
         primaryStage.setResizable(false);
         Image Image = new Image(new FileInputStream("src/main/java/app/lyricsapp/logo.png"));
         primaryStage.getIcons().add(Image);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("Window is closing");
+                try {
+                    favoriteList.saveAll(app.lyricsapp.controller.RunCLI.playlists);
+                    favoriteList.saveFavorites(favoriteList);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
         primaryStage.show();
     }
 

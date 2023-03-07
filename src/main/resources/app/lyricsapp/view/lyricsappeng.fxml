@@ -81,5 +81,6 @@
         <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="14.0" prefHeight="117.0" prefWidth="464.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Your Favorites" textAlignment="CENTER" wrapText="true" />
         <Label fx:id="labelFavArtist" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="767.0" layoutY="52.0" prefHeight="48.0" prefWidth="298.0" style="-fx-font-size: 20px; -fx-text-fill: white;" />
         <Label fx:id="playlistLabel" layoutX="287.0" layoutY="18.0" prefHeight="117.0" prefWidth="414.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Your Playlists" />
+        <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="59.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 23; -fx-text-fill: white; -fx-line-spacing: 8;" />
     </children>
 </AnchorPane>
