@@ -6,7 +6,8 @@ public class EngLanguage extends  Language{
         this.mainMenu = "Menu";
         this.findByLyric = "1 - Finding music lyrics";
         this.favoris = "2 - Managing your favorites";
-        this.exit = "3 - Quit the program";
+        this.languageChoice = "3 - Change language";
+        this.exit = "4 - Quit the program";
         this.choice= "Your choice : ";
         this.invaliedCommande = "Unknown command";
         this.reDo = "Try again, please.";

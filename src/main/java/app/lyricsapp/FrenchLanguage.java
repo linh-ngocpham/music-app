@@ -7,7 +7,8 @@ public class FrenchLanguage extends Language{
         this.mainMenu = "Menu";
         this.findByLyric = "1 - Recherche des paroles d'une musique";
         this.favoris = "2 - Gestion de vos favoris";
-        this.exit = "3 - Quitter le programme";
+        this.languageChoice = "3 - Changement de langue";
+        this.exit = "4 - Quitter le programme";
         this.choice = "Votre choix : ";
         this.invaliedCommande = "Commande inconnue";
         this.reDo = "Veuillez réessayer s'il vous plait.";

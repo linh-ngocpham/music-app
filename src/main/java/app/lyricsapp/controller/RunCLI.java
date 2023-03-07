@@ -121,10 +121,11 @@ public class  RunCLI {
         while(validInput){
             System.out.println(current_language.findByLyric);
             System.out.println(current_language.favoris);
+            System.out.println();
             System.out.println(current_language.exit);
             System.out.print(current_language.choice);
             input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3") || Objects.equals(input, "4")){
                 validInput = false;
             }
             else {
@@ -142,6 +143,9 @@ public class  RunCLI {
                 manageFavorites();
                 break;
             case "3":
+                run();
+                break;
+            case "4":
                 favoriteList.saveAll(playlists);
                 favoriteList.saveFavorites(favoriteList);
                 System.exit(0);

@@ -3,6 +3,7 @@ package app.lyricsapp;
 public abstract class Language {
     public String type_of_language;
     public String mainMenu;
+    public String languageChoice;
     public String findByLyric ;
     public String favoris ;
     public String exit ;
