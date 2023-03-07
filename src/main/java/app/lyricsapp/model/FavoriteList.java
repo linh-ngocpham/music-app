@@ -332,6 +332,13 @@ public class FavoriteList {
             e.printStackTrace();
         }
     }
+    public static void deletePlaylist(FavoriteList playlist, List<FavoriteList> playlists){
+        if(playlists.contains(playlist)){
+            File file = new File("src/main/java/app/lyricsapp/model/favorites" + playlists.indexOf(playlist) + ".txt");
+            playlists.remove(playlist);
+            file.delete();
+        }
+    }
 
     public static void clearFile(String fileName){
         try{
