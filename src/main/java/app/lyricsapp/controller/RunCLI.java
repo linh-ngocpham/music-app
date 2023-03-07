@@ -79,7 +79,7 @@ public class  RunCLI {
         return temp;
     }
 
-    public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
+    public static void run()throws ParserConfigurationException, IOException, SAXException {
         banWordList(banWordString);
         boolean validInput = true;
         Scanner scanner = new Scanner(System.in);
@@ -89,11 +89,11 @@ public class  RunCLI {
         System.out.println("----------------------------------------");
         System.out.println("--           Language choice:         --");
         System.out.println("----------------------------------------");
-        while(validInput){
+        while (validInput) {
             System.out.println("1. French");
             System.out.println("2. English");
             input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") ) {
+            if (Objects.equals(input, "1") || Objects.equals(input, "2")) {
                 validInput = false;
                 switch (input) {
                     case "1":
@@ -103,18 +103,21 @@ public class  RunCLI {
                         current_language = new EngLanguage();
                         break;
                 }
-            }
-            else {
+            } else {
                 System.out.println("Invalid Choice.");
             }
         }
+        runCLI();
+    }
 
+    public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
+        Scanner scanner = new Scanner(System.in);
         // Main menu
         System.out.println("----------------------------------------");
         System.out.println("--           "+current_language.mainMenu+"           --");
         System.out.println("----------------------------------------");
-        input = null;
-        validInput = true;
+        String input = null;
+        boolean validInput = true;
         while(validInput){
             System.out.println(current_language.findByLyric);
             System.out.println(current_language.favoris);
@@ -814,6 +817,6 @@ public class  RunCLI {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         favoriteList.recuperateFavorites();
         favoriteList.recuperateAll(playlists);
-        runCLI();
+        run();
     }
 }
