@@ -23,6 +23,7 @@ public class FrenchLanguage extends Language{
         this.errorLyrics = "Les paroles entrées ne contiennent que des mots interdits";
         this.choseByMusicNumber = "Choisissez le numéro de la musique";
         this.returnToMain = "Sinon, retourner aux menu principal : Menu";
+        this.returnToPreviousMenu = "Sinon, retourner aux menu précedent : Menu";
         this.newResearch = "1 - Voulez-vous faire une nouvelle recherche ?";
         this.choseByMusicNumber2 = "Choose the playlist you want to save in :\n";
         this.exited = "Cette musique est déja présente dans les favoris";
@@ -30,6 +31,8 @@ public class FrenchLanguage extends Language{
         this.addToFavotis = "1 - Ajouter aux favoris";
         this.creatPlaylist = "1 - Créer une playlist";
         this.playlistManag = "2 - Gestion des playlist";
+        this.playlistChangeName = "1 - renommer la playlist";
+        this.playlistDelete = "2 - Supprimer la playlist : ";
         this.namePlaylist = "Quelle nom voulez-vous donner à la playlist ?";
         this.emptyEntry = "Entrée vide";
         this.errorNamePlaylist = "Nom de la playlist trop long.";

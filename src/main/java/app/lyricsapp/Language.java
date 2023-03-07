@@ -21,6 +21,7 @@ public abstract class Language {
     public String errorLyrics ;
     public String choseByMusicNumber ;
     public String returnToMain ;
+    public String returnToPreviousMenu;
     public String newResearch ;
     public String choseByMusicNumber2 ;
     public String exited;
@@ -28,6 +29,8 @@ public abstract class Language {
     public String addToFavotis ;
     public String creatPlaylist ;
     public String playlistManag ;
+    public String playlistChangeName;
+    public String playlistDelete;
     public String namePlaylist ;
     public String emptyEntry ;
     public String errorNamePlaylist ;

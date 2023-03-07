@@ -22,6 +22,7 @@ public class EngLanguage extends  Language{
         this.errorLyrics = "The lyrics entered only contain forbidden words";
         this.choseByMusicNumber = "Choose the music number";
         this.returnToMain = "Otherwise, return to the main menu: Menu";
+        this.returnToPreviousMenu = "Otherwise, return to previous menu : Menu";
         this.newResearch = "1 - Do you want to do a new search?";
         this.choseByMusicNumber2 = "Choose the playlist you want to save in :\n";
         this.exited = "This music is already present in the favorites";
@@ -29,6 +30,8 @@ public class EngLanguage extends  Language{
         this.addToFavotis = "1 - Add to favorites";
         this.creatPlaylist = "1 - Create a playlist";
         this.playlistManag = "2 - Playlist management";
+        this.playlistChangeName = "1 - rename this playlist";
+        this.playlistDelete = "2 - delete playlistt : ";
         this.namePlaylist = "What name do you want to give to the playlist?";
         this.emptyEntry = "Empty entry";
         this.errorNamePlaylist = "Playlist name too long.";
