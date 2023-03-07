@@ -121,7 +121,7 @@ public class  RunCLI {
         while(validInput){
             System.out.println(current_language.findByLyric);
             System.out.println(current_language.favoris);
-            System.out.println();
+            System.out.println(current_language.languageChoice);
             System.out.println(current_language.exit);
             System.out.print(current_language.choice);
             input = scanner.nextLine();
