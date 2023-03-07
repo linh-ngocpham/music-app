@@ -11,6 +11,7 @@ public class Song {
     private String SongUrl;
     private String lyricCorrectUrl;
     private String lyric;
+    private String lyricCovertArtUrl;
 
 
     public Song(int trackId, int lyricId, String songName, int songRank, String artist, String lyricChecksum, String artistUrl, String songUrl){
@@ -27,6 +28,19 @@ public class Song {
     }
     public Song(){}
 
+    public Song(int trackId, int lyricId, String songName, int songRank, String artist, String lyricChecksum, String artistUrl, String songUrl, String lyricCovertArtUrl){
+        this.trackId = trackId;
+        this.artist = artist;
+        this.lyricId = lyricId;
+        this.songName = songName;
+        this.songRank = songRank;
+        this.LyricChecksum = lyricChecksum;
+        this.ArtistUrl = artistUrl;
+        this.SongUrl = songUrl;
+        this.lyricCovertArtUrl = lyricCovertArtUrl;
+        this.lyricCorrectUrl = null;
+        this.lyric = null;
+    }
     public String getArtist() {
         return artist;
     }
@@ -65,6 +79,9 @@ public class Song {
 
     public String getLyric() {
         return lyric;
+    }
+    public String getLyricCovertArtUrl(){
+        return lyricCovertArtUrl;
     }
 
     public void setArtist(String artist) {
@@ -107,6 +124,9 @@ public class Song {
         this.trackId = trackId;
     }
 
+    public void setLyricCovertArtUrl(String lyricCovertArtUrl){
+        this.lyricCovertArtUrl = lyricCovertArtUrl;
+    }
     public void toStringOne() {
         System.out.println( this.getArtist() + " - " + this.getSongName() + "    " + this.getSongRank() + "/10");
         //System.out.println("TrackId: " + this.getTrackId());

@@ -62,7 +62,7 @@
             </cursor>
         </TextField>
         <ChoiceBox fx:id="searchChoiceBox" layoutX="706.0" layoutY="14.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="100.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="14.0" />
-      <ScrollPane layoutX="285.0" layoutY="104.0" style="-fx-background-color: #373737; -fx-background: #373737;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="104.0">
+      <ScrollPane fx:id="mainScrollPane" layoutX="285.0" layoutY="104.0" style="-fx-background-color: #373737; -fx-background: #373737;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="285.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="104.0">
          <content>
               <AnchorPane id="infoAnchorPane" fx:id="infoAnchorPane" prefHeight="15.0" prefWidth="777.0" style="-fx-background-color: #373737;">
                   <children>
@@ -78,9 +78,9 @@
                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="54.0" prefWidth="424.0" scaleZ="15.0" style="-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;" text="Présentation de l'application" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0" />
             </children>
         </AnchorPane>
-      <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="14.0" prefHeight="117.0" prefWidth="425.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Favoris" textAlignment="CENTER" wrapText="true" />
-      <Label fx:id="labelFavArtist" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="767.0" layoutY="52.0" prefHeight="48.0" prefWidth="298.0" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-      <Label fx:id="playlistLabel" layoutX="287.0" layoutY="18.0" prefHeight="117.0" prefWidth="364.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Playlists" />
-      <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="59.0" prefHeight="54.0" prefWidth="532.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 25; -fx-text-fill: white; -fx-line-spacing: 8;" text="Label" />
+      <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="298.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Favoris" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="labelFavArtist" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="767.0" layoutY="52.0" style="-fx-font-size: 20px; -fx-text-fill: white;" />
+      <Label fx:id="playlistLabel" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="298.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Playlists" />
+      <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="59.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 30; -fx-text-fill: white; -fx-line-spacing: 8;" />
     </children>
 </AnchorPane>

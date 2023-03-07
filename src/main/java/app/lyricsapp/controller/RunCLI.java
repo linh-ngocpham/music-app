@@ -16,7 +16,7 @@ import static app.lyricsapp.model.FavoriteList.deletePlaylist;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class  RunCLI {
-    static List<FavoriteList> playlists = new ArrayList<>();
+    public static List<FavoriteList> playlists = new ArrayList<>();
     static FavoriteList favoriteList = new FavoriteList();
     public List<FavoriteList> getPlaylists() {
         return playlists;

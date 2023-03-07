@@ -39,7 +39,7 @@ public class EngLanguage extends  Language{
         this.choosePlaylist = "Choose your playlist:";
         this.emptyFavoris = "Your favorites list contains no music";
         this.displayFavoris = "1 - Would you like to display music from your favorites?";
-        this.removeSuceed = "Musique retirée de vos favoris";
+        this.removeSuceed = "Music deleted from your favorites";
         this.choosePlaylist2 = "Choose your playlist:";
         this.chooseMusic = "Choose the music";
     }
