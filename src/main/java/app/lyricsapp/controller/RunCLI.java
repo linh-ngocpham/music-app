@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import static app.lyricsapp.model.FavoriteList.deletePlaylist;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class  RunCLI {
@@ -215,6 +216,7 @@ public class  RunCLI {
                 System.out.println(current_language.errorArtistName);
             }
         }
+        boolean validInput3 = IsSearchSongPopular();
         String song = replaceAllAPI(input2);
         readXMLSong(artistName, song, songList);    //affiche les musique correspondant aux noms de la musique données
         if(songList.isEmpty()){
@@ -244,7 +246,13 @@ public class  RunCLI {
             }
         }
         String lyric = replaceAllAPI(input);
-        readXMLSongLyric(lyric, songList); //affiche les musiques correspondantes aux noms d'artistes donnés
+        String input2 = null;
+        boolean validInput2 = IsSearchSongPopular();
+        if (validInput2) {
+            readXMLSongLyricPopular(lyric, songList);//affiche les musiques populaires correspondant aux paroles données
+        } else{
+            readXMLSongLyric(lyric, songList);//affiche les musiques correspondant aux paroles données
+        }
         if(songList.isEmpty()){
             System.out.println(current_language.noFoundMusic);
             searchSong();
@@ -500,10 +508,10 @@ public class  RunCLI {
             System.out.println(current_language.choosePlaylist);
             for (int i = 0; i < playlists.size() + 1; i++) {
                 if(i == 0){
-                    System.out.println(i + "/ " + favoriteList.getPlaylistName());
+                    System.out.println(i + " - " + favoriteList.getPlaylistName());
                 }
                 else{
-                    System.out.println(i + "/ " + playlists.get(i-1).getPlaylistName());
+                    System.out.println(i + " - " + playlists.get(i-1).getPlaylistName());
                 }
             }
             System.out.println((playlists.size() + 1) + current_language.returnToMain);
@@ -527,6 +535,7 @@ public class  RunCLI {
                 manageFavorites();
             }
             else{
+                System.out.println("------------------------------------------------------------------");
                 playlists.get(input-1).toStringFavoritesList();
                 selectFavoriteSong(playlists.get(input-1));
             }
@@ -545,23 +554,55 @@ public class  RunCLI {
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validInput = true;
-        String input = null;
+        String input = null ;
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
-                System.out.println(current_language.emptyFavoris);
-                System.out.println(current_language.returnToMain);
+                if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                    System.out.println("Votre liste de favoris ne contient aucune musique");
+                    System.out.println("1 - Retourner aux menu principal");
+                }
+                else{
+                    System.out.println("Votre liste de favoris ne contient aucune musique");
+                    System.out.println("1 - Gestion de la playlist");
+                    System.out.println("2 - Retourner aux menu principal");
+                }
             }
             else{
-                System.out.println(current_language.displayFavoris);
-                System.out.println(current_language.returnToMain);
+                if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                    System.out.println("1 - Souhaitez-vous afficher une musique de vos favoris ?");
+                    System.out.println("2 - Retourner aux menu principal");
+                }
+                else{
+                    System.out.println("1 - Souhaitez-vous afficher une musique de vos favoris ?");
+                    System.out.println("2 - Gestion de la playlist");
+                    System.out.println("3 - Retourner aux menu principal");
+                }
             }
             input = choice.nextLine();
-            if(favoriteList.getList().isEmpty() && Objects.equals(input, "1")){
-                validInput = false;
+            if(favoriteList.getList().isEmpty()){
+                if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                    if(Objects.equals(input, "1")){
+                        validInput = false;
+                    }
+                }
+                else{
+                    if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+                        validInput = false;
+                    }
+                }
             }
-            else if((Objects.equals(input, "1") || Objects.equals(input, "2")) && !favoriteList.getList().isEmpty()){
-                validInput = false;
+            else if(!favoriteList.getList().isEmpty()){
+                if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                    if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+                        validInput = false;
+                    }
+                }
+                else{
+                    if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
+                        validInput = false;
+                    }
+                }
             }
             else{
                 System.out.println(current_language.invaliedCommande);
@@ -569,18 +610,112 @@ public class  RunCLI {
             }
         }
         if(favoriteList.getList().isEmpty()){
-            if (input.equals("1")) {
-                runCLI();
+            if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                    manageFavorites();
+            } else{
+                switch (input){
+                    case "1":
+                        editPlaylist(favoriteList);
+                        break;
+                    case "2":
+                        manageFavorites();
+                        break;
+                }
             }
         } else{
-            switch (input){
+            if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+                switch (input){
+                    case "1":
+                        getSongFromFavoritesSong(favoriteList);
+                        break;
+                    case "2":
+                        manageFavorites();
+                        break;
+                }
+            } else{
+                switch (input){
+                    case "1":
+                        getSongFromFavoritesSong(favoriteList);
+                        break;
+                    case "2":
+                        editPlaylist(favoriteList);
+                        break;
+                    case "3":
+                        manageFavorites();
+                        break;
+                }
+            }
+        }
+    }
+
+    public static void editPlaylist(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
+        System.out.println("1 - Changer le nom de la playlist");
+        System.out.println("2 - Supprimer la playlist : " + playlist.getPlaylistName());
+        System.out.println("3 - Retour");
+        String input = choice.nextLine();
+        if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")){
+            switch(input){
                 case "1":
-                    getSongFromFavoritesSong(favoriteList);
+                    editNamePlaylistCLI(playlist);
                     break;
                 case "2":
-                    runCLI();
+                    deletePlaylistCLI(playlist);
+                    break;
+                case "3":
+                    selectFavoriteSong(playlist);
                     break;
             }
+        }
+        else{
+            System.out.println("Commande inconnue");
+            System.out.println( "Retour aux menu précédent");
+            selectFavoriteSong(playlist);
+        }
+    }
+
+    public static void editNamePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
+        System.out.print("Nouveau nom de la playlist de " + playlist.getPlaylistName() + " ou 0 pour annuler: ");
+        String input = choice.nextLine();
+        if(Objects.equals(input, "0") || Objects.equals(input, "")){
+            System.out.println("Mofication non pris en compte");
+            selectFavoriteSong(playlist);
+        }
+        else if (input.length() < 50){
+            playlist.setPlaylistName(input);
+            System.out.println("Modification pris en compte");
+            System.out.println("La playlist s'appelle désormais : " + playlist.getPlaylistName());
+            selectFavoriteSong(playlist);
+        }
+        else{
+            System.out.println("Modification non pris en compte");
+            System.out.println("cause : Nom trop long");
+            selectFavoriteSong(playlist);
+        }
+
+    }
+    public static void deletePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+        Scanner choice = new Scanner(System.in);
+        System.out.println("------------------------------------------------------------------");
+        System.out.print("êtes-vous sûr de supprimer la playlist " + playlist.getPlaylistName() + " ? (y/n) : ");
+        String input = choice.nextLine();
+        if(Objects.equals(input, "y") || Objects.equals(input, "n")){
+            switch(input){
+                case "y":
+                    deletePlaylist(playlist, playlists);
+                case "n":
+                    System.out.println( "Retour aux menu précédent");
+                    selectFavoriteSong(playlist);
+                    break;
+            }
+        }
+        else{
+            System.out.println("Commande incorrecte");
+            System.out.println( "Retour aux menu précédent");
+            selectFavoriteSong(playlist);
         }
     }
 
