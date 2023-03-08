@@ -6,6 +6,7 @@ public class EngLanguage extends  Language{
         this.mainMenu = "Menu";
         this.findByLyric = "1 - Finding music lyrics";
         this.favoris = "2 - Managing your favorites";
+        this.playlistMenu = "2 - Playlist";
         this.languageChoice = "3 - Change language";
         this.exit = "4 - Quit the program";
         this.choice= "Your choice : ";
@@ -26,6 +27,7 @@ public class EngLanguage extends  Language{
         this.isSearchMusicPopular = "Searched Only Popular Music (Min 7/10) : [y/n]";
         this.returnToMain = "Otherwise, return to the main menu: Menu";
         this.returnToPreviousMenu = "Otherwise, return to previous menu : Menu";
+        this.returnToPreviousMenuInt = " - return to previous menu";
         this.newResearch = "1 - Do you want to do a new search?";
         this.choseByMusicNumber2 = "Choose the playlist you want to save in :\n";
         this.exited = "This music is already present in the favorites";

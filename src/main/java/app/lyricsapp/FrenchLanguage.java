@@ -7,12 +7,13 @@ public class FrenchLanguage extends Language{
         this.mainMenu = "Menu";
         this.findByLyric = "1 - Recherche des paroles d'une musique";
         this.favoris = "2 - Gestion de vos favoris";
+        this.playlistMenu = "2 - Playlist";
         this.languageChoice = "3 - Changement de langue";
         this.exit = "4 - Quitter le programme";
         this.choice = "Votre choix : ";
         this.invaliedCommande = "Commande inconnue";
         this.reDo = "Veuillez réessayer s'il vous plait.";
-        this.exitToPreviousMenu = "Retour aux menu précedent";
+        this.exitToPreviousMenu = "Retour aux menu precedent";
         this.searchedByMusic = "Vous avez choisi la recherche des paroles d'une musique";
         this.searchedByArtistMusic = "1 - Recherche avec le nom de l'artiste et le nom de la musique";
         this.searchedByLyrics = "2 - Recherche par paroles ";
@@ -26,15 +27,16 @@ public class FrenchLanguage extends Language{
         this.choseByMusicNumber = "Choisissez le numéro de la musique";
         this.isSearchMusicPopular = "Recherché Uniquement les Musique Populaires (Min 7/10) : [y/n]";
         this.returnToMain = "Sinon, retourner aux menu principal : Menu";
-        this.returnToPreviousMenu = "Sinon, retourner aux menu précedent : Menu";
+        this.returnToPreviousMenu = "Sinon, retourner aux menu precedent : Menu";
+        this.returnToPreviousMenuInt = " - retourner aux menu precedent";
         this.newResearch = "1 - Voulez-vous faire une nouvelle recherche ?";
         this.choseByMusicNumber2 = "Choose the playlist you want to save in :\n";
-        this.exited = "Cette musique est déja présente dans les favoris";
-        this.delete = "1 - Suprimer des favoris";
+        this.exited = "Cette musique est deja présente dans les favoris";
+        this.delete = "1 - Supprimer des favoris";
         this.addToFavotis = "1 - Ajouter aux favoris";
         this.creatPlaylist = "1 - Créer une playlist";
-        this.playlistManag1 = "1 - Gestion des playlist";
-        this.playlistManag2 = "2 - Gestion des playlist";
+        this.playlistManag1 = "1 - Gestion de la playlist";
+        this.playlistManag2 = "2 - Gestion de la playlist";
         this.playlistChangeName = "1 - renommer la playlist";
         this.playlistDelete = "2 - Supprimer la playlist : ";
         this.namePlaylist = "Quelle nom voulez-vous donner à la playlist ?";
@@ -55,6 +57,6 @@ public class FrenchLanguage extends Language{
         this.chooseMusic = "Choisissez la musique";
         this.likedMusic = "Favoris :";
         this.changeTaken = "Modification pris en compte";
-        this.changeNotTaken = "Mofication non pris en compte";
+        this.changeNotTaken = "Modification non pris en compte";
     }
 }

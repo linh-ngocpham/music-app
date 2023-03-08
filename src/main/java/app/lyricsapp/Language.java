@@ -6,6 +6,7 @@ public abstract class Language {
     public String languageChoice;
     public String findByLyric ;
     public String favoris ;
+    public String playlistMenu;
     public String exit ;
     public String choice;
     public String invaliedCommande ;
@@ -55,4 +56,5 @@ public abstract class Language {
     public String isPlaylistDelete2;
     public String emptyPlaylist;
     public String displayPlaylist;
+    public String returnToPreviousMenuInt;
 }
