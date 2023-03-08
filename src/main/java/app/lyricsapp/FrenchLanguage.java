@@ -13,6 +13,9 @@ public class FrenchLanguage extends Language{
         this.choice = "Votre choix : ";
         this.invaliedCommande = "Commande inconnue";
         this.reDo = "Veuillez réessayer s'il vous plait.";
+        this.favoritesArtist = "Artiste Favoris : ";
+        this.favoritesArtistPlaylist = "Artiste Favoris de la playlist : ";
+        this.favoritesArtistNotFound = "aucun";
         this.exitToPreviousMenu = "Retour aux menu precedent";
         this.searchedByMusic = "Vous avez choisi la recherche des paroles d'une musique";
         this.searchedByArtistMusic = "1 - Recherche avec le nom de l'artiste et le nom de la musique";

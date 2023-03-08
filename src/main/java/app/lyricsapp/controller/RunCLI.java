@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static app.lyricsapp.model.FavoriteList.deletePlaylist;
+import static app.lyricsapp.model.FavoriteList.getMostFavoritesArtist;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class  RunCLI {
@@ -559,7 +560,7 @@ public class  RunCLI {
                 }
             }
             if(input == 0){
-                favoriteList.toStringFavoritesList();
+                System.out.println("------------------------------------------------------------------");
                 selectFavoriteSong(favoriteList);
             }
             else if(input == playlists.size() + 1) {
@@ -567,25 +568,27 @@ public class  RunCLI {
             }
             else{
                 System.out.println("------------------------------------------------------------------");
-                playlists.get(input-1).toStringFavoritesList();
                 selectFavoriteSong(playlists.get(input-1));
             }
         }
         else {
             System.out.println(current_language.likedMusic);
-            favoriteList.toStringFavoritesList();
             selectFavoriteSong(favoriteList);
         }
-    }
-    public static void displayFavoritesList() throws ParserConfigurationException, IOException, SAXException {
-        favoriteList.toStringFavoritesList();
-        selectFavoriteSong(favoriteList);
     }
 
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validInput = true;
         String input = null ;
+        String favoritesArtist = getMostFavoritesArtist(favoriteList.getList()) != null ? getMostFavoritesArtist(favoriteList.getList()) : current_language.favoritesArtistNotFound;
+        if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+            System.out.println(current_language.favoritesArtist + favoritesArtist);
+        }
+        else{
+            System.out.println(current_language.favoritesArtistPlaylist + favoritesArtist);
+        }
+        favoriteList.toStringFavoritesList();
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
@@ -728,7 +731,7 @@ public class  RunCLI {
         else{
             System.out.println(current_language.changeNotTaken);
             System.out.println(current_language.errorNamePlaylist);
-            displayPlaylists();
+            selectFavoriteSong(playlist);
         }
 
     }
@@ -750,7 +753,7 @@ public class  RunCLI {
         else{
             System.out.println(current_language.invaliedCommande);
             System.out.println(current_language.exitToPreviousMenu);
-            selectFavoriteSong(playlist);
+            displayPlaylists();
         }
     }
 

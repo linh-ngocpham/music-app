@@ -11,6 +11,9 @@ public abstract class Language {
     public String choice;
     public String invaliedCommande ;
     public String reDo ;
+    public String favoritesArtist;
+    public String favoritesArtistPlaylist;
+    public String favoritesArtistNotFound;
     public String searchedByMusic ;
     public String searchedByArtistMusic;
     public String searchedByLyrics;

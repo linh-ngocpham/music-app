@@ -69,6 +69,28 @@ public class FavoriteList {
             //System.out.println("SongRank: " + song.getSongRank());
         }
     }
+
+    public static String getMostFavoritesArtist(ArrayList<Song> songList) {
+        Map<String, Integer> artistCount = new HashMap<>();
+        for (Song song : songList) {
+            String artist = song.getArtist();
+            if (artistCount.containsKey(artist)) {
+                artistCount.put(artist, artistCount.get(artist) + 1);
+            } else {
+                artistCount.put(artist, 1);
+            }
+        }
+        int maxCount = 0;
+        String mostFavoritesArtist = null;
+        for (Map.Entry<String, Integer> entry : artistCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mostFavoritesArtist = entry.getKey();
+            }
+        }
+        return mostFavoritesArtist;
+    }
+
     public void saveAll(List<FavoriteList> playlists) throws IOException {
         int index = 0;
         while(index < playlists.size()){

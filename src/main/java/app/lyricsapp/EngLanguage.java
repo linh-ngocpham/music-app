@@ -12,6 +12,9 @@ public class EngLanguage extends  Language{
         this.choice= "Your choice : ";
         this.invaliedCommande = "Unknown command";
         this.reDo = "Try again, please.";
+        this.favoritesArtist = "Favorites Artist : ";
+        this.favoritesArtistPlaylist = "Favorites Artist from the playlist : ";
+        this.favoritesArtistNotFound = "nothing";
         this.exitToPreviousMenu = "Return to previous menu";
         this.searchedByMusic = "You have chosen to search for music lyrics";
         this.searchedByArtistMusic = "Search with artist name and music name";
