@@ -40,6 +40,7 @@ public class FrenchLanguage extends Language{
         this.creatPlaylist = "1 - Créer une playlist";
         this.playlistManag1 = "1 - Gestion de la playlist";
         this.playlistManag2 = "2 - Gestion de la playlist";
+        this.showPlaylist = "2 - Afficher les Playlists";
         this.playlistChangeName = "1 - renommer la playlist";
         this.playlistDelete = "2 - Supprimer la playlist : ";
         this.namePlaylist = "Quelle nom voulez-vous donner à la playlist ?";

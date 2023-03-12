@@ -479,7 +479,7 @@ public class  RunCLI {
         while(validInput){
             System.out.println("----------------------------------------");
             System.out.println(current_language.creatPlaylist);
-            System.out.println(current_language.playlistManag2);
+            System.out.println(current_language.showPlaylist);
             System.out.println(current_language.returnToMain);
             System.out.print(current_language.choice);
             input = scanner.nextLine().toLowerCase();

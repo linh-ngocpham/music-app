@@ -39,6 +39,7 @@ public class EngLanguage extends  Language{
         this.creatPlaylist = "1 - Create a playlist";
         this.playlistManag1 = "1 - Playlist management";
         this.playlistManag2 = "2 - Playlist management";
+        this.showPlaylist = "2 - Show Playlist";
         this.playlistChangeName = "1 - rename this playlist";
         this.playlistDelete = "2 - delete playlistt : ";
         this.namePlaylist = "What name do you want to give to the playlist?";

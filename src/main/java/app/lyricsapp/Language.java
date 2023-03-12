@@ -60,4 +60,5 @@ public abstract class Language {
     public String emptyPlaylist;
     public String displayPlaylist;
     public String returnToPreviousMenuInt;
+    public String showPlaylist;
 }
