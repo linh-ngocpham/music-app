@@ -115,7 +115,7 @@ public class  RunCLI {
         Scanner scanner = new Scanner(System.in);
         // Main menu
         System.out.println("----------------------------------------");
-        System.out.println("--           "+current_language.mainMenu+"           --");
+        System.out.println(current_language.mainMenu);
         System.out.println("----------------------------------------");
         String input = null;
         boolean validInput = true;
@@ -356,8 +356,9 @@ public class  RunCLI {
         for (int i = 0; i < playlists.size(); i++) {
             System.out.println((i+1) + "/ " + playlists.get(i).getPlaylistName());
         }
+        System.out.println((playlists.size() + 1) + "/ Retour aux menu précedent");
         int input = -1;
-        while (input < 0 || input > playlists.size()){
+        while (input < 0 || input > playlists.size() + 1){
             Scanner choice = new Scanner(System.in);
             String text = choice.nextLine();
             if(text.matches("[0-9]+")) {
@@ -370,6 +371,9 @@ public class  RunCLI {
         }
         if(input == 0){
             favorites(song);
+        }
+        else if(input  == playlists.size() + 1){
+            searchSong();
         }
         else{
             favoritesFromPlaylist(song, playlists.get(input-1));

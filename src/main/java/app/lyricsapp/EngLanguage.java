@@ -3,7 +3,7 @@ package app.lyricsapp;
 public class EngLanguage extends  Language{
     public EngLanguage(){
         this.type_of_language = "ENGLISH";
-        this.mainMenu = "Menu";
+        this.mainMenu = "--                Menu                --";
         this.findByLyric = "1 - Finding music lyrics";
         this.favoris = "2 - Managing your favorites";
         this.playlistMenu = "2 - Playlist";

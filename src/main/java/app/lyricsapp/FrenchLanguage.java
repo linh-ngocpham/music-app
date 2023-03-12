@@ -4,7 +4,7 @@ public class FrenchLanguage extends Language{
     
     public FrenchLanguage() {
         this.type_of_language = "FRENCH";
-        this.mainMenu = "Menu";
+        this.mainMenu = "--                Menu                --";
         this.findByLyric = "1 - Recherche des paroles d'une musique";
         this.favoris = "2 - Gestion de vos favoris";
         this.playlistMenu = "2 - Playlist";
