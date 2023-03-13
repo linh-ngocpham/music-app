@@ -41,7 +41,7 @@ public class FavoriteList {
     public boolean isEmpty(){
         return favoritesSongs.isEmpty();
     }
-
+    public static void rename(FavoriteList playlist, String playlistName){playlist.setPlaylistName(playlistName);}
     public ArrayList<Song> getList(){
         return favoritesSongs;
     }

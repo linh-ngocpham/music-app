@@ -191,7 +191,7 @@ public class LyricsAppController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-/*
+
     public void getCoversApi(Song songs) {
         try {
             DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
@@ -212,7 +212,7 @@ public class LyricsAppController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-*/
+
     private void displayResults(String result) {
         labelTest.setText("");
         vbox.getChildren().clear();
@@ -398,13 +398,33 @@ public class LyricsAppController implements Initializable {
 
 
     public void displayPlaylistContent(FavoriteList playlist){
+        vbox.getChildren().clear();
+        Button renommer= new Button("Renommer");
+        TextField name= new TextField();
+        renommer.setOnAction(event -> {
+            FavoriteList.rename(playlist,name.getText());
+        });
+        vbox.getChildren().addAll(name,renommer);
+
+        HBox hBox = new HBox();
+        HBox.setMargin(renommer,new Insets(0,0,0,15));
+        HBox.setMargin(name,new Insets(-4,0,0,340));
+        Label labelPlay = new Label("Voulez vous renommer votre playlist?");
+        hBox.getChildren().addAll(labelPlay, name, renommer);
+        renommer.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
+        vbox.getChildren().addAll(hBox);
+
         if (playlist.isEmpty()) {
             labelTest.setText("Vous n'avez aucune musique dans cette playlist");
             vbox.getChildren().clear();
+            vbox.getChildren().addAll(name,renommer);
             return;
         }
         labelTest.setText("");
+
+
         vbox.getChildren().clear();
+        vbox.getChildren().addAll(name,renommer);
         Map<String, Integer> artistCounts = new HashMap<>();
         for (Song song : playlist.getList()) {
             if (playlist.contains(song)) {
@@ -419,6 +439,7 @@ public class LyricsAppController implements Initializable {
                 button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
                 button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
                 button.setPrefHeight(90);
+                //rename
 
                 // Create a VBox container for the "Remove from favorites" button
                 VBox buttonBox = new VBox();
