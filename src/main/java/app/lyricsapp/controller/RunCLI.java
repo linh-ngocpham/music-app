@@ -27,19 +27,19 @@ public class  RunCLI {
 
     private static Language current_language = null;
     private static final String banWordString = "about,after,all,also,an,and,another," +
-            "any,are,as,at,be,because,been,before," +
-            "being,between,both,but,by,came,can,come," +
-            "could,did,do,does,each,else,for,from,get," +
-            "got,had,has,have,he,her,here,him,himself," +
-            "his,how,if,in,into,is,it,its,just,like," +
-            "make,many,me,might,more,most,much,must," +
-            "my,never,no,now,of,on,only,or,other,our," +
-            "out,over,re,said,same,see,should,since," +
-            "so,some,still,such,take,than,that,the," +
-            "their,them,then,there,these,they,this," +
-            "those,through,to,too,under,up,use,very," +
-            "want,was,way,we,well,were,what,when," +
-            "where,which,while,who,will,with,would,you,your";
+                                                "any,are,as,at,be,because,been,before," +
+                                                "being,between,both,but,by,came,can,come," +
+                                                "could,did,do,does,each,else,for,from,get," +
+                                                "got,had,has,have,he,her,here,him,himself," +
+                                                "his,how,if,in,into,is,it,its,just,like," +
+                                                "make,many,me,might,more,most,much,must," +
+                                                "my,never,no,now,of,on,only,or,other,our," +
+                                                "out,over,re,said,same,see,should,since," +
+                                                "so,some,still,such,take,than,that,the," +
+                                                "their,them,then,there,these,they,this," +
+                                                "those,through,to,too,under,up,use,very," +
+                                                "want,was,way,we,well,were,what,when," +
+                                                "where,which,while,who,will,with,would,you,your";
     public static void banWordList(String banWordString){
         ArrayList<String> tempList = new ArrayList<>();
         String temp = "";
@@ -194,6 +194,7 @@ public class  RunCLI {
         }
     }
 
+    // recherche par nom de l'artiste et nom de la musique
     public static void searchSongArtistAndSongName() throws ParserConfigurationException, IOException, SAXException {
         System.out.println("------------------------------------------------------------------");
         Scanner scanner = new Scanner(System.in);
@@ -226,11 +227,7 @@ public class  RunCLI {
         }
         boolean validInput3 = IsSearchSongPopular();
         String song = replaceAllAPI(input2);
-        if (validInput3) {
-            readXMLSongPopular(artistName, song, songList);//affiche les musiques populaires correspondant aux noms de la musique données
-        } else{
-            readXMLSong(artistName, song, songList);//affiche les musiques correspondant aux noms de la musique données
-        }
+        readXMLSong(artistName, song, songList, validInput3); //affiche les musiques correspondant aux noms de la musique données
         if(songList.isEmpty()){
             System.out.println(current_language.noFoundMusic);
             searchSong();
@@ -241,6 +238,7 @@ public class  RunCLI {
         }
     }
 
+    // demande à l'utilisateur si la musique voulue sont ceux populaires
     public static boolean IsSearchSongPopular(){
         Scanner choice = new Scanner(System.in);
         while(true){
@@ -260,6 +258,7 @@ public class  RunCLI {
         }
     }
 
+    // recherche par paroles
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
         Scanner scanner = new Scanner(System.in);
         String input = null;
@@ -278,11 +277,7 @@ public class  RunCLI {
         }
         String lyric = replaceAllAPI(input);
         boolean validInput2 = IsSearchSongPopular();
-        if (validInput2) {
-            readXMLSongLyricPopular(lyric, songList);//affiche les musiques populaires correspondant aux paroles données
-        } else{
-            readXMLSongLyric(lyric, songList);//affiche les musiques correspondant aux paroles données
-        }
+        readXMLSongLyric(lyric, songList, validInput2);//affiche les musiques correspondant aux paroles données
         if(songList.isEmpty()){
             System.out.println(current_language.noFoundMusic);
             searchSong();
@@ -294,6 +289,7 @@ public class  RunCLI {
 
     }
 
+    //Sous-menu permmettant de choisir la musique après la recherche
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
         boolean validInput = true;
         Scanner choice = new Scanner(System.in);
@@ -324,6 +320,7 @@ public class  RunCLI {
         choosePlaylistForFavorites(displaySong);
     }
 
+    //Sous-menu pour retourner aux menu principal ou refaire une recherche après la recherche et (supposer) ajout à une playlist de la musique
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -350,6 +347,8 @@ public class  RunCLI {
                 break;
         }
     }
+
+    //Sous-menu pour choisir une playlist à laquelle ajouter une musique choisi après la recherche
     public static void choosePlaylistForFavorites(Song song) throws IOException, ParserConfigurationException, SAXException {
         System.out.println(current_language.choseByMusicNumber2);
         System.out.println("0/ " + favoriteList.getPlaylistName());
@@ -380,6 +379,8 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu permettant de vérfier si l'utilisateur peut ou non ajouter une musique de sa recherche
+    // dans la playlist ou encore de la retire
     public static void favoritesFromPlaylist(Song song, FavoriteList playlist) throws IOException, ParserConfigurationException, SAXException {
         Scanner scanner = new Scanner(System.in);
         int check = 0;
@@ -426,6 +427,9 @@ public class  RunCLI {
                 break;
         }
     }
+
+    //Meme fonctionnement que la fonction favoritesFromPlaylist (fonction précédentes)
+    //mais dans le cas de la liste des musiques favorites
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -472,6 +476,9 @@ public class  RunCLI {
                 break;
         }
     }
+
+    //Menu principal pour l'affichage et gestion des favoris
+    //(renommer, supprimer une musique ou la playlist, créer une playlist)
     public static void manageFavorites() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -504,6 +511,7 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu permettant de créer une playlist
     public static void createPlaylist() throws IOException, ParserConfigurationException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -539,6 +547,7 @@ public class  RunCLI {
         manageFavorites();
     }
 
+    //affichage des musiques favorites
     public static void displayPlaylists() throws ParserConfigurationException, IOException, SAXException{
         if(!playlists.isEmpty()) {
             System.out.println(current_language.choosePlaylist);
@@ -581,6 +590,8 @@ public class  RunCLI {
         }
     }
 
+    //Choisir une playlist disponible
+    //ou à défaut les musiques favorites
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validInput = true;
@@ -689,6 +700,7 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu de gestion d'une playlist (uniquement)
     public static void editPlaylist(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
@@ -716,6 +728,7 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu permettant la modification du nom d'une playlist (uniquement)
     public static void editNamePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
@@ -737,8 +750,9 @@ public class  RunCLI {
             System.out.println(current_language.errorNamePlaylist);
             selectFavoriteSong(playlist);
         }
-
     }
+
+    //Sous-menu de suppression d'une playlist
     public static void deletePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
@@ -748,6 +762,7 @@ public class  RunCLI {
             switch(input){
                 case "y":
                     deletePlaylist(playlist, playlists);
+                    break;
                 case "n":
                     System.out.println(current_language.exitToPreviousMenu);
                     manageFavorites();
@@ -761,6 +776,7 @@ public class  RunCLI {
         }
     }
 
+    //sous-menu pour supprimer une musique d'une playlist/favoris
     public static void editFavoritesSongList(int index, FavoriteList favoritesList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validinput = true;
