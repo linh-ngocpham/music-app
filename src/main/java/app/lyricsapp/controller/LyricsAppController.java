@@ -61,6 +61,8 @@ public class LyricsAppController implements Initializable {
     private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
     @FXML
     private CheckBox score ;
+    @FXML
+    private Button submitButton ;
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -155,8 +157,16 @@ public class LyricsAppController implements Initializable {
         configureCheckBox(score);
 
 
+        submitButton.setDisable(true);
+
         numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
-            unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+
+                unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+
+
+                unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
+                submitButton.setDisable(true);
+
         });
     }
 
