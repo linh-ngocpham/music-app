@@ -2,6 +2,7 @@ package app.lyricsapp.controller;
 
 import app.lyricsapp.EngLanguage;
 import app.lyricsapp.FrenchLanguage;
+import app.lyricsapp.ItalyLanguage;
 import app.lyricsapp.Language;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
@@ -93,6 +94,7 @@ public class  RunCLI {
         while (validInput) {
             System.out.println("1. French");
             System.out.println("2. English");
+            System.out.println("3. Italy");
             input = scanner.nextLine();
             if (Objects.equals(input, "1") || Objects.equals(input, "2")) {
                 validInput = false;
@@ -102,6 +104,9 @@ public class  RunCLI {
                         break;
                     case "2":
                         current_language = new EngLanguage();
+                        break;
+                    case "3":
+                        current_language = new ItalyLanguage();
                         break;
                 }
             } else {
