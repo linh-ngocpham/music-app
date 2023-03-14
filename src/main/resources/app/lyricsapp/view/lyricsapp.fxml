@@ -22,7 +22,7 @@
             </cursor>
         </TextField>
 
-              alignment="center" spacing="5">
+
             <CheckBox fx:id="score" text="7/10" />
             <Button fx:id="submitButton" text="Submit" />
 
