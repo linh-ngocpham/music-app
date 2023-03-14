@@ -3,6 +3,8 @@ package app.lyricsapp.controller;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
@@ -56,6 +58,9 @@ public class LyricsAppController implements Initializable {
     private Map<String, Integer> artistCounts = new HashMap<>();
     private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
     private ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
+    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    @FXML
+    private CheckBox score ;
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,6 +151,13 @@ public class LyricsAppController implements Initializable {
 
         favoriteList.recuperateFavorites();
         favoriteList.recuperateAll(playlists);
+
+        configureCheckBox(score);
+
+
+        numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
+            unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+        });
     }
 
     @FXML
