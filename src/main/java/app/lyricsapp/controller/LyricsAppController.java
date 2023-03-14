@@ -162,9 +162,6 @@ public class LyricsAppController implements Initializable {
         numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
 
                 unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
-
-
-                unselectedCheckBoxes.forEach(cb -> cb.setDisable(false));
                 submitButton.setDisable(true);
 
         });
