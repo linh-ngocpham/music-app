@@ -96,7 +96,7 @@ public class  RunCLI {
             System.out.println("2. English");
             System.out.println("3. Italy");
             input = scanner.nextLine();
-            if (Objects.equals(input, "1") || Objects.equals(input, "2")) {
+            if (Objects.equals(input, "1") || Objects.equals(input, "2")|| Objects.equals(input, "3")) {
                 validInput = false;
                 switch (input) {
                     case "1":
