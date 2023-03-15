@@ -111,7 +111,7 @@ public class ReadXML {
         }
     }
 
-    public static void readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static String readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -144,6 +144,7 @@ public class ReadXML {
         for (Song song : songList) {
             System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
         }
+        return artistName;
     }
 
     public static void readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {

@@ -43,6 +43,7 @@ import static app.lyricsapp.model.ReadXML.*;
 
 public class LyricsAppController implements Initializable {
 
+    @FXML private CheckBox checkboxscore;
     @FXML private Button favoritesButton, lyricsappButton, playlistButton, displayFavoritesButton, backMenu;
     @FXML private ChoiceBox<String> searchChoiceBox, languageChoiceBox;
     @FXML private TextField titleSearchField, artistSearchField, lyricsSearchField;
@@ -176,12 +177,24 @@ public class LyricsAppController implements Initializable {
                 String input2 = artistSearchField.getText();
                 String title = replaceAllAPI(input1);
                 String artist = replaceAllAPI(input2);
-                String result = readXMLSong(artist, title, songList);
+                String result;
+                if(checkboxscore.isSelected()) {
+                    result = readXMLSongPopular(artist, title, songList);
+                }
+                else
+                    result = readXMLSong(artist, title, songList);
                 displayResults(result);
             } else {
                 String input3 = lyricsSearchField.getText();
                 String lyrics = replaceAllAPI(input3);
-                String result = readXMLSongLyric(lyrics, songList);
+                String result;
+                if(checkboxscore.isSelected()) {
+
+//                    result = readXMLSongLyricPopular(lyrics, songList);
+                    result = "Check code";
+                }
+                else
+                    result = readXMLSongLyric(lyrics, songList);
                 displayResults(result);
             }
             clearSearchFields();
