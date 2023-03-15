@@ -125,8 +125,9 @@ public class Song {
         this.trackId = trackId;
     }
 
-    public void setLyricCovertArtUrl(String lyricCovertArtUrl){
+    public String setLyricCovertArtUrl(String lyricCovertArtUrl){
         this.lyricCovertArtUrl = lyricCovertArtUrl;
+        return lyricCovertArtUrl;
     }
     public void toStringOne() {
         System.out.println( this.getArtist() + " - " + this.getSongName() + "    " + this.getSongRank() + "/10");

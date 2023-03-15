@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -27,9 +28,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.swing.text.html.ImageView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -192,7 +195,7 @@ public class LyricsAppController implements Initializable {
         }
     }
 
-    public void getCoversApi(Song songs) {
+    public String getCoversApi(Song songs) {
         try {
             DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
             DocumentBuilder db1 = dbf1.newDocumentBuilder();
@@ -203,7 +206,8 @@ public class LyricsAppController implements Initializable {
                 Node nNode1 = nList1.item(temp1);
                 if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement1 = (Element) nNode1;
-                    songs.setLyric(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
+                    String CovertURL = songs.setLyricCovertArtUrl(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
+                    return CovertURL;
                 }
             }
         } catch(IOException | ParserConfigurationException e) {
@@ -211,12 +215,14 @@ public class LyricsAppController implements Initializable {
         } catch (SAXException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     private void displayResults(String result) {
         labelTest.setText("");
         vbox.getChildren().clear();
         String[] lines = result.split("\n");
+        presentationTile.setVisible(false);
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
             Song song = songList.get(i);
@@ -255,8 +261,19 @@ public class LyricsAppController implements Initializable {
 
             buttonBox.getChildren().addAll(favoritesAddButton, playlistAddButton);
             buttonBox.setMargin(favoritesAddButton, new Insets(-10, 0, 0, 0)); // Set top margin of 10 pixels
+            String cover = getCoversApi(song);// assume que cover est une URL valide
+            System.out.println(cover);
 
-            button.setGraphic(buttonBox);
+            if(!cover.contains("ec1.images-amazon.com")){
+                cover="file:src/main/java/app/lyricsapp/img/music.png";
+            }
+            Image image = new Image(cover);
+            javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
+            imageView.setFitWidth(96);
+            imageView.setFitHeight(96);
+
+           // button.setGraphic(buttonBox);
+            button.setGraphic(imageView);
             button.setOnAction(e -> {
                 getLyricsApi(song);
                 mainScrollPane.setVvalue(0.0);
@@ -284,7 +301,9 @@ public class LyricsAppController implements Initializable {
                 backButton.setId("backButton");
                 VBox.setMargin(backButton, new Insets(-35, 0, 0, 0)); // Set top margin of 10 pixels
             });
+
             vbox.getChildren().add(button);
+           // vbox.getChildren().addAll(imageView, button);
         }
         vbox.setSpacing(10); // Set spacing between buttons
     }
@@ -399,6 +418,15 @@ public class LyricsAppController implements Initializable {
 
     public void displayPlaylistContent(FavoriteList playlist){
         vbox.getChildren().clear();
+        Button back = new Button("Back");
+        back.setPrefHeight(50);
+        back.setPrefWidth(100);
+        back.setOnAction(event -> {
+            displayPlaylist();
+            event.consume();
+        });
+        //vbox.getChildren().addAll(new Label(""), back);
+        back.setId("back");
         Button renommer= new Button("Renommer");
         TextField name= new TextField();
         renommer.setOnAction(event -> {
@@ -408,11 +436,12 @@ public class LyricsAppController implements Initializable {
 
         HBox hBox = new HBox();
         HBox.setMargin(renommer,new Insets(0,0,0,15));
-        HBox.setMargin(name,new Insets(-4,0,0,340));
+        HBox.setMargin(name,new Insets(-4,0,0,100));
         Label labelPlay = new Label("Voulez vous renommer votre playlist?");
         hBox.getChildren().addAll(labelPlay, name, renommer);
         renommer.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
-        vbox.getChildren().addAll(hBox);
+        vbox.getChildren().addAll(back,hBox);
+        VBox.setMargin(back, new Insets(-35, 0, 0, 0));
 
         if (playlist.isEmpty()) {
             labelTest.setText("Vous n'avez aucune musique dans cette playlist");
@@ -565,7 +594,26 @@ public class LyricsAppController implements Initializable {
             return; // exit the method if there are no favorite songs
         }*/
         for (FavoriteList list: playlists){
+            if (!playlists.isEmpty()){
+                labelPlay.setText("Vos playlists:");
+            }
             System.out.println("Playlist Menu : \n"+list.getPlaylistName());
+            Button removeButton = new Button("Remove from this playlist");
+            removeButton.setOnAction(e -> {
+                FavoriteList.deletePlaylist(list,playlists);
+                try {
+                    favoriteList.saveAll(playlists);
+                    favoriteList.saveFavorites(favoriteList);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+                // regenerate the buttons after removing the song from favorites
+                displayPlaylist();
+                e.consume();
+            });
+            removeButton.setPrefWidth(150);
+            removeButton.setPrefHeight(20);
+            removeButton.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-font-size : 9; ");
             Button button = new Button(list.getPlaylistName());
             button.setPrefWidth(Double.MAX_VALUE);
             button.setAlignment(Pos.BASELINE_LEFT);
@@ -573,6 +621,7 @@ public class LyricsAppController implements Initializable {
             button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
             button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
             button.setPrefHeight(90);
+            button.setGraphic(removeButton);
             vbox.getChildren().add(button);
             button.setOnAction(event -> {
                 System.out.println(list.getList());
