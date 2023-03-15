@@ -3,6 +3,10 @@ package app.lyricsapp.controller;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +56,13 @@ public class LyricsAppController implements Initializable {
     private static List<Song> songList = new ArrayList<>();
     public static FavoriteList favoriteList = new FavoriteList();
     private Map<String, Integer> artistCounts = new HashMap<>();
+    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+    private ObservableSet<CheckBox> unselectedCheckBoxes = FXCollections.observableSet();
+    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    @FXML
+    private CheckBox score ;
+    @FXML
+    private Button submitButton ;
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -142,6 +153,18 @@ public class LyricsAppController implements Initializable {
 
         favoriteList.recuperateFavorites();
         favoriteList.recuperateAll(playlists);
+
+        configureCheckBox(score);
+
+
+        submitButton.setDisable(true);
+
+        numCheckBoxesSelected.addListener((obs, oldSelectedCount, newSelectedCount) -> {
+
+                unselectedCheckBoxes.forEach(cb -> cb.setDisable(true));
+                submitButton.setDisable(true);
+
+        });
     }
 
     @FXML
@@ -695,6 +718,30 @@ public class LyricsAppController implements Initializable {
         // Display the playlist selection window
         playlistStage.show();
     }
+
+    private void configureCheckBox(CheckBox checkBox) {
+
+
+        if (checkBox.isSelected()) {
+            selectedCheckBoxes.add(checkBox);
+        } else {
+            unselectedCheckBoxes.add(checkBox);
+        }
+
+        checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                unselectedCheckBoxes.remove(checkBox);
+                selectedCheckBoxes.add(checkBox);
+            } else {
+                selectedCheckBoxes.remove(checkBox);
+                unselectedCheckBoxes.add(checkBox);
+            }
+
+        });
+
+    }
+
+
     public FavoriteList searchInPlaylistByName(String name){
         for (FavoriteList element:playlists){
             if(element.getPlaylistName().equals(name)){
