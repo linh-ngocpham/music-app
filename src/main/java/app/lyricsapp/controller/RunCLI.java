@@ -2,6 +2,7 @@ package app.lyricsapp.controller;
 
 import app.lyricsapp.EngLanguage;
 import app.lyricsapp.FrenchLanguage;
+import app.lyricsapp.ItalyLanguage;
 import app.lyricsapp.Language;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static app.lyricsapp.model.FavoriteList.deletePlaylist;
+import static app.lyricsapp.model.FavoriteList.getMostFavoritesArtist;
 import static app.lyricsapp.model.ReadXML.*;
 
 public class  RunCLI {
@@ -26,19 +28,19 @@ public class  RunCLI {
 
     private static Language current_language = null;
     private static final String banWordString = "about,after,all,also,an,and,another," +
-            "any,are,as,at,be,because,been,before," +
-            "being,between,both,but,by,came,can,come," +
-            "could,did,do,does,each,else,for,from,get," +
-            "got,had,has,have,he,her,here,him,himself," +
-            "his,how,if,in,into,is,it,its,just,like," +
-            "make,many,me,might,more,most,much,must," +
-            "my,never,no,now,of,on,only,or,other,our," +
-            "out,over,re,said,same,see,should,since," +
-            "so,some,still,such,take,than,that,the," +
-            "their,them,then,there,these,they,this," +
-            "those,through,to,too,under,up,use,very," +
-            "want,was,way,we,well,were,what,when," +
-            "where,which,while,who,will,with,would,you,your";
+                                                "any,are,as,at,be,because,been,before," +
+                                                "being,between,both,but,by,came,can,come," +
+                                                "could,did,do,does,each,else,for,from,get," +
+                                                "got,had,has,have,he,her,here,him,himself," +
+                                                "his,how,if,in,into,is,it,its,just,like," +
+                                                "make,many,me,might,more,most,much,must," +
+                                                "my,never,no,now,of,on,only,or,other,our," +
+                                                "out,over,re,said,same,see,should,since," +
+                                                "so,some,still,such,take,than,that,the," +
+                                                "their,them,then,there,these,they,this," +
+                                                "those,through,to,too,under,up,use,very," +
+                                                "want,was,way,we,well,were,what,when," +
+                                                "where,which,while,who,will,with,would,you,your";
     public static void banWordList(String banWordString){
         ArrayList<String> tempList = new ArrayList<>();
         String temp = "";
@@ -79,21 +81,22 @@ public class  RunCLI {
         return temp;
     }
 
-    public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
+    public static void run()throws ParserConfigurationException, IOException, SAXException {
         banWordList(banWordString);
         boolean validInput = true;
         Scanner scanner = new Scanner(System.in);
-        String input = null;
+        String input;
 
         // Language Menu
         System.out.println("----------------------------------------");
-        System.out.println("--           Language choice:          --");
+        System.out.println("--           Language choice:         --");
         System.out.println("----------------------------------------");
-        while(validInput){
+        while (validInput) {
             System.out.println("1. French");
             System.out.println("2. English");
+            System.out.println("3. Italy");
             input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") ) {
+            if (Objects.equals(input, "1") || Objects.equals(input, "2")|| Objects.equals(input, "3")) {
                 validInput = false;
                 switch (input) {
                     case "1":
@@ -102,26 +105,33 @@ public class  RunCLI {
                     case "2":
                         current_language = new EngLanguage();
                         break;
+                    case "3":
+                        current_language = new ItalyLanguage();
+                        break;
                 }
-            }
-            else {
+            } else {
                 System.out.println("Invalid Choice.");
             }
         }
+        runCLI();
+    }
 
+    public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
+        Scanner scanner = new Scanner(System.in);
         // Main menu
         System.out.println("----------------------------------------");
-        System.out.println("--           "+current_language.mainMenu+"           --");
+        System.out.println(current_language.mainMenu);
         System.out.println("----------------------------------------");
-        input = null;
-        validInput = true;
+        String input = null;
+        boolean validInput = true;
         while(validInput){
             System.out.println(current_language.findByLyric);
-            System.out.println(current_language.favoris);
+            System.out.println(current_language.playlistMenu);
+            System.out.println(current_language.languageChoice);
             System.out.println(current_language.exit);
             System.out.print(current_language.choice);
             input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3") || Objects.equals(input, "4")){
                 validInput = false;
             }
             else {
@@ -139,6 +149,9 @@ public class  RunCLI {
                 manageFavorites();
                 break;
             case "3":
+                run();
+                break;
+            case "4":
                 favoriteList.saveAll(playlists);
                 favoriteList.saveFavorites(favoriteList);
                 System.exit(0);
@@ -160,8 +173,8 @@ public class  RunCLI {
             System.out.println("------------------------------------------------------------------");
             System.out.print(current_language.choice);
 
-            input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "3")) {
+            input = scanner.nextLine().toLowerCase();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "menu")) {
                 validInput = false;
             }
             else {
@@ -180,12 +193,13 @@ public class  RunCLI {
                 System.out.println(current_language.searchedWithLyrics);
                 searchSongLyric();
                 break;
-            case "3":
+            case "menu":
                 runCLI();
                 break;
         }
     }
 
+    // recherche par nom de l'artiste et nom de la musique
     public static void searchSongArtistAndSongName() throws ParserConfigurationException, IOException, SAXException {
         System.out.println("------------------------------------------------------------------");
         Scanner scanner = new Scanner(System.in);
@@ -206,7 +220,7 @@ public class  RunCLI {
         String input2 = null;
         boolean validInput2 = true;
         while (validInput2) {
-            System.out.println(current_language.errorArtistName);
+            System.out.println(current_language.enterArtistName);
             input2 = scanner.nextLine().toLowerCase();
             String[] strInput2 = input2.split(" ");
             if(!banWord.containsAll(List.of(strInput2)) && (input2.length() <= 125)){
@@ -218,7 +232,7 @@ public class  RunCLI {
         }
         boolean validInput3 = IsSearchSongPopular();
         String song = replaceAllAPI(input2);
-        readXMLSong(artistName, song, songList);    //affiche les musique correspondant aux noms de la musique données
+        readXMLSong(artistName, song, songList, validInput3); //affiche les musiques correspondant aux noms de la musique données
         if(songList.isEmpty()){
             System.out.println(current_language.noFoundMusic);
             searchSong();
@@ -229,10 +243,11 @@ public class  RunCLI {
         }
     }
 
+    // demande à l'utilisateur si la musique voulue sont ceux populaires
     public static boolean IsSearchSongPopular(){
         Scanner choice = new Scanner(System.in);
         while(true){
-            System.out.println("Recherché Uniquement les Musique Populaires (Min 7/10) : [y/n]");
+            System.out.println(current_language.isSearchMusicPopular);
             String input = choice.nextLine().toLowerCase();
             if(Objects.equals(input,"y")){
                 return true;
@@ -241,12 +256,14 @@ public class  RunCLI {
                 return false;
             }
             else{
-                System.out.println("Commande inconnue");
-                System.out.println("Veuillez réessayer s'il vous plait.");
+                System.out.println("------------------------------------------------------------------");
+                System.out.println(current_language.invaliedCommande);
+                System.out.println(current_language.reDo);
             }
         }
     }
 
+    // recherche par paroles
     public static void searchSongLyric() throws ParserConfigurationException,IOException, SAXException{
         Scanner scanner = new Scanner(System.in);
         String input = null;
@@ -264,13 +281,8 @@ public class  RunCLI {
             }
         }
         String lyric = replaceAllAPI(input);
-        String input2 = null;
         boolean validInput2 = IsSearchSongPopular();
-        if (validInput2) {
-            readXMLSongLyricPopular(lyric, songList);//affiche les musiques populaires correspondant aux paroles données
-        } else{
-            readXMLSongLyric(lyric, songList);//affiche les musiques correspondant aux paroles données
-        }
+        readXMLSongLyric(lyric, songList, validInput2);//affiche les musiques correspondant aux paroles données
         if(songList.isEmpty()){
             System.out.println(current_language.noFoundMusic);
             searchSong();
@@ -282,6 +294,7 @@ public class  RunCLI {
 
     }
 
+    //Sous-menu permmettant de choisir la musique après la recherche
     public static void getSongFromSongList() throws ParserConfigurationException, IOException, SAXException {
         boolean validInput = true;
         Scanner choice = new Scanner(System.in);
@@ -303,7 +316,7 @@ public class  RunCLI {
             }
             else{
                 System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.exit);
+                System.out.println(current_language.exitToPreviousMenu);
                 searchSong();
             }
         }
@@ -312,6 +325,7 @@ public class  RunCLI {
         choosePlaylistForFavorites(displaySong);
     }
 
+    //Sous-menu pour retourner aux menu principal ou refaire une recherche après la recherche et (supposer) ajout à une playlist de la musique
     public static void postSearchMenu() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -320,8 +334,8 @@ public class  RunCLI {
             System.out.println("------------------------------------------------------------------");
             System.out.println(current_language.newResearch);
             System.out.println(current_language.returnToMain);
-            input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            input = scanner.nextLine().toLowerCase();
+            if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
                 validInput = false;
             }
             else{
@@ -333,19 +347,22 @@ public class  RunCLI {
             case "1":
                 searchSong();
                 break;
-            case "2":
+            case "menu":
                 runCLI();
                 break;
         }
     }
-    public static void choosePlaylistForFavorites(Song song) throws ParserConfigurationException, IOException, SAXException {
+
+    //Sous-menu pour choisir une playlist à laquelle ajouter une musique choisi après la recherche
+    public static void choosePlaylistForFavorites(Song song) throws IOException, ParserConfigurationException, SAXException {
         System.out.println(current_language.choseByMusicNumber2);
         System.out.println("0/ " + favoriteList.getPlaylistName());
         for (int i = 0; i < playlists.size(); i++) {
             System.out.println((i+1) + "/ " + playlists.get(i).getPlaylistName());
         }
+        System.out.println((playlists.size() + 1) + "/ Retour aux menu précedent");
         int input = -1;
-        while (input < 0 || input > playlists.size()){
+        while (input < 0 || input > playlists.size() + 1){
             Scanner choice = new Scanner(System.in);
             String text = choice.nextLine();
             if(text.matches("[0-9]+")) {
@@ -359,12 +376,17 @@ public class  RunCLI {
         if(input == 0){
             favorites(song);
         }
+        else if(input  == playlists.size() + 1){
+            searchSong();
+        }
         else{
             favoritesFromPlaylist(song, playlists.get(input-1));
         }
     }
 
-    public static void favoritesFromPlaylist(Song song, FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
+    //Sous-menu permettant de vérfier si l'utilisateur peut ou non ajouter une musique de sa recherche
+    // dans la playlist ou encore de la retire
+    public static void favoritesFromPlaylist(Song song, FavoriteList playlist) throws IOException, ParserConfigurationException, SAXException {
         Scanner scanner = new Scanner(System.in);
         int check = 0;
         for(Song favSong : playlist.getList()){
@@ -384,9 +406,9 @@ public class  RunCLI {
             } else{
                 System.out.println(current_language.addToFavotis);
             }
-            System.out.println(current_language.returnToMain);
-            input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            System.out.println(current_language.returnToPreviousMenu);
+            input = scanner.nextLine().toLowerCase();
+            if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
                 validInput = false;
             }
             else{
@@ -405,10 +427,14 @@ public class  RunCLI {
                     favoriteList.saveAll(playlists);
                 }
                 break;
-            case "2":
+            case "menu":
+                runCLI();
                 break;
         }
     }
+
+    //Meme fonctionnement que la fonction favoritesFromPlaylist (fonction précédentes)
+    //mais dans le cas de la liste des musiques favorites
     public static void favorites(Song song) throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -429,9 +455,9 @@ public class  RunCLI {
             } else{
                 System.out.println(current_language.addToFavotis);
             }
-            System.out.println(current_language.returnToMain);
+            System.out.println(current_language.returnToPreviousMenu);
             input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2")){
+            if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
                 validInput = false;
             } else {
                 System.out.println("------------------------------------------------------------------");
@@ -450,10 +476,14 @@ public class  RunCLI {
                     System.out.println("La musique : " + song.getArtist() + " - " + song.getSongName() + " a été ajoutée aux favoris.");
                 }
                 break;
-            case "2":
+            case "menu":
+                runCLI();
                 break;
         }
     }
+
+    //Menu principal pour l'affichage et gestion des favoris
+    //(renommer, supprimer une musique ou la playlist, créer une playlist)
     public static void manageFavorites() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -461,11 +491,11 @@ public class  RunCLI {
         while(validInput){
             System.out.println("----------------------------------------");
             System.out.println(current_language.creatPlaylist);
-            System.out.println(current_language.playlistManag);
+            System.out.println(current_language.showPlaylist);
             System.out.println(current_language.returnToMain);
             System.out.print(current_language.choice);
-            input = scanner.nextLine();
-            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input.toLowerCase(), "menu")){
+            input = scanner.nextLine().toLowerCase();
+            if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "menu")){
                 validInput = false;
             }
             else{
@@ -486,6 +516,7 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu permettant de créer une playlist
     public static void createPlaylist() throws IOException, ParserConfigurationException, SAXException {
         Scanner scanner = new Scanner(System.in);
         boolean validInput = true;
@@ -493,16 +524,16 @@ public class  RunCLI {
         while(validInput){
             System.out.println("----------------------------------------");
             System.out.println(current_language.namePlaylist);
-            System.out.println(current_language.returnToMain);
-            input = scanner.nextLine();
-            if(Objects.equals(input.toLowerCase(),"menu")){
+            System.out.println(current_language.returnToPreviousMenu);
+            input = scanner.nextLine().toLowerCase();
+            if(Objects.equals(input,"menu")){
                 manageFavorites();
             }
-            if(input != null && input.length() < 50){
+            if(!input.equals("") && input.length() < 50){
                 validInput = false;
             }
             else{
-                if(input == null){
+                if(input.equals("")){
                     System.out.println(current_language.emptyEntry);
                 }
                 else{
@@ -516,11 +547,12 @@ public class  RunCLI {
         file.createNewFile();
         playlists.add(new FavoriteList(input));
         favoriteList.saveAll(playlists);
-        System.out.println(playlists.get(playlists.size()-1).getPlaylistName() + " a été créée.");
-        System.out.println(current_language.returnToMain);
+        System.out.println(playlists.get(playlists.size()-1).getPlaylistName() + current_language.playlistCreated);
+        System.out.println(current_language.returnToPreviousMenu);
         manageFavorites();
     }
 
+    //affichage des musiques favorites
     public static void displayPlaylists() throws ParserConfigurationException, IOException, SAXException{
         if(!playlists.isEmpty()) {
             System.out.println(current_language.choosePlaylist);
@@ -532,7 +564,7 @@ public class  RunCLI {
                     System.out.println(i + " - " + playlists.get(i-1).getPlaylistName());
                 }
             }
-            System.out.println((playlists.size() + 1) + current_language.returnToMain);
+            System.out.println((playlists.size() + 1) + current_language.returnToPreviousMenuInt);
             int input = -1;
             while (input < 0 || input > playlists.size()+1){
                 Scanner choice = new Scanner(System.in);
@@ -542,11 +574,11 @@ public class  RunCLI {
                 }
                 else{
                     System.out.println(current_language.invaliedCommande);
-                    System.out.println( current_language.reDo);
+                    System.out.println(current_language.reDo);
                 }
             }
             if(input == 0){
-                favoriteList.toStringFavoritesList();
+                System.out.println("------------------------------------------------------------------");
                 selectFavoriteSong(favoriteList);
             }
             else if(input == playlists.size() + 1) {
@@ -554,25 +586,29 @@ public class  RunCLI {
             }
             else{
                 System.out.println("------------------------------------------------------------------");
-                playlists.get(input-1).toStringFavoritesList();
                 selectFavoriteSong(playlists.get(input-1));
             }
         }
         else {
-            System.out.println("Liked :");
-            favoriteList.toStringFavoritesList();
+            System.out.println(current_language.likedMusic);
             selectFavoriteSong(favoriteList);
         }
     }
-    public static void displayFavoritesList() throws ParserConfigurationException, IOException, SAXException {
-        favoriteList.toStringFavoritesList();
-        selectFavoriteSong(favoriteList);
-    }
 
+    //Choisir une playlist disponible
+    //ou à défaut les musiques favorites
     public static void selectFavoriteSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validInput = true;
         String input = null ;
+        String favoritesArtist = getMostFavoritesArtist(favoriteList.getList()) != null ? getMostFavoritesArtist(favoriteList.getList()) : current_language.favoritesArtistNotFound;
+        if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
+            System.out.println(current_language.favoritesArtist + favoritesArtist);
+        }
+        else{
+            System.out.println(current_language.favoritesArtistPlaylist + favoritesArtist);
+        }
+        favoriteList.toStringFavoritesList();
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
@@ -581,23 +617,24 @@ public class  RunCLI {
                     System.out.println(current_language.returnToPreviousMenu);
                 }
                 else{
-                    System.out.println("Votre liste de favoris ne contient aucune musique");
-                    System.out.println("1 - Gestion de la playlist");
+                    System.out.println(current_language.emptyPlaylist);
+                    System.out.println(current_language.playlistManag1);
                     System.out.println(current_language.returnToPreviousMenu);
                 }
             }
             else{
                 if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
-                    System.out.println("1 - Souhaitez-vous afficher une musique de vos favoris ?");
+                    System.out.println(current_language.displayFavoris);
                     System.out.println(current_language.returnToPreviousMenu);
                 }
                 else{
-                    System.out.println("1 - Souhaitez-vous afficher une musique de vos favoris ?");
-                    System.out.println("2 - Gestion de la playlist");
+                    System.out.println(current_language.displayPlaylist);
+                    System.out.println(current_language.playlistManag2);
                     System.out.println(current_language.returnToPreviousMenu);
                 }
             }
             input = choice.nextLine().toLowerCase();
+            boolean condition = Objects.equals(input, "1") || Objects.equals(input, "menu");
             if(favoriteList.getList().isEmpty()){
                 if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
                     if(Objects.equals(input, "menu")){
@@ -605,14 +642,14 @@ public class  RunCLI {
                     }
                 }
                 else{
-                    if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
+                    if(condition){
                         validInput = false;
                     }
                 }
             }
             else if(!favoriteList.getList().isEmpty()){
                 if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
-                    if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
+                    if(condition){
                         validInput = false;
                     }
                 }
@@ -668,12 +705,13 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu de gestion d'une playlist (uniquement)
     public static void editPlaylist(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
         System.out.println(current_language.playlistChangeName);
         System.out.println(current_language.playlistDelete + playlist.getPlaylistName());
-        System.out.println("3 - Retour");
+        System.out.println(current_language.returnToPreviousMenu);
         String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "menu")){
             switch(input){
@@ -695,50 +733,55 @@ public class  RunCLI {
         }
     }
 
+    //Sous-menu permettant la modification du nom d'une playlist (uniquement)
     public static void editNamePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
-        System.out.print("Nouveau nom de la playlist de " + playlist.getPlaylistName() + " ou 0 pour annuler: ");
-        String input = choice.nextLine();
-        if(Objects.equals(input, "0") || Objects.equals(input, "")){
-            System.out.println("Mofication non pris en compte");
+        System.out.print(current_language.namePlaylist + playlist.getPlaylistName());
+        System.out.println(current_language.exitToPreviousMenu);
+        String input = choice.nextLine().toLowerCase();
+        if(Objects.equals(input, "menu") || Objects.equals(input.replace(" ",""), "")){
+            System.out.println(current_language.changeNotTaken);
             selectFavoriteSong(playlist);
         }
         else if (input.length() < 50){
             playlist.setPlaylistName(input);
-            System.out.println("Modification pris en compte");
-            System.out.println("La playlist s'appelle désormais : " + playlist.getPlaylistName());
+            System.out.println(current_language.changeTaken);
+            System.out.println(current_language.playlistNewName + playlist.getPlaylistName());
             selectFavoriteSong(playlist);
         }
         else{
-            System.out.println("Modification non pris en compte");
-            System.out.println("cause : Nom trop long");
+            System.out.println(current_language.changeNotTaken);
+            System.out.println(current_language.errorNamePlaylist);
             selectFavoriteSong(playlist);
         }
-
     }
+
+    //Sous-menu de suppression d'une playlist
     public static void deletePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
-        System.out.print("êtes-vous sûr de supprimer la playlist " + playlist.getPlaylistName() + " ? (y/n) : ");
-        String input = choice.nextLine();
+        System.out.print(current_language.isPlaylistDelete1 + playlist.getPlaylistName() + current_language.isPlaylistDelete2);
+        String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "y") || Objects.equals(input, "n")){
             switch(input){
                 case "y":
                     deletePlaylist(playlist, playlists);
+                    break;
                 case "n":
-                    System.out.println( "Retour aux menu précédent");
+                    System.out.println(current_language.exitToPreviousMenu);
                     manageFavorites();
                     break;
             }
         }
         else{
-            System.out.println("Commande incorrecte");
-            System.out.println( "Retour aux menu précédent");
-            selectFavoriteSong(playlist);
+            System.out.println(current_language.invaliedCommande);
+            System.out.println(current_language.exitToPreviousMenu);
+            displayPlaylists();
         }
     }
 
+    //sous-menu pour supprimer une musique d'une playlist/favoris
     public static void editFavoritesSongList(int index, FavoriteList favoritesList) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         boolean validinput = true;
@@ -778,7 +821,7 @@ public class  RunCLI {
         System.out.println(current_language.chooseMusic);
         System.out.println(current_language.returnToMain);
         Scanner choice = new Scanner(System.in);
-        String input = choice.nextLine();
+        String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "retour")){
             selectFavoriteSong(favoriteList);
         }
@@ -809,6 +852,6 @@ public class  RunCLI {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         favoriteList.recuperateFavorites();
         favoriteList.recuperateAll(playlists);
-        runCLI();
+        run();
     }
 }

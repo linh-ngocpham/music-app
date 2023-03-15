@@ -44,7 +44,7 @@ public class ReadXML {
         return con;
     }
 
-    public static void readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static void readXMLSong(String artistName, String songName, List<Song> songList, boolean isMusicPopular) throws ParserConfigurationException, IOException, SAXException {
         File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -68,27 +68,25 @@ public class ReadXML {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, lyricChecksum, artistUrl, songUrl);
-                if(!songList.contains(song)) {
-                    songList.add(song);
+                if(isMusicPopular){
+                    if(!songList.contains(song) && song.getSongRank() >= 7) {
+                        songList.add(song);
+                    }
+                }
+                else{
+                    if(!songList.contains(song)) {
+                        songList.add(song);
+                    }
                 }
 
             }
         }
         for (Song song : songList) {
             System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
-            //System.out.println("NumÃ©ro : " + (songList.indexOf(song) + 1));
-            //System.out.println("TrackId: " + song.getTrackId());
-            //System.out.println("LyricChecksum: " + song.getLyricChecksum());
-            //System.out.println("LyricId: " + song.getLyricId());
-            //System.out.println("SongUrl: " + song.getSongUrl());
-            //System.out.println("ArtistUrl: " + song.getArtistUrl());
-            //System.out.println("Artist: " + song.getArtist());
-            //System.out.println("Song: " + song.getSongName());
-            //System.out.println("SongRank: " + song.getSongRank());
         }
     }
 
-    public static void readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static void readXMLSongLyric(String lyric, List<Song> songList , boolean isMusicPopular) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -110,26 +108,25 @@ public class ReadXML {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, "", artistUrl, songUrl);
-                if(!songList.contains(song)) {
-                    songList.add(song);
+                if(isMusicPopular){
+                    if(!songList.contains(song) && song.getSongRank() >= 7) {
+                        songList.add(song);
+                    }
+                }
+                else{
+                    if(!songList.contains(song)) {
+                        songList.add(song);
+                    }
                 }
             }
         }
         for (Song song : songList) {
             System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
-            //System.out.println("NumÃ©ro : " + (songList.indexOf(song) + 1));
-            //System.out.println("TrackId: " + song.getTrackId());
-            //System.out.println("LyricChecksum: " + song.getLyricChecksum());
-            //System.out.println("LyricId: " + song.getLyricId());
-            //System.out.println("SongUrl: " + song.getSongUrl());
-            //System.out.println("ArtistUrl: " + song.getArtistUrl());
-            //System.out.println("Artist: " + song.getArtist());
-            //System.out.println("Song: " + song.getSongName());
-            //System.out.println("SongRank: " + song.getSongRank());
         }
     }
 
-    public static void readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+
+    public static String readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -159,21 +156,18 @@ public class ReadXML {
 
             }
         }
+//        for (Song song : songList) {
+//            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
+//        }
+
+        StringBuilder stringBuilder = new StringBuilder();
         for (Song song : songList) {
-            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
-            //System.out.println("NumÃ©ro : " + (songList.indexOf(song) + 1));
-            //System.out.println("TrackId: " + song.getTrackId());
-            //System.out.println("LyricChecksum: " + song.getLyricChecksum());
-            //System.out.println("LyricId: " + song.getLyricId());
-            //System.out.println("SongUrl: " + song.getSongUrl());
-            //System.out.println("ArtistUrl: " + song.getArtistUrl());
-            //System.out.println("Artist: " + song.getArtist());
-            //System.out.println("Song: " + song.getSongName());
-            //System.out.println("SongRank: " + song.getSongRank());
+                stringBuilder.append((songList.indexOf(song) + 1)).append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
         }
+        return stringBuilder.toString();
     }
 
-    public static void readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static String readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -200,20 +194,12 @@ public class ReadXML {
                 }
             }
         }
+        StringBuilder stringBuilder = new StringBuilder();
         for (Song song : songList) {
-            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
-            //System.out.println("NumÃ©ro : " + (songList.indexOf(song) + 1));
-            //System.out.println("TrackId: " + song.getTrackId());
-            //System.out.println("LyricChecksum: " + song.getLyricChecksum());
-            //System.out.println("LyricId: " + song.getLyricId());
-            //System.out.println("SongUrl: " + song.getSongUrl());
-            //System.out.println("ArtistUrl: " + song.getArtistUrl());
-            //System.out.println("Artist: " + song.getArtist());
-            //System.out.println("Song: " + song.getSongName());
-            //System.out.println("SongRank: " + song.getSongRank());
+            stringBuilder.append((songList.indexOf(song) + 1)).append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
         }
+        return stringBuilder.toString();
     }
-
 
     /*Méthode de mise sous forme d'objet de chaque song et de listage de chaque objets song + systeme de recherche à partir d'un nom d'artiste ou d'un titre de musique*/
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {

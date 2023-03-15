@@ -3,6 +3,10 @@ package app.lyricsapp.controller;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -195,28 +199,28 @@ public class LyricsAppController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-    /*
-        public void getCoversApi(Song songs) {
-            try {
-                DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db1 = dbf1.newDocumentBuilder();
-                Document document = db1.parse(getsong(songs));
-                document.getDocumentElement().normalize();
-                NodeList nList1 = document.getElementsByTagName("GetLyricResult");
-                for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
-                    Node nNode1 = nList1.item(temp1);
-                    if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
-                        Element eElement1 = (Element) nNode1;
-                        songs.setLyric(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
-                    }
+/*
+    public void getCoversApi(Song songs) {
+        try {
+            DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db1 = dbf1.newDocumentBuilder();
+            Document document = db1.parse(getsong(songs));
+            document.getDocumentElement().normalize();
+            NodeList nList1 = document.getElementsByTagName("GetLyricResult");
+            for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
+                Node nNode1 = nList1.item(temp1);
+                if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement1 = (Element) nNode1;
+                    songs.setLyric(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
                 }
-            } catch(IOException | ParserConfigurationException e) {
-                System.out.println(e);
-            } catch (SAXException e) {
-                throw new RuntimeException(e);
             }
+        } catch(IOException | ParserConfigurationException e) {
+            System.out.println(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
         }
-    */
+    }
+*/
     private void displayResults(String result) {
         labelTest.setText("");
         vbox.getChildren().clear();
@@ -525,7 +529,7 @@ public class LyricsAppController implements Initializable {
             playlists.add(list);
             vbox.getChildren().clear();
             displayPlaylist();
-            // System.out.println("new Playlist "+list.getPlaylistName());
+           // System.out.println("new Playlist "+list.getPlaylistName());
         });
         create.setPrefWidth(50);
         create.setPrefHeight(20);
@@ -562,7 +566,7 @@ public class LyricsAppController implements Initializable {
             button.setOnAction(event -> {
                 System.out.println(list.getList());
                 displayPlaylistContent(list);
-                // displayResults(list.getList().toString());
+               // displayResults(list.getList().toString());
             });
         }
     }
