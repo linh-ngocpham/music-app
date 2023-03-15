@@ -126,7 +126,7 @@ public class ReadXML {
     }
 
 
-    public static void readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static String readXMLSongPopular(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         File file = new File("src/main/java/app/lyricsapp/model/query1.xml");
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -156,12 +156,18 @@ public class ReadXML {
 
             }
         }
+//        for (Song song : songList) {
+//            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
+//        }
+
+        StringBuilder stringBuilder = new StringBuilder();
         for (Song song : songList) {
-            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
+                stringBuilder.append((songList.indexOf(song) + 1)).append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
         }
+        return stringBuilder.toString();
     }
 
-    public static void readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public static String readXMLSongLyricPopular(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -188,9 +194,11 @@ public class ReadXML {
                 }
             }
         }
+        StringBuilder stringBuilder = new StringBuilder();
         for (Song song : songList) {
-            System.out.println((songList.indexOf(song) + 1) + "/    " + song.getArtist() + " - " + song.getSongName() + "    " + song.getSongRank() + "/10");
+            stringBuilder.append((songList.indexOf(song) + 1)).append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
         }
+        return stringBuilder.toString();
     }
 
     /*Méthode de mise sous forme d'objet de chaque song et de listage de chaque objets song + systeme de recherche à partir d'un nom d'artiste ou d'un titre de musique*/

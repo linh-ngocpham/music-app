@@ -177,7 +177,7 @@ public class LyricsAppController implements Initializable {
                 String input2 = artistSearchField.getText();
                 String title = replaceAllAPI(input1);
                 String artist = replaceAllAPI(input2);
-                String result;
+                String result = "";
                 if(checkboxscore.isSelected()) {
                     result = readXMLSongPopular(artist, title, songList);
                 }
@@ -187,11 +187,9 @@ public class LyricsAppController implements Initializable {
             } else {
                 String input3 = lyricsSearchField.getText();
                 String lyrics = replaceAllAPI(input3);
-                String result;
+                String result = "";
                 if(checkboxscore.isSelected()) {
-
-//                    result = readXMLSongLyricPopular(lyrics, songList);
-                    result = "Check code";
+                    result = readXMLSongLyricPopular(lyrics, songList);
                 }
                 else
                     result = readXMLSongLyric(lyrics, songList);
