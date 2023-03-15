@@ -1,1 +1,10 @@
 Liked
+Song:
+TrackId:0
+LyricChecksum:526b49ec5cb211694c7d5e0144888ec1
+LyricId:409
+SongUrl:http://www.chartlyrics.com/_-NcuQU9h06eAcl7Zq8T1A/Lose+Yourself.aspx
+ArtistUrl:http://www.chartlyrics.com/_-NcuQU9h06eAcl7Zq8T1A.aspx
+Artist:Eminem
+SongName:Lose Yourself
+SongRank:9

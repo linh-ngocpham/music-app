@@ -46,6 +46,7 @@ public class LyricsAppController implements Initializable {
     @FXML private ScrollPane mainScrollPane;
     @FXML private Label labelTest, favoritesLabel, labelFavArtist, playlistLabel, titleArtistLabel;
     @FXML private VBox vbox;
+    @FXML private CheckBox goodSongCheckbox;
     private String[] searchSelection = {"Paroles", "Titre/Artiste"};
     private String[] searchSelectionEng = {"Lyrics", "Title/Artist"};
     private String[] languageSelection = {"Langage : FR", "Language : ENG"};
@@ -97,6 +98,7 @@ public class LyricsAppController implements Initializable {
             favoritesLabel.setVisible(true);
             playlistButton.setVisible(true);
             titleArtistLabel.setVisible(false);
+            goodSongCheckbox.setVisible(false);
             displayFavoriteList();
         });
 
@@ -118,6 +120,7 @@ public class LyricsAppController implements Initializable {
             playlistButton.setVisible(true);
             titleArtistLabel.setLayoutX(310);
             titleArtistLabel.setLayoutY(54);
+            goodSongCheckbox.setVisible(true);
         });
 
         playlistButton.setOnAction(event -> {
@@ -137,6 +140,7 @@ public class LyricsAppController implements Initializable {
             backMenu.setLayoutX(35.0);
             backMenu.setLayoutY(120.0);
             backMenu.setVisible(true);
+            goodSongCheckbox.setVisible(false);
             displayPlaylist();
         });
 
@@ -191,28 +195,28 @@ public class LyricsAppController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-/*
-    public void getCoversApi(Song songs) {
-        try {
-            DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db1 = dbf1.newDocumentBuilder();
-            Document document = db1.parse(getsong(songs));
-            document.getDocumentElement().normalize();
-            NodeList nList1 = document.getElementsByTagName("GetLyricResult");
-            for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
-                Node nNode1 = nList1.item(temp1);
-                if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
-                    Element eElement1 = (Element) nNode1;
-                    songs.setLyric(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
+    /*
+        public void getCoversApi(Song songs) {
+            try {
+                DocumentBuilderFactory dbf1 = DocumentBuilderFactory.newInstance();
+                DocumentBuilder db1 = dbf1.newDocumentBuilder();
+                Document document = db1.parse(getsong(songs));
+                document.getDocumentElement().normalize();
+                NodeList nList1 = document.getElementsByTagName("GetLyricResult");
+                for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
+                    Node nNode1 = nList1.item(temp1);
+                    if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement1 = (Element) nNode1;
+                        songs.setLyric(eElement1.getElementsByTagName("LyricCovertArtUrl").item(0).getTextContent());
+                    }
                 }
+            } catch(IOException | ParserConfigurationException e) {
+                System.out.println(e);
+            } catch (SAXException e) {
+                throw new RuntimeException(e);
             }
-        } catch(IOException | ParserConfigurationException e) {
-            System.out.println(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
         }
-    }
-*/
+    */
     private void displayResults(String result) {
         labelTest.setText("");
         vbox.getChildren().clear();
@@ -264,6 +268,7 @@ public class LyricsAppController implements Initializable {
                 titleSearchField.setVisible(false);
                 artistSearchField.setVisible(false);
                 searchChoiceBox.setVisible(false);
+                goodSongCheckbox.setVisible(false);
                 vbox.getChildren().clear();
                 vbox.setAlignment(Pos.TOP_RIGHT); // Set alignment of VBox to top right
                 Button backButton = new Button("Back");
@@ -277,6 +282,7 @@ public class LyricsAppController implements Initializable {
                     searchChoiceBox.setVisible(true);
                     searchChoiceBox.setValue("Titre/Artiste");
                     titleArtistLabel.setVisible(false);
+                    goodSongCheckbox.setVisible(true);
                     displayResults(result);
                     event.consume();
                 });
@@ -519,7 +525,7 @@ public class LyricsAppController implements Initializable {
             playlists.add(list);
             vbox.getChildren().clear();
             displayPlaylist();
-           // System.out.println("new Playlist "+list.getPlaylistName());
+            // System.out.println("new Playlist "+list.getPlaylistName());
         });
         create.setPrefWidth(50);
         create.setPrefHeight(20);
@@ -556,7 +562,7 @@ public class LyricsAppController implements Initializable {
             button.setOnAction(event -> {
                 System.out.println(list.getList());
                 displayPlaylistContent(list);
-               // displayResults(list.getList().toString());
+                // displayResults(list.getList().toString());
             });
         }
     }
@@ -798,7 +804,7 @@ public class LyricsAppController implements Initializable {
         ft.play();
     }
 
-    public static String readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public String readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -822,10 +828,13 @@ public class LyricsAppController implements Initializable {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, lyricChecksum, artistUrl, songUrl);
-                if(!songList.contains(song)) {
+                if (goodSongCheckbox.isSelected() && song.getSongRank() >= 7 && !songList.contains(song)) {
                     songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
+                } else if (!goodSongCheckbox.isSelected() && !songList.contains(song)) {
+                    songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
                 //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
                 //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");
@@ -841,7 +850,7 @@ public class LyricsAppController implements Initializable {
     }
 
 
-    public static String readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public String readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -861,10 +870,13 @@ public class LyricsAppController implements Initializable {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, "", artistUrl, songUrl);
-                if(!songList.contains(song)) {
+                if (goodSongCheckbox.isSelected() && song.getSongRank() >= 7 && !songList.contains(song)) {
                     songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
+                } else if (!goodSongCheckbox.isSelected() && !songList.contains(song)) {
+                    songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
                 //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
                 //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");

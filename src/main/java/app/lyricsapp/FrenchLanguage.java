@@ -26,7 +26,7 @@ public class FrenchLanguage extends Language{
         this.returnToPreviousMenu = "Sinon, retourner aux menu précedent : Menu";
         this.newResearch = "1 - Voulez-vous faire une nouvelle recherche ?";
         this.choseByMusicNumber2 = "Choose the playlist you want to save in :\n";
-        this.exited = "Cette musique est déja présente dans les favoris";
+        this.exited = "Cette musique est déjà présente dans les favoris";
         this.delete = "1 - Suprimer des favoris";
         this.addToFavotis = "1 - Ajouter aux favoris";
         this.creatPlaylist = "1 - Créer une playlist";
