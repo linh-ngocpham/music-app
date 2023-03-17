@@ -10,6 +10,7 @@ public class ItalyLanguage extends Language{
         this.languageChoice = "3 - Cambio di lingua";
         this.exit = "4 - Uscire dal programma";
         this.banWordCLI = "tipo ? conoscere le parole proibite.";
+        this.banWordIs = "Parole di input vietate : ";
         this.choice = "La tua scelta : ";
         this.invaliedCommande = "Comando sconosciuto";
         this.reDo = "Riprova, per favore.";

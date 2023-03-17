@@ -10,6 +10,7 @@ public class EngLanguage extends  Language{
         this.languageChoice = "3 - Change language";
         this.exit = "4 - Quit the program";
         this.banWordCLI = "type ? to know the banned words.";
+        this.banWordIs = "Banned words is : ";
         this.choice= "Your choice : ";
         this.invaliedCommande = "Unknown command";
         this.reDo = "Try again, please.";

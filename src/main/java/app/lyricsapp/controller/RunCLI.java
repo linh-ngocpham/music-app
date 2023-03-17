@@ -215,7 +215,7 @@ public class  RunCLI {
             System.out.println(ANSI_BLUE + current_language.enterArtistName + ANSI_RESET);
             input1 = scanner.nextLine().toLowerCase();
             if(Objects.equals(input1,"?")){
-                System.out.println("Les mots bannis sont :");
+                System.out.println(current_language.banWordIs);
                 System.out.println(banWord.toString());
             }
             else{
@@ -240,7 +240,7 @@ public class  RunCLI {
             System.out.println(ANSI_BLUE + current_language.enterSongName + ANSI_RESET);
             input2 = scanner.nextLine().toLowerCase();
             if(Objects.equals(input2,"?")){
-                System.out.println("Les mots bannis sont :");
+                System.out.println(current_language.banWordIs);
                 System.out.println(banWord.toString());
             }
             else{
@@ -302,7 +302,7 @@ public class  RunCLI {
             System.out.println(ANSI_YELLOW + current_language.enterLyrics + ANSI_RESET);
             input = scanner.nextLine().toLowerCase();
             if(Objects.equals(input,"?")){
-                System.out.println("Les mots bannis sont :");
+                System.out.println(current_language.banWordIs);
                 System.out.println(banWord.toString());
             }
             else{

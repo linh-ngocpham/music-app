@@ -11,6 +11,7 @@ public class FrenchLanguage extends Language{
         this.languageChoice = "3 - Changement de langue";
         this.exit = "4 - Quitter le programme";
         this.banWordCLI = "tapez ? pour connaitre les mots bannis";
+        this.banWordIs = "Les mots bannis : ";
         this.choice = "Votre choix : ";
         this.invaliedCommande = "Commande inconnue";
         this.reDo = "Veuillez réessayer s'il vous plait.";

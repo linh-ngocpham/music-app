@@ -9,6 +9,7 @@ public abstract class Language {
     public String playlistMenu;
     public String exit ;
     public String banWordCLI;
+    public String banWordIs;
     public String choice;
     public String invaliedCommande ;
     public String reDo ;
