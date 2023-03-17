@@ -225,11 +225,10 @@ public class  RunCLI {
                 }
                 else if (banWord.containsAll(List.of(strInput1))){
                     System.out.println(ANSI_RED + current_language.errorArtistName + ANSI_RESET);
-                    System.out.println(ANSI_RED + "tapez ? pour connaitre les mots bannis" + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
                 }
                 else{
-                    // TODO : changer les message d'erreur
-                    System.out.println(ANSI_RED + "l'entré ne doit pas dépasser 75 caractères" + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.errorArtistNameTooLong + ANSI_RESET);
                 }
             }
 
@@ -238,7 +237,7 @@ public class  RunCLI {
         String input2 = null;
         boolean validInput2 = true;
         while (validInput2) {
-            System.out.println(ANSI_BLUE + current_language.enterArtistName + ANSI_RESET);
+            System.out.println(ANSI_BLUE + current_language.enterSongName + ANSI_RESET);
             input2 = scanner.nextLine().toLowerCase();
             if(Objects.equals(input2,"?")){
                 System.out.println("Les mots bannis sont :");
@@ -250,12 +249,11 @@ public class  RunCLI {
                     validInput2 = false;
                 }
                 else if(banWord.containsAll(List.of(strInput2))){
-                    // TODO : changer les message d'erreur
-                    System.out.println(ANSI_RED + current_language.errorArtistName + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.errorSongName + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
                 }
                 else{
-                    // TODO : changer les message d'erreur
-                    System.out.println(ANSI_RED + "La longueur de l'entré ne pas dépasser 125 caractères" + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.errorSongNameTooLong + ANSI_RESET);
                 }
             }
 
@@ -303,17 +301,24 @@ public class  RunCLI {
             System.out.println("------------------------------------------------------------------");
             System.out.println(ANSI_YELLOW + current_language.enterLyrics + ANSI_RESET);
             input = scanner.nextLine().toLowerCase();
-            String[] strInput = input.split(" ");
-            if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
-                validInput = false;
-            }
-            else if (banWord.containsAll(List.of(strInput))){
-                System.out.println(ANSI_RED + "l'entré de paroles ne contient que des mots bannis" + ANSI_RESET);
+            if(Objects.equals(input,"?")){
+                System.out.println("Les mots bannis sont :");
+                System.out.println(banWord.toString());
             }
             else{
-                // TODO : changer les message d'erreur
-                System.out.println(ANSI_RED + current_language.errorArtistName + ANSI_RESET);
+                String[] strInput = input.split(" ");
+                if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
+                    validInput = false;
+                }
+                else if (banWord.containsAll(List.of(strInput))){
+                    System.out.println(ANSI_RED + current_language.errorLyrics + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
+                }
+                else{
+                    System.out.println(ANSI_RED + current_language.errorLyricsTooLong + ANSI_RESET);
+                }
             }
+
         }
         String lyric = replaceAllAPI(input);
         boolean validInput2 = IsSearchSongPopular();

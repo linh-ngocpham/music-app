@@ -10,6 +10,7 @@ public class FrenchLanguage extends Language{
         this.playlistMenu = "2 - Playlist";
         this.languageChoice = "3 - Changement de langue";
         this.exit = "4 - Quitter le programme";
+        this.banWordCLI = "tapez ? pour connaitre les mots bannis";
         this.choice = "Votre choix : ";
         this.invaliedCommande = "Commande inconnue";
         this.reDo = "Veuillez réessayer s'il vous plait.";
@@ -22,11 +23,16 @@ public class FrenchLanguage extends Language{
         this.searchedByLyrics = "2 - Recherche par paroles ";
         this.searchedByArtist = "Vous avez choisi : Recherche avec le nom de l'artiste";
         this.searchedWithLyrics = "Vous avez choisi : Recherche avec les paroles";
-        this.enterArtistName = "Saisissez le nom de l'artiste :";
+        this.enterArtistName = "Saisissez le nom de l'artiste : ";
         this.errorArtistName = "Le nom de l'artiste ne contient que des mots interdits";
-        this.noFoundMusic = "Aucune musique n'a été trouvé \\n\" + \"Retour au menu précédent";
+        this.errorArtistNameTooLong = "La longueur de l'entré ne doit pas dépasser 75 caractères.";
+        this.enterSongName = "Saisissez le nom de la musique : ";
+        this.errorSongName = "Le nom de la musique ne contient que des mots interdits";
+        this.errorSongNameTooLong = "La longueur de l'entré ne pas dépasser 125 caractères.";
+        this.noFoundMusic = "Aucune musique n'a été trouvé \n\" + \"Retour au menu précédent";
         this.enterLyrics = "Saisissez un morceau de paroles de la musique :";
         this.errorLyrics = "Les paroles entrées ne contiennent que des mots interdits";
+        this.errorLyricsTooLong = "L'entré des paroles ne doit pas dépasser 250 caractères.";
         this.choseByMusicNumber = "Choisissez le numéro de la musique";
         this.isSearchMusicPopular = "Recherché Uniquement les Musique Populaires (Min 7/10) : [y/n]";
         this.returnToMain = "Sinon, retourner aux menu principal : Menu";
