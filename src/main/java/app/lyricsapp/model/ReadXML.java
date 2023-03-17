@@ -344,7 +344,7 @@ public class ReadXML {
             document.getDocumentElement().normalize();
             //System.out.println("Root Element :" + document.getDocumentElement().getNodeName());
             NodeList nList1 = document.getElementsByTagName("GetLyricResult");
-            System.out.println("----------------------------");
+            System.out.println("------------------------------------------------------------------");
             for (int temp1 = 0; temp1 < nList1.getLength(); temp1++) {
                 Node nNode1 = nList1.item(temp1);
                 if (nNode1.getNodeType() == Node.ELEMENT_NODE) {
@@ -352,7 +352,8 @@ public class ReadXML {
                     songs.setLyric(eElement1.getElementsByTagName("Lyric").item(0).getTextContent());
                 }
             }
-            System.out.println("Lyric : " + songs.getLyric());
+            System.out.println(songs.getArtist() + " - " + songs.getSongName() + "  " + songs.getSongRank());
+            System.out.println(songs.getLyric());
 
         } catch(IOException | ParserConfigurationException e) {
             System.out.println(e);
