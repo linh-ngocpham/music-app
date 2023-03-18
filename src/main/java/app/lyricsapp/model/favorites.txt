@@ -1,1 +1,28 @@
 Liked
+Song:
+TrackId:0
+LyricChecksum:
+LyricId:6
+SongUrl:http://www.chartlyrics.com/VBNJeYM940CdjnWS1Y15Cg/Smoke+on+the+Water.aspx
+ArtistUrl:http://www.chartlyrics.com/VBNJeYM940CdjnWS1Y15Cg.aspx
+Artist:Deep Purple
+SongName:Smoke on the Water
+SongRank:9
+Song:
+TrackId:0
+LyricChecksum:
+LyricId:229
+SongUrl:http://www.chartlyrics.com/nYFojr5xfU60HfHfgbAdPw/In+Da+Club.aspx
+ArtistUrl:http://www.chartlyrics.com/nYFojr5xfU60HfHfgbAdPw.aspx
+Artist:50 Cent
+SongName:In Da Club
+SongRank:9
+Song:
+TrackId:0
+LyricChecksum:
+LyricId:3775
+SongUrl:http://www.chartlyrics.com/nYFojr5xfU60HfHfgbAdPw/Candy+Shop+(feat.+Olivia).aspx
+ArtistUrl:http://www.chartlyrics.com/nYFojr5xfU60HfHfgbAdPw.aspx
+Artist:50 Cent
+SongName:Candy Shop (feat. Olivia)
+SongRank:9

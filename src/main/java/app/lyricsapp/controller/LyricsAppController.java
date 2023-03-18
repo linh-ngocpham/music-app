@@ -243,7 +243,7 @@ public class LyricsAppController implements Initializable {
             button.setAlignment(Pos.BASELINE_LEFT);
             button.setId("button"); // Set ID for the button
             button.setStyle("-fx-background-radius: 10;"); // Set rounded corners
-            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; ")); // Add this line to change the text color on hover
+            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: blue; -fx-border-radius: 9px; -fx-font-size: 20px; -fx-text-fill: darkblue;")); // Add this line to change the text color on hover
             button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ")); // Add this line to change the text color on hover
             button.setPrefHeight(90);
 
@@ -399,26 +399,7 @@ public class LyricsAppController implements Initializable {
         }
         vbox.setSpacing(10);
         // Find the artist with the highest count
-        String favArtist = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                favArtist = entry.getKey();
-                maxCount = entry.getValue();
-            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
-                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
-                continue;
-            } else if (entry.getValue() == maxCount) {
-                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
-                favArtist = "";
-            }
-        }
-        //
-        if (!favArtist.isEmpty()) {
-            labelFavArtist.setText("Artiste Favoris: " + favArtist);
-        } else {
-            labelFavArtist.setText("");
-        }
+        findFavoriteArtist();
     }
 
 
@@ -511,25 +492,7 @@ public class LyricsAppController implements Initializable {
         }
         vbox.setSpacing(10);
         // Find the artist with the highest count
-        String favArtist = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                favArtist = entry.getKey();
-                maxCount = entry.getValue();
-            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
-                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
-                continue;
-            } else if (entry.getValue() == maxCount) {
-                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
-                favArtist = "";
-            }
-        }
-        if (!favArtist.isEmpty()) {
-            labelFavArtist.setText("Artiste Favoris: " + favArtist);
-        } else {
-            labelFavArtist.setText("");
-        }
+        findFavoriteArtist();
     }
 
     private void displayPlaylist(){
@@ -596,7 +559,27 @@ public class LyricsAppController implements Initializable {
             });
         }
     }
-
+    public void findFavoriteArtist() {
+        String favArtist = "";
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                favArtist = entry.getKey();
+                maxCount = entry.getValue();
+            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
+                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
+                continue;
+            } else if (entry.getValue() == maxCount) {
+                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
+                favArtist = "";
+            }
+        }
+        if (!favArtist.isEmpty()) {
+            labelFavArtist.setText("Artiste Favoris: " + favArtist);
+        } else {
+            labelFavArtist.setText("");
+        }
+    }
     public void removeFromFavorites(Song song) {
         favoriteList.remove(song);
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -846,6 +829,7 @@ public class LyricsAppController implements Initializable {
             titleSearchField.setPromptText("Entrez : le titre de la musique");
             artistSearchField.setPromptText("Entrez : un nom d'artiste");
             lyricsSearchField.setPromptText("Entrez : des paroles");
+            searchChoiceBox.setItems(FXCollections.observableArrayList());
             searchChoiceBox.setValue("Titre/Artiste");
             searchChoiceBox.getItems().addAll(searchSelection);
         } else if (mode.equals("Language : ENG")) {
@@ -873,6 +857,7 @@ public class LyricsAppController implements Initializable {
             titleSearchField.setPromptText("Enter : the music's title");
             artistSearchField.setPromptText("Enter : an artist name");
             lyricsSearchField.setPromptText("Enter : lyrics from a song");
+            searchChoiceBox.setItems(FXCollections.observableArrayList());
             searchChoiceBox.setValue("Title/Artist");
             searchChoiceBox.getItems().addAll(searchSelectionEng);
         }
@@ -895,7 +880,7 @@ public class LyricsAppController implements Initializable {
     */
     public void fadeInOutText(MouseEvent event) {
         Button button = (Button) event.getSource();
-        FadeTransition ft = new FadeTransition(Duration.millis(300), button);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), button);
         ft.setCycleCount(1);
         if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
             ft.setFromValue(0.5);
