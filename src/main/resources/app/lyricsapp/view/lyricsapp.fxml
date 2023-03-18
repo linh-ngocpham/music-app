@@ -31,12 +31,12 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </ChoiceBox>
-                <TextField editable="false" prefHeight="60.0" prefWidth="216.0" scaleZ="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent;" text="Langage : FR" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="22.0">
+                <TextField editable="false" prefHeight="60.0" prefWidth="216.0" scaleZ="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent; -fx-text-fill: #AC4AD5;" text="Langage : FR" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="22.0">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </TextField>
-                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Vos Playlists">
+                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-text-fill: #AC4AD5; -fx-font-weight: bold; -fx-font-size: 20px;" text="Vos Playlists">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -45,7 +45,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Vos Favoris">
+            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: #AC4AD5;" text="Vos Favoris">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
