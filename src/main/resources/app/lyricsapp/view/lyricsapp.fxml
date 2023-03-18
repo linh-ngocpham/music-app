@@ -4,26 +4,30 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 
 <AnchorPane fx:id="rootElement" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1100.0" style="-fx-background-color: #373737;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.lyricsapp.controller.LyricsAppController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
     <children>
-        <TextField fx:id="lyricsSearchField" layoutX="283.0" layoutY="14.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : des paroles" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField fx:id="lyricsSearchField" layoutX="283.0" layoutY="14.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
         <AnchorPane prefHeight="477.0" prefWidth="260.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ChoiceBox fx:id="languageChoiceBox" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="22.0">
+                <ChoiceBox fx:id="languageChoiceBox" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-text-fill: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="22.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -31,12 +35,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </ChoiceBox>
-                <TextField editable="false" prefHeight="60.0" prefWidth="216.0" scaleZ="0.0" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: transparent; -fx-text-fill: #AC4AD5;" text="Langage : FR" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="22.0">
-                    <cursor>
-                        <Cursor fx:constant="HAND" />
-                    </cursor>
-                </TextField>
-                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-text-fill: #AC4AD5; -fx-font-weight: bold; -fx-font-size: 20px;" text="Vos Playlists">
+                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
@@ -45,18 +44,20 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill: #AC4AD5;" text="Vos Favoris">
+            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
+            <Label fx:id="label1" layoutX="23.0" layoutY="361.0" prefHeight="60.0" prefWidth="226.0" style="-fx-text-fill: white;" />
+            <Label fx:id="languageSelectionLabel" layoutX="22.0" layoutY="573.0" prefHeight="60.0" prefWidth="191.0" style="-fx-text-fill: gray; -fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: black;" />
             </children>
       </AnchorPane>
-        <TextField fx:id="artistSearchField" layoutX="283.0" layoutY="58.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : un nom d'artiste" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField fx:id="artistSearchField" layoutX="283.0" layoutY="58.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
         </TextField>
-        <TextField id="titleSearchField" fx:id="titleSearchField" layoutX="283.0" layoutY="14.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" promptText="Entrez : le titre de la musique" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
+        <TextField id="titleSearchField" fx:id="titleSearchField" layoutX="283.0" layoutY="14.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
             <cursor>
                 <Cursor fx:constant="TEXT" />
             </cursor>
@@ -74,13 +75,31 @@
       </ScrollPane>
         <AnchorPane id="presentationTile" fx:id="presentationTile" layoutX="286.0" layoutY="104.0" prefHeight="579.0" prefWidth="448.0" style="-fx-background-color: gray; -fx-border-radius: 25px; -fx-background-radius: 25px;" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="286.0" AnchorPane.rightAnchor="135.0" AnchorPane.topAnchor="104.0">
             <children>
-                <Label contentDisplay="CENTER" layoutX="13.0" layoutY="64.0" prefHeight="420.0" prefWidth="134.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 20; -fx-line-spacing: 8;" text="LyricsApp est une application de recherche de paroles qui permet aux utilisateurs de trouver facilement les paroles de leurs chansons préférées. Grâce à une base de données exhaustive, les utilisateurs peuvent rechercher les paroles d'une chanson en entrant simplement le titre de la chanson ou le nom de l'artiste. LyricsApp est l'outil parfait pour les amateurs de musique qui souhaitent découvrir les paroles de leurs chansons préférées." textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="64.0" />
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="54.0" prefWidth="424.0" scaleZ="15.0" style="-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;" text="Présentation de l'application" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0" />
+                <Label fx:id="presentationLabel" contentDisplay="CENTER" layoutX="13.0" layoutY="64.0" prefHeight="420.0" prefWidth="134.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 20; -fx-line-spacing: 8;" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="64.0" />
+                <Label fx:id="titlePresentationLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="13.0" layoutY="14.0" prefHeight="54.0" prefWidth="424.0" scaleZ="15.0" style="-fx-font-size: 30; -fx-font-weight: bold; -fx-text-fill: white;" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="14.0" />
             </children>
         </AnchorPane>
-      <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="298.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Favoris" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="330.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" textAlignment="CENTER" wrapText="true" />
       <Label fx:id="labelFavArtist" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="767.0" layoutY="52.0" style="-fx-font-size: 20px; -fx-text-fill: white;" />
-      <Label fx:id="playlistLabel" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="298.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" text="Vos Playlists" />
+      <Label fx:id="playlistLabel" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="330.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" />
       <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="59.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 30; -fx-text-fill: white; -fx-line-spacing: 8;" />
+      <CheckBox fx:id="goodSongCheckbox" layoutX="1000.0" layoutY="67.0" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" scaleZ="1.5" text="&gt;7/10">
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </CheckBox>
     </children>
 </AnchorPane>

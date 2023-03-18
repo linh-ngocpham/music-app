@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -28,6 +29,8 @@ import static app.lyricsapp.controller.RunCLI.playlists;
 
 
 public class LyricsApp extends Application {
+    public CheckBox goodSongCheckbox;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/app/lyricsapp/view/lyricsapp.fxml"));
@@ -37,16 +40,13 @@ public class LyricsApp extends Application {
         primaryStage.setResizable(false);
         Image Image = new Image(new FileInputStream("src/main/java/app/lyricsapp/logo.png"));
         primaryStage.getIcons().add(Image);
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                System.out.println("Window is closing");
-                try {
-                    favoriteList.saveAll(app.lyricsapp.controller.RunCLI.playlists);
-                    favoriteList.saveFavorites(favoriteList);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+        primaryStage.setOnCloseRequest(event -> {
+            System.out.println("Window is closing");
+            try {
+                favoriteList.saveAll(RunCLI.playlists);
+                favoriteList.saveFavorites(favoriteList);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         });
         primaryStage.show();

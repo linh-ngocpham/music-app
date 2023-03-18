@@ -3,7 +3,12 @@ package app.lyricsapp.controller;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import javafx.animation.FadeTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -40,13 +45,15 @@ import static app.lyricsapp.model.ReadXML.*;
 
 public class LyricsAppController implements Initializable {
 
-    @FXML private Button favoritesButton, lyricsappButton, playlistButton, displayFavoritesButton, backMenu;
+    @FXML private Button playlistButton, displayFavoritesButton, backMenu;
     @FXML private ChoiceBox<String> searchChoiceBox, languageChoiceBox;
     @FXML private TextField titleSearchField, artistSearchField, lyricsSearchField;
     @FXML private AnchorPane presentationTile, infoAnchorPane;
     @FXML private ScrollPane mainScrollPane;
     @FXML private Label labelTest, favoritesLabel, labelFavArtist, playlistLabel, titleArtistLabel;
     @FXML private VBox vbox;
+    @FXML private CheckBox goodSongCheckbox;
+    @FXML private Label label1, presentationLabel, titlePresentationLabel, languageSelectionLabel;
     private String[] searchSelection = {"Paroles", "Titre/Artiste"};
     private String[] searchSelectionEng = {"Lyrics", "Title/Artist"};
     private String[] languageSelection = {"Langage : FR", "Language : ENG"};
@@ -56,6 +63,7 @@ public class LyricsAppController implements Initializable {
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /*
         String fxmlName = location.toString();
         if (fxmlName.contains("/lyricsappeng.fxml") || fxmlName.contains("/favoriseng.fxml") || fxmlName.contains("/playlisteng.fxml")) {
             // set values for English search
@@ -66,18 +74,25 @@ public class LyricsAppController implements Initializable {
             searchChoiceBox.setValue("Titre/Artiste");
             searchChoiceBox.getItems().addAll(searchSelection);
         }
+        */
 
-        if (fxmlName.contains("/favoris.fxml") || fxmlName.contains("/playlist.fxml") || fxmlName.contains("/favoriseng.fxml") || fxmlName.contains("/playlisteng.fxml")) {
-            searchChoiceBox.setVisible(false);
-            lyricsSearchField.setVisible(false);
-            artistSearchField.setVisible(false);
-            titleSearchField.setVisible(false);
-        }
+        //modeChoiceBox.getItems().addAll(modeSelection);
+        //modeChoiceBox.setValue("Mode 1");
+
+        //modeChoiceBox.setOnAction(event -> onModeSelected());
+
+        languageSelectionLabel.setMouseTransparent(true);
+        languageChoiceBox.setValue("Langage : FR");
+        languageChoiceBox.getItems().addAll(languageSelection);
+        onModeSelected();
+
+        languageChoiceBox.setOnAction(event -> {
+            onModeSelected();
+        });
 
         searchChoiceBox.setOnAction(this::searchTitleArtist);
         searchChoiceBox.setOnAction(this::searchLyrics);
-        languageChoiceBox.getItems().addAll(languageSelection);
-        switchLanguage();
+        //switchLanguage();
         backMenu.setVisible(false);
         favoritesLabel.setVisible(false);
         playlistLabel.setVisible(false);
@@ -98,6 +113,7 @@ public class LyricsAppController implements Initializable {
             favoritesLabel.setVisible(true);
             playlistButton.setVisible(true);
             titleArtistLabel.setVisible(false);
+            goodSongCheckbox.setVisible(false);
             displayFavoriteList();
         });
 
@@ -119,6 +135,7 @@ public class LyricsAppController implements Initializable {
             playlistButton.setVisible(true);
             titleArtistLabel.setLayoutX(310);
             titleArtistLabel.setLayoutY(20);
+            goodSongCheckbox.setVisible(true);
         });
 
         playlistButton.setOnAction(event -> {
@@ -138,6 +155,7 @@ public class LyricsAppController implements Initializable {
             backMenu.setLayoutX(35.0);
             backMenu.setLayoutY(120.0);
             backMenu.setVisible(true);
+            goodSongCheckbox.setVisible(false);
             displayPlaylist();
         });
 
@@ -229,7 +247,7 @@ public class LyricsAppController implements Initializable {
             button.setAlignment(Pos.BASELINE_LEFT);
             button.setId("button"); // Set ID for the button
             button.setStyle("-fx-background-radius: 10;"); // Set rounded corners
-            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; ")); // Add this line to change the text color on hover
+            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: blue; -fx-border-radius: 9px; -fx-font-size: 20px; -fx-text-fill: darkblue;")); // Add this line to change the text color on hover
             button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ")); // Add this line to change the text color on hover
             button.setPrefHeight(90);
 
@@ -306,6 +324,7 @@ public class LyricsAppController implements Initializable {
                 titleSearchField.setVisible(false);
                 artistSearchField.setVisible(false);
                 searchChoiceBox.setVisible(false);
+                goodSongCheckbox.setVisible(false);
                 vbox.getChildren().clear();
                 vbox.setAlignment(Pos.TOP_RIGHT); // Set alignment of VBox to top right
                 Button backButton = new Button();
@@ -322,6 +341,7 @@ public class LyricsAppController implements Initializable {
                     searchChoiceBox.setVisible(true);
                     searchChoiceBox.setValue("Titre/Artiste");
                     titleArtistLabel.setVisible(false);
+                    goodSongCheckbox.setVisible(true);
                     displayResults(result);
                     event.consume();
                 });
@@ -329,16 +349,19 @@ public class LyricsAppController implements Initializable {
                 backButton.setId("backButton");
                 VBox.setMargin(backButton, new Insets(-20, 0, 0, 0)); // Set top margin of 10 pixels
             });
-
             vbox.getChildren().add(button);
-           // vbox.getChildren().addAll(imageView, button);
         }
         vbox.setSpacing(10); // Set spacing between buttons
     }
 
     private void displayFavoriteList() {
+        String mode = languageChoiceBox.getValue();
         if (favoriteList.isEmpty()) {
-            labelTest.setText("Vous n'avez aucune musique favorite");
+            if (mode.equals("Langage : FR")) {
+                labelTest.setText("Vous n'avez aucune musique favorite");
+            } else if (mode.equals("Language : ENG")) {
+                labelTest.setText("You don't have any music in your favorites");
+            }
             vbox.getChildren().clear();
             return; // exit the method if there are no favorite songs
         }
@@ -459,30 +482,12 @@ public class LyricsAppController implements Initializable {
         }
         vbox.setSpacing(10);
         // Find the artist with the highest count
-        String favArtist = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                favArtist = entry.getKey();
-                maxCount = entry.getValue();
-            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
-                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
-                continue;
-            } else if (entry.getValue() == maxCount) {
-                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
-                favArtist = "";
-            }
-        }
-        //
-        if (!favArtist.isEmpty()) {
-            labelFavArtist.setText("Artiste Favoris: " + favArtist);
-        } else {
-            labelFavArtist.setText("");
-        }
+        findFavoriteArtist();
     }
 
 
     public void displayPlaylistContent(FavoriteList playlist){
+        String mode = languageChoiceBox.getValue();
         vbox.getChildren().clear();
         Button back = new Button();
         Image imgbk = new Image("file:src/main/java/app/lyricsapp/img/back.png");
@@ -526,18 +531,22 @@ public class LyricsAppController implements Initializable {
 
         //VBox.setMargin(hBox, new Insets(15, 0, 0, 0));
         if (playlist.isEmpty()) {
+            if (mode.equals("Langage : FR")) {
+                labelTest.setText("Vous n'avez aucune musique dans cette playlist");
+            } else if (mode.equals("Language : ENG")) {
+                labelTest.setText("You don't have any music in this playlist");
+            }
             espace.setText("Vous n'avez aucune musique dans cette playlist");
             header.setSpacing(400);
             HBox.setMargin(back, new Insets(-15, 0, 0, 0));
            // vbox.getChildren().clear();
-
             return;
         }
-        labelTest.setText("                                                       ");
-        HBox.setMargin(back, new Insets(-15, 0, 0, 200));
+        labelTest.setText("");
 
 
-        //vbox.getChildren().clear();
+       // vbox.getChildren().clear();
+      //  vbox.getChildren().addAll(name,renommer);
         Map<String, Integer> artistCounts = new HashMap<>();
         for (Song song : playlist.getList()) {
             if (playlist.contains(song)) {
@@ -552,6 +561,7 @@ public class LyricsAppController implements Initializable {
                 button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
                 button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
                 button.setPrefHeight(90);
+                //rename
 
                 Button removeButton = new Button();
                 removeButton.setOnAction(e -> {
@@ -627,34 +637,18 @@ public class LyricsAppController implements Initializable {
                        displayPlaylistContent(playlist);
                        titleArtistLabel.setVisible(false);
                     });
+
                 });
                 vbox.getChildren().add(button);
             }
         }
         vbox.setSpacing(10);
         // Find the artist with the highest count
-        String favArtist = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                favArtist = entry.getKey();
-                maxCount = entry.getValue();
-            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
-                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
-                continue;
-            } else if (entry.getValue() == maxCount) {
-                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
-                favArtist = "";
-            }
-        }
-        if (!favArtist.isEmpty()) {
-            labelFavArtist.setText("Artiste Favoris: " + favArtist);
-        } else {
-            labelFavArtist.setText("");
-        }
+        findFavoriteArtist();
     }
 
     private void displayPlaylist(){
+        String mode = languageChoiceBox.getValue();
         vbox.getChildren().clear();
         // labelTest.setText("Vous n'avez aucune playlist, voulez vous créer une ?");
         Button create = new Button();
@@ -689,6 +683,11 @@ public class LyricsAppController implements Initializable {
         HBox hBox = new HBox();
         create.setStyle("-fx-text-fill: gray; -fx-background-radius: 4; -fx-font-size : 9; -fx-border-color: transparent; ");
         Label labelPlay = new Label("Vous n'avez aucune playlist !");
+        if (mode.equals("Langage : FR")) {
+            labelPlay.setText("Vous n'avez aucune playlist");
+        } else if (mode.equals("Language : ENG")) {
+            labelPlay.setText("You don't have any playlist");
+        }
         hBox.getChildren().addAll(labelPlay, stackPane);
         HBox.setMargin(labelPlay, new Insets(5, 0, 0, 10));
         HBox.setMargin(stackPane, new Insets(0, 0, 10, 200));
@@ -762,7 +761,27 @@ public class LyricsAppController implements Initializable {
             vbox.getChildren().add(button);
         }
     }
-
+    public void findFavoriteArtist() {
+        String favArtist = "";
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : artistCounts.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                favArtist = entry.getKey();
+                maxCount = entry.getValue();
+            } else if (entry.getValue() == maxCount && !favArtist.isEmpty() && entry.getKey().equals(favArtist)) {
+                // If the current artist has the same count as the current maxCount and is the same as the favArtist, skip it
+                continue;
+            } else if (entry.getValue() == maxCount) {
+                // If the current artist has the same count as the current maxCount but is not the same as the favArtist, don't display the favArtist
+                favArtist = "";
+            }
+        }
+        if (!favArtist.isEmpty()) {
+            labelFavArtist.setText("Artiste Favoris: " + favArtist);
+        } else {
+            labelFavArtist.setText("");
+        }
+    }
     public void removeFromFavorites(Song song) {
         favoriteList.remove(song);
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -884,7 +903,7 @@ public class LyricsAppController implements Initializable {
         }
         return null;
     }
-
+    /*
     public boolean switchLanguage() {
         languageChoiceBox.setOnAction(event -> {
             String language = languageChoiceBox.getValue();
@@ -904,7 +923,7 @@ public class LyricsAppController implements Initializable {
         });
         return true;
     }
-
+    */
     private void clearSearchFields() {
         titleSearchField.setText("");
         artistSearchField.setText("");
@@ -940,7 +959,7 @@ public class LyricsAppController implements Initializable {
         labelTest.setText("");
         vbox.getChildren().clear();
     }
-
+    /*
     public void switchToSceneFavoritesEng() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/lyricsapp/view/favoriseng.fxml"));
@@ -982,10 +1001,88 @@ public class LyricsAppController implements Initializable {
             e.printStackTrace();
         }
     }
+    */
+    @FXML
+    private void onModeSelected() {
+        String mode = languageChoiceBox.getValue();
 
+        if (mode.equals("Langage : FR")) {
+            vbox.getChildren().clear();
+            presentationTile.setVisible(true);
+            displayFavoritesButton.setVisible(true);
+            playlistButton.setVisible(true);
+            backMenu.setVisible(false);
+            searchChoiceBox.setVisible(true);
+            titleSearchField.setVisible(true);
+            artistSearchField.setVisible(true);
+            lyricsSearchField.setVisible(true);
+            playlistLabel.setVisible(false);
+            favoritesLabel.setVisible(false);
+            goodSongCheckbox.setVisible(true);
+            label1.setText("Texte pour le mode 1");
+            presentationLabel.setText("LyricsApp est une application de recherche de paroles qui permet aux utilisateurs de trouver facilement les paroles de leurs chansons préférées. Grâce à une base de données exhaustive, les utilisateurs peuvent rechercher les paroles d'une chanson en entrant simplement le titre de la chanson ou le nom de l'artiste. LyricsApp est l'outil parfait pour les amateurs de musique qui souhaitent découvrir les paroles de leurs chansons préférées.");
+            titlePresentationLabel.setText("Présentation de l'application");
+            favoritesLabel.setText("Vos Favoris");
+            displayFavoritesButton.setText("Vos Favoris");
+            displayFavoritesButton.setLayoutX(60);
+            playlistLabel.setText("Vos Playlists");
+            playlistButton.setText("Vos Playlists");
+            languageSelectionLabel.setText("Langage : FR");
+            titleSearchField.setPromptText("Entrez : le titre de la musique");
+            artistSearchField.setPromptText("Entrez : un nom d'artiste");
+            lyricsSearchField.setPromptText("Entrez : des paroles");
+            searchChoiceBox.setItems(FXCollections.observableArrayList());
+            searchChoiceBox.setValue("Titre/Artiste");
+            searchChoiceBox.getItems().addAll(searchSelection);
+        } else if (mode.equals("Language : ENG")) {
+            vbox.getChildren().clear();
+            presentationTile.setVisible(true);
+            displayFavoritesButton.setVisible(true);
+            playlistButton.setVisible(true);
+            backMenu.setVisible(false);
+            searchChoiceBox.setVisible(true);
+            titleSearchField.setVisible(true);
+            artistSearchField.setVisible(true);
+            lyricsSearchField.setVisible(true);
+            playlistLabel.setVisible(false);
+            favoritesLabel.setVisible(false);
+            goodSongCheckbox.setVisible(true);
+            label1.setText("Texte pour le mode 2");
+            presentationLabel.setText("LyricsApp is a lyric search application that allows users to easily find the lyrics of their favorite songs. With a comprehensive database, users can search for lyrics to a song by simply entering the song title or the artist's name.  LyricsApp is the perfect tool for music lovers who want to discover the lyrics of their favorite songs.");
+            titlePresentationLabel.setText("Application overview");
+            favoritesLabel.setText("Your Favorites");
+            displayFavoritesButton.setText("Your Favorites");
+            displayFavoritesButton.setLayoutX(47);
+            playlistLabel.setText("Your Playlists");
+            playlistButton.setText("Your Playlists");
+            languageSelectionLabel.setText("Language : ENG");
+            titleSearchField.setPromptText("Enter : the music's title");
+            artistSearchField.setPromptText("Enter : an artist name");
+            lyricsSearchField.setPromptText("Enter : lyrics from a song");
+            searchChoiceBox.setItems(FXCollections.observableArrayList());
+            searchChoiceBox.setValue("Title/Artist");
+            searchChoiceBox.getItems().addAll(searchSelectionEng);
+        }
+    }
+    /*
+    public void clearAllText(){
+        label1.setText("");
+        presentationLabel.setText("");
+        titlePresentationLabel.setText("");
+        favoritesLabel.setText("");
+        displayFavoritesButton.setText("");
+        playlistLabel.setText("");
+        playlistButton.setText("");
+        languageSelectionLabel.setText("");
+        titleSearchField.setPromptText("");
+        artistSearchField.setPromptText("");
+        lyricsSearchField.setPromptText("");
+        searchChoiceBox.setValue("");
+    }
+    */
     public void fadeInOutText(MouseEvent event) {
         Button button = (Button) event.getSource();
-        FadeTransition ft = new FadeTransition(Duration.millis(300), button);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), button);
         ft.setCycleCount(1);
         if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
             ft.setFromValue(0.5);
@@ -1000,7 +1097,7 @@ public class LyricsAppController implements Initializable {
         ft.play();
     }
 
-    public static String readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public String readXMLSong(String artistName, String songName, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -1024,10 +1121,13 @@ public class LyricsAppController implements Initializable {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, lyricChecksum, artistUrl, songUrl);
-                if(!songList.contains(song)) {
+                if (goodSongCheckbox.isSelected() && song.getSongRank() >= 7 && !songList.contains(song)) {
                     songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
+                } else if (!goodSongCheckbox.isSelected() && !songList.contains(song)) {
+                    songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
                 //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
                 //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");
@@ -1043,7 +1143,7 @@ public class LyricsAppController implements Initializable {
     }
 
 
-    public static String readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
+    public String readXMLSongLyric(String lyric, List<Song> songList) throws ParserConfigurationException, IOException, SAXException {
         songList.clear();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -1063,10 +1163,13 @@ public class LyricsAppController implements Initializable {
                 String artist = eElement.getElementsByTagName("Artist").item(0).getTextContent();
                 int songRank = Integer.parseInt(eElement.getElementsByTagName("SongRank").item(0).getTextContent());
                 Song song = new Song(trackId, lyricId, title, songRank, artist, "", artistUrl, songUrl);
-                if(!songList.contains(song)) {
+                if (goodSongCheckbox.isSelected() && song.getSongRank() >= 7 && !songList.contains(song)) {
                     songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
+                } else if (!goodSongCheckbox.isSelected() && !songList.contains(song)) {
+                    songList.add(song);
+                    stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
                 //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
                 //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");
