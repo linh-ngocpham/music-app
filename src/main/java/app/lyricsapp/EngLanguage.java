@@ -9,6 +9,8 @@ public class EngLanguage extends  Language{
         this.playlistMenu = "2 - Playlist";
         this.languageChoice = "3 - Change language";
         this.exit = "4 - Quit the program";
+        this.banWordCLI = "type ? to know the banned words.";
+        this.banWordIs = "Banned words is : ";
         this.choice= "Your choice : ";
         this.invaliedCommande = "Unknown command";
         this.reDo = "Try again, please.";
@@ -23,9 +25,14 @@ public class EngLanguage extends  Language{
         this.searchedwithLyrics = "You have chosen: Search with lyrics";
         this.enterArtistName = "Enter the name of the artist:";
         this.errorArtistName = "The name of the artist only contains forbidden words";
-        this.noFoundMusic= "No music was found \\n\" + \"Return to previous menu";
+        this.errorArtistNameTooLong = "The length of the entry must not exceed 75 characters";
+        this.enterSongName = "Enter the name of the song : ";
+        this.errorSongName = "The name of the song only contains forbidden words";
+        this.errorSongNameTooLong = "The length of the entry must not exceed 125 characters.";
+        this.noFoundMusic= "No music was found \n\" + \"Return to previous menu";
         this.enterLyrics= "Enter a piece of lyrics from the music:";
         this.errorLyrics = "The lyrics entered only contain forbidden words";
+        this.errorLyricsTooLong = "The lyrics entry must not exceed 250 characters.";
         this.choseByMusicNumber = "Choose the music number";
         this.isSearchMusicPopular = "Searched Only Popular Music (Min 7/10) : [y/n]";
         this.returnToMain = "Otherwise, return to the main menu: Menu";

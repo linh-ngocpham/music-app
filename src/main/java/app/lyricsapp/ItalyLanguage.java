@@ -9,6 +9,8 @@ public class ItalyLanguage extends Language{
         this.playlistMenu = "2 - Playlist";
         this.languageChoice = "3 - Cambio di lingua";
         this.exit = "4 - Uscire dal programma";
+        this.banWordCLI = "tipo ? conoscere le parole proibite.";
+        this.banWordIs = "Parole di input vietate : ";
         this.choice = "La tua scelta : ";
         this.invaliedCommande = "Comando sconosciuto";
         this.reDo = "Riprova, per favore.";
@@ -21,11 +23,16 @@ public class ItalyLanguage extends Language{
         this.searchedByLyrics = "2 - Cerca per testo ";
         this.searchedByArtist = "Hai scelto: Cerca per nome dell'artista";
         this.searchedWithLyrics = "Hai scelto: Cerca con testo";
-        this.enterArtistName = "Inserisci il nome dell'artista:";
+        this.enterArtistName = "Inserisci il nome dell'artista: ";
         this.errorArtistName = "Il nome dell'artista contiene solo parole proibite";
-        this.noFoundMusic = "Nessuna musica trovata \\n\" + \"Torna al menu precedente";
+        this.errorArtistNameTooLong = "La lunghezza della voce non deve superare i 75 caratteri.";
+        this.enterSongName = "Inserisci il nome della musica : ";
+        this.errorSongName = "Il nome della musica contiene solo parole proibite.";
+        this.errorSongNameTooLong = "La lunghezza della voce non deve superare i 125 caratteri";
+        this.noFoundMusic = "Nessuna musica trovata \n\" + \"Torna al menu precedente";
         this.enterLyrics = "Inserisci un pezzo di testo dalla musica:";
         this.errorLyrics = "I testi inseriti contengono solo parole proibite";
+        this.errorLyricsTooLong = "La voce del testo non deve superare i 250 caratteri.";
         this.choseByMusicNumber = "Scegli il numero della musica";
         this.isSearchMusicPopular = "Cercasi solo musica popolare (min 7/10): [y/n]";
         this.returnToMain = "Altrimenti, torna al menu principale: Menu";

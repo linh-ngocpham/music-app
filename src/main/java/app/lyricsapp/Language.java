@@ -8,6 +8,8 @@ public abstract class Language {
     public String favoris ;
     public String playlistMenu;
     public String exit ;
+    public String banWordCLI;
+    public String banWordIs;
     public String choice;
     public String invaliedCommande ;
     public String reDo ;
@@ -21,9 +23,14 @@ public abstract class Language {
     public String searchedWithLyrics ;
     public String enterArtistName ;
     public String errorArtistName ;
+    public String errorArtistNameTooLong;
+    public String enterSongName;
+    public String errorSongName;
+    public String errorSongNameTooLong;
     public String noFoundMusic;
     public String enterLyrics;
     public String errorLyrics ;
+    public String errorLyricsTooLong;
     public String choseByMusicNumber ;
     public String isSearchMusicPopular;
     public String returnToMain ;

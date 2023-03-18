@@ -24,6 +24,12 @@ public class  RunCLI {
         return playlists;
     }
     static List<Song> songList = new ArrayList<>();
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN ="\u001B[32m";
+    public static final String ANSI_YELLOW ="\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
     private static ArrayList<String> banWord = new ArrayList<String>();
 
     private static Language current_language = null;
@@ -88,13 +94,13 @@ public class  RunCLI {
         String input;
 
         // Language Menu
-        System.out.println("----------------------------------------");
+        System.out.println(ANSI_RED +"----------------------------------------");
         System.out.println("--           Language choice:         --");
-        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------"+ANSI_RESET);
         while (validInput) {
-            System.out.println("1. French");
+            System.out.println(ANSI_RED +"1. French");
             System.out.println("2. English");
-            System.out.println("3. Italy");
+            System.out.println("3. Italy"+ANSI_RESET);
             input = scanner.nextLine();
             if (Objects.equals(input, "1") || Objects.equals(input, "2")|| Objects.equals(input, "3")) {
                 validInput = false;
@@ -119,15 +125,15 @@ public class  RunCLI {
     public static void runCLI() throws ParserConfigurationException, IOException, SAXException {
         Scanner scanner = new Scanner(System.in);
         // Main menu
-        System.out.println("----------------------------------------");
+        System.out.println(ANSI_GREEN +"----------------------------------------");
         System.out.println(current_language.mainMenu);
-        System.out.println("----------------------------------------");
+        System.out.println("----------------------------------------"+ANSI_RESET);
         String input = null;
         boolean validInput = true;
         while(validInput){
-            System.out.println(current_language.findByLyric);
-            System.out.println(current_language.playlistMenu);
-            System.out.println(current_language.languageChoice);
+            System.out.println(ANSI_BLUE + current_language.findByLyric + ANSI_RESET);
+            System.out.println(ANSI_YELLOW + current_language.playlistMenu + ANSI_RESET);
+            System.out.println(ANSI_RED + current_language.languageChoice + ANSI_RESET);
             System.out.println(current_language.exit);
             System.out.print(current_language.choice);
             input = scanner.nextLine();
@@ -167,9 +173,9 @@ public class  RunCLI {
         while(validInput){
             // Affichage Menu des recherches
             System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.searchedByArtistMusic);
+            System.out.println(ANSI_BLUE + current_language.searchedByArtistMusic);
             System.out.println(current_language.searchedByLyrics);
-            System.out.println(current_language.returnToMain);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             System.out.println("------------------------------------------------------------------");
             System.out.print(current_language.choice);
 
@@ -206,35 +212,58 @@ public class  RunCLI {
         String input1 = null;
         boolean validInput1 = true;
         while (validInput1) {
-            System.out.println(current_language.enterArtistName);
+            System.out.println(ANSI_BLUE + current_language.enterArtistName + ANSI_RESET);
             input1 = scanner.nextLine().toLowerCase();
-            String[] strInput1 = input1.split(" ");
-            if(!banWord.containsAll(List.of(strInput1)) && (input1.length() <= 75)){
-                validInput1 = false;
+            if(Objects.equals(input1,"?")){
+                System.out.println(current_language.banWordIs);
+                System.out.println(banWord.toString());
             }
             else{
-                System.out.println(current_language.errorArtistName);
+                String[] strInput1 = input1.split(" ");
+                if(!banWord.containsAll(List.of(strInput1)) && (input1.length() <= 75)){
+                    validInput1 = false;
+                }
+                else if (banWord.containsAll(List.of(strInput1))){
+                    System.out.println(ANSI_RED + current_language.errorArtistName + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
+                }
+                else{
+                    System.out.println(ANSI_RED + current_language.errorArtistNameTooLong + ANSI_RESET);
+                }
             }
+
         }
         String artistName = replaceAllAPI(input1);
         String input2 = null;
         boolean validInput2 = true;
         while (validInput2) {
-            System.out.println(current_language.enterArtistName);
+            System.out.println(ANSI_BLUE + current_language.enterSongName + ANSI_RESET);
             input2 = scanner.nextLine().toLowerCase();
-            String[] strInput2 = input2.split(" ");
-            if(!banWord.containsAll(List.of(strInput2)) && (input2.length() <= 125)){
-                validInput2 = false;
+            if(Objects.equals(input2,"?")){
+                System.out.println(current_language.banWordIs);
+                System.out.println(banWord.toString());
             }
             else{
-                System.out.println(current_language.errorArtistName);
+                String[] strInput2 = input2.split(" ");
+                if(!banWord.containsAll(List.of(strInput2)) && (input2.length() <= 125)){
+                    validInput2 = false;
+                }
+                else if(banWord.containsAll(List.of(strInput2))){
+                    System.out.println(ANSI_RED + current_language.errorSongName + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
+                }
+                else{
+                    System.out.println(ANSI_RED + current_language.errorSongNameTooLong + ANSI_RESET);
+                }
             }
+
         }
         boolean validInput3 = IsSearchSongPopular();
         String song = replaceAllAPI(input2);
+        System.out.println("------------------------------------------------------------------");
         readXMLSong(artistName, song, songList, validInput3); //affiche les musiques correspondant aux noms de la musique données
         if(songList.isEmpty()){
-            System.out.println(current_language.noFoundMusic);
+            System.out.println(ANSI_BLUE + current_language.noFoundMusic + ANSI_RESET);
             searchSong();
         }
         else{
@@ -247,7 +276,7 @@ public class  RunCLI {
     public static boolean IsSearchSongPopular(){
         Scanner choice = new Scanner(System.in);
         while(true){
-            System.out.println(current_language.isSearchMusicPopular);
+            System.out.println(ANSI_GREEN + current_language.isSearchMusicPopular + ANSI_RESET);
             String input = choice.nextLine().toLowerCase();
             if(Objects.equals(input,"y")){
                 return true;
@@ -257,8 +286,8 @@ public class  RunCLI {
             }
             else{
                 System.out.println("------------------------------------------------------------------");
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
     }
@@ -270,21 +299,33 @@ public class  RunCLI {
         boolean validInput = true;
         while (validInput) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.enterLyrics);
+            System.out.println(ANSI_YELLOW + current_language.enterLyrics + ANSI_RESET);
             input = scanner.nextLine().toLowerCase();
-            String[] strInput = input.split(" ");
-            if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
-                validInput = false;
+            if(Objects.equals(input,"?")){
+                System.out.println(current_language.banWordIs);
+                System.out.println(banWord.toString());
             }
             else{
-                System.out.println(current_language.errorArtistName);
+                String[] strInput = input.split(" ");
+                if(!banWord.containsAll(List.of(strInput)) && (input.length() <= 250)){
+                    validInput = false;
+                }
+                else if (banWord.containsAll(List.of(strInput))){
+                    System.out.println(ANSI_RED + current_language.errorLyrics + ANSI_RESET);
+                    System.out.println(ANSI_RED + current_language.banWordCLI + ANSI_RESET);
+                }
+                else{
+                    System.out.println(ANSI_RED + current_language.errorLyricsTooLong + ANSI_RESET);
+                }
             }
+
         }
         String lyric = replaceAllAPI(input);
         boolean validInput2 = IsSearchSongPopular();
+        System.out.println("------------------------------------------------------------------");
         readXMLSongLyric(lyric, songList, validInput2);//affiche les musiques correspondant aux paroles données
         if(songList.isEmpty()){
-            System.out.println(current_language.noFoundMusic);
+            System.out.println(ANSI_YELLOW + current_language.noFoundMusic + ANSI_RESET);
             searchSong();
         }
         else{
@@ -300,23 +341,23 @@ public class  RunCLI {
         Scanner choice = new Scanner(System.in);
         int temp = 0;
         while(validInput) {
-            System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.choseByMusicNumber);
-            System.out.println(current_language.returnToMain);
+            System.out.println( "------------------------------------------------------------------");
+            System.out.println(ANSI_YELLOW + current_language.choseByMusicNumber);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             String index = choice.nextLine();
             if (Objects.equals(index.toLowerCase(), "menu")) {
                 runCLI();
             } else if(index.matches("[0-9]+")) {
                 temp = Integer.parseInt(index) - 1;
                 if (songList.size() < temp || temp < 0) {
-                    System.out.println(current_language.invaliedCommande);
+                    System.out.println(ANSI_RED + current_language.invaliedCommande + ANSI_RESET);
                 } else {
                     validInput = false;
                 }
             }
             else{
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.exitToPreviousMenu);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.exitToPreviousMenu + ANSI_RESET);
                 searchSong();
             }
         }
@@ -332,15 +373,15 @@ public class  RunCLI {
         String input = null;
         while(validInput){
             System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.newResearch);
-            System.out.println(current_language.returnToMain);
+            System.out.println(ANSI_GREEN + current_language.newResearch);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             input = scanner.nextLine().toLowerCase();
             if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
                 validInput = false;
             }
             else{
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
         switch(input){
@@ -364,6 +405,7 @@ public class  RunCLI {
         int input = -1;
         while (input < 0 || input > playlists.size() + 1){
             Scanner choice = new Scanner(System.in);
+            System.out.print(current_language.choice);
             String text = choice.nextLine();
             if(text.matches("[0-9]+")) {
                 input = Integer.parseInt(text);
@@ -450,19 +492,19 @@ public class  RunCLI {
             System.out.println("------------------------------------------------------------------");
             if(check == 1){
                 System.out.println();
-                System.out.println(current_language.exited);
-                System.out.println(current_language.delete);
+                System.out.println(ANSI_YELLOW + current_language.exited);
+                System.out.println(current_language.delete + ANSI_RESET);
             } else{
-                System.out.println(current_language.addToFavotis);
+                System.out.println(ANSI_YELLOW + current_language.addToFavotis + ANSI_RESET);
             }
-            System.out.println(current_language.returnToPreviousMenu);
+            System.out.println(ANSI_YELLOW + current_language.returnToPreviousMenu + ANSI_RESET);
             input = scanner.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "menu")){
                 validInput = false;
             } else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
         switch(input) {
@@ -490,17 +532,17 @@ public class  RunCLI {
         String input = "";
         while(validInput){
             System.out.println("----------------------------------------");
-            System.out.println(current_language.creatPlaylist);
+            System.out.println(ANSI_YELLOW + current_language.creatPlaylist);
             System.out.println(current_language.showPlaylist);
-            System.out.println(current_language.returnToMain);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             System.out.print(current_language.choice);
             input = scanner.nextLine().toLowerCase();
             if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "menu")){
                 validInput = false;
             }
             else{
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
         switch (input) {
@@ -523,8 +565,8 @@ public class  RunCLI {
         String input = "";
         while(validInput){
             System.out.println("----------------------------------------");
-            System.out.println(current_language.namePlaylist);
-            System.out.println(current_language.returnToPreviousMenu);
+            System.out.println(ANSI_GREEN + current_language.namePlaylist);
+            System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
             input = scanner.nextLine().toLowerCase();
             if(Objects.equals(input,"menu")){
                 manageFavorites();
@@ -534,11 +576,11 @@ public class  RunCLI {
             }
             else{
                 if(input.equals("")){
-                    System.out.println(current_language.emptyEntry);
+                    System.out.println(ANSI_RED + current_language.emptyEntry + ANSI_RESET);
                 }
                 else{
-                    System.out.println(current_language.errorNamePlaylist);
-                    System.out.println(current_language.errorNamePlaylist1);
+                    System.out.println(ANSI_RED + current_language.errorNamePlaylist);
+                    System.out.println(current_language.errorNamePlaylist1 + ANSI_RESET);
                 }
                 System.out.println( current_language.reDo);
             }
@@ -547,24 +589,24 @@ public class  RunCLI {
         file.createNewFile();
         playlists.add(new FavoriteList(input));
         favoriteList.saveAll(playlists);
-        System.out.println(playlists.get(playlists.size()-1).getPlaylistName() + current_language.playlistCreated);
-        System.out.println(current_language.returnToPreviousMenu);
+        System.out.println(ANSI_YELLOW + playlists.get(playlists.size()-1).getPlaylistName() + current_language.playlistCreated);
+        System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
         manageFavorites();
     }
 
     //affichage des musiques favorites
     public static void displayPlaylists() throws ParserConfigurationException, IOException, SAXException{
         if(!playlists.isEmpty()) {
-            System.out.println(current_language.choosePlaylist);
+            System.out.println(ANSI_YELLOW + current_language.choosePlaylist + ANSI_RESET);
             for (int i = 0; i < playlists.size() + 1; i++) {
                 if(i == 0){
-                    System.out.println(i + " - " + favoriteList.getPlaylistName());
+                    System.out.println(ANSI_YELLOW + i + " - " + favoriteList.getPlaylistName() + ANSI_RESET);
                 }
                 else{
-                    System.out.println(i + " - " + playlists.get(i-1).getPlaylistName());
+                    System.out.println( ANSI_YELLOW + i + " - " + playlists.get(i-1).getPlaylistName() + ANSI_RESET);
                 }
             }
-            System.out.println((playlists.size() + 1) + current_language.returnToPreviousMenuInt);
+            System.out.println(ANSI_YELLOW + (playlists.size() + 1) + current_language.returnToPreviousMenuInt + ANSI_RESET);
             int input = -1;
             while (input < 0 || input > playlists.size()+1){
                 Scanner choice = new Scanner(System.in);
@@ -573,8 +615,8 @@ public class  RunCLI {
                     input = Integer.parseInt(textInput);
                 }
                 else{
-                    System.out.println(current_language.invaliedCommande);
-                    System.out.println(current_language.reDo);
+                    System.out.println(ANSI_RED + current_language.invaliedCommande);
+                    System.out.println(current_language.reDo + ANSI_RESET);
                 }
             }
             if(input == 0){
@@ -590,7 +632,7 @@ public class  RunCLI {
             }
         }
         else {
-            System.out.println(current_language.likedMusic);
+            System.out.println(ANSI_YELLOW + current_language.likedMusic + ANSI_RESET);
             selectFavoriteSong(favoriteList);
         }
     }
@@ -603,34 +645,34 @@ public class  RunCLI {
         String input = null ;
         String favoritesArtist = getMostFavoritesArtist(favoriteList.getList()) != null ? getMostFavoritesArtist(favoriteList.getList()) : current_language.favoritesArtistNotFound;
         if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
-            System.out.println(current_language.favoritesArtist + favoritesArtist);
+            System.out.println(ANSI_GREEN + current_language.favoritesArtist + favoritesArtist + ANSI_RESET);
         }
         else{
-            System.out.println(current_language.favoritesArtistPlaylist + favoritesArtist);
+            System.out.println(ANSI_GREEN + current_language.favoritesArtistPlaylist + favoritesArtist + ANSI_RESET);
         }
         favoriteList.toStringFavoritesList();
         while(validInput){
             System.out.println("------------------------------------------------------------------");
             if(favoriteList.getList().isEmpty()){
                 if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
-                    System.out.println(current_language.emptyFavoris);
-                    System.out.println(current_language.returnToPreviousMenu);
+                    System.out.println(ANSI_YELLOW + current_language.emptyFavoris);
+                    System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
                 }
                 else{
-                    System.out.println(current_language.emptyPlaylist);
+                    System.out.println(ANSI_YELLOW + current_language.emptyPlaylist);
                     System.out.println(current_language.playlistManag1);
-                    System.out.println(current_language.returnToPreviousMenu);
+                    System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
                 }
             }
             else{
                 if(Objects.equals(favoriteList.getPlaylistName(), "Liked")){
-                    System.out.println(current_language.displayFavoris);
-                    System.out.println(current_language.returnToPreviousMenu);
+                    System.out.println(ANSI_YELLOW + current_language.displayFavoris);
+                    System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
                 }
                 else{
-                    System.out.println(current_language.displayPlaylist);
+                    System.out.println(ANSI_YELLOW + current_language.displayPlaylist);
                     System.out.println(current_language.playlistManag2);
-                    System.out.println(current_language.returnToPreviousMenu);
+                    System.out.println(current_language.returnToPreviousMenu + ANSI_RESET);
                 }
             }
             input = choice.nextLine().toLowerCase();
@@ -660,8 +702,8 @@ public class  RunCLI {
                 }
             }
             else{
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RESET + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
         if(favoriteList.getList().isEmpty()){
@@ -709,9 +751,9 @@ public class  RunCLI {
     public static void editPlaylist(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
-        System.out.println(current_language.playlistChangeName);
-        System.out.println(current_language.playlistDelete + playlist.getPlaylistName());
-        System.out.println(current_language.returnToPreviousMenu);
+        System.out.println(ANSI_RED + current_language.playlistChangeName);
+        System.out.println(current_language.playlistDelete + ANSI_RESET + playlist.getPlaylistName());
+        System.out.println(ANSI_YELLOW + current_language.returnToPreviousMenu + ANSI_RESET);
         String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "1") || Objects.equals(input, "2") || Objects.equals(input, "menu")){
             switch(input){
@@ -727,8 +769,8 @@ public class  RunCLI {
             }
         }
         else{
-            System.out.println(current_language.invaliedCommande);
-            System.out.println(current_language.reDo);
+            System.out.println(ANSI_RED + current_language.invaliedCommande);
+            System.out.println(current_language.reDo + ANSI_RESET);
             selectFavoriteSong(playlist);
         }
     }
@@ -737,22 +779,22 @@ public class  RunCLI {
     public static void editNamePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
-        System.out.print(current_language.namePlaylist + playlist.getPlaylistName());
-        System.out.println(current_language.exitToPreviousMenu);
+        System.out.print(ANSI_RED + current_language.namePlaylist + ANSI_RESET + playlist.getPlaylistName());
+        System.out.println(ANSI_YELLOW + current_language.exitToPreviousMenu + ANSI_RESET);
         String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "menu") || Objects.equals(input.replace(" ",""), "")){
-            System.out.println(current_language.changeNotTaken);
+            System.out.println(ANSI_YELLOW + current_language.changeNotTaken + ANSI_RESET);
             selectFavoriteSong(playlist);
         }
         else if (input.length() < 50){
             playlist.setPlaylistName(input);
-            System.out.println(current_language.changeTaken);
-            System.out.println(current_language.playlistNewName + playlist.getPlaylistName());
+            System.out.println(ANSI_GREEN + current_language.changeTaken + ANSI_RESET);
+            System.out.println(ANSI_GREEN + current_language.playlistNewName + ANSI_RESET + playlist.getPlaylistName());
             selectFavoriteSong(playlist);
         }
         else{
-            System.out.println(current_language.changeNotTaken);
-            System.out.println(current_language.errorNamePlaylist);
+            System.out.println(ANSI_RED + current_language.changeNotTaken);
+            System.out.println(current_language.errorNamePlaylist + ANSI_RESET);
             selectFavoriteSong(playlist);
         }
     }
@@ -761,7 +803,7 @@ public class  RunCLI {
     public static void deletePlaylistCLI(FavoriteList playlist) throws ParserConfigurationException, IOException, SAXException {
         Scanner choice = new Scanner(System.in);
         System.out.println("------------------------------------------------------------------");
-        System.out.print(current_language.isPlaylistDelete1 + playlist.getPlaylistName() + current_language.isPlaylistDelete2);
+        System.out.print(ANSI_RED +  current_language.isPlaylistDelete1 + playlist.getPlaylistName() + current_language.isPlaylistDelete2 + ANSI_RESET);
         String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "y") || Objects.equals(input, "n")){
             switch(input){
@@ -769,14 +811,14 @@ public class  RunCLI {
                     deletePlaylist(playlist, playlists);
                     break;
                 case "n":
-                    System.out.println(current_language.exitToPreviousMenu);
+                    System.out.println(ANSI_RED + current_language.exitToPreviousMenu + ANSI_RESET);
                     manageFavorites();
                     break;
             }
         }
         else{
-            System.out.println(current_language.invaliedCommande);
-            System.out.println(current_language.exitToPreviousMenu);
+            System.out.println(ANSI_RED + current_language.invaliedCommande);
+            System.out.println(current_language.exitToPreviousMenu + ANSI_RESET);
             displayPlaylists();
         }
     }
@@ -788,22 +830,22 @@ public class  RunCLI {
         String input = null;
         while(validinput){
             System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.delete);
-            System.out.println(current_language.returnToMain);
+            System.out.println(ANSI_YELLOW + current_language.delete);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             input = choice.nextLine();
             if(Objects.equals(input, "1") || Objects.equals(input, "2")){
                 validinput = false;
             }
             else {
                 System.out.println("------------------------------------------------------------------");
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.reDo);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.reDo + ANSI_RESET);
             }
         }
         switch(input){
             case "1":
                 favoritesList.getList().remove(index);
-                System.out.println(current_language.removeSuceed);
+                System.out.println(ANSI_GREEN + current_language.removeSuceed + ANSI_RESET);
                 favoriteList.saveAll(playlists);
                 favoriteList.saveFavorites(favoriteList);
                 favoritesList.toStringFavoritesList();
@@ -818,8 +860,8 @@ public class  RunCLI {
 
     public static void getSongFromFavoritesSong(FavoriteList favoriteList) throws ParserConfigurationException, IOException, SAXException {
         System.out.println("------------------------------------------------------------------");
-        System.out.println(current_language.chooseMusic);
-        System.out.println(current_language.returnToMain);
+        System.out.println(ANSI_YELLOW + current_language.chooseMusic);
+        System.out.println(current_language.returnToMain + ANSI_RESET);
         Scanner choice = new Scanner(System.in);
         String input = choice.nextLine().toLowerCase();
         if(Objects.equals(input, "retour")){
@@ -837,14 +879,14 @@ public class  RunCLI {
                 editFavoritesSongList(temp,favoriteList);
             } else{
                 System.out.println("------------------------------------------------------------------");
-                System.out.println(current_language.invaliedCommande);
-                System.out.println(current_language.returnToMain);
+                System.out.println(ANSI_RED + current_language.invaliedCommande);
+                System.out.println(current_language.returnToMain + ANSI_RESET);
                 selectFavoriteSong(favoriteList);
             }
         } else{
             System.out.println("------------------------------------------------------------------");
-            System.out.println(current_language.invaliedCommande);
-            System.out.println(current_language.returnToMain);
+            System.out.println(ANSI_RED + current_language.invaliedCommande);
+            System.out.println(current_language.returnToMain + ANSI_RESET);
             selectFavoriteSong(favoriteList);
         }
     }
