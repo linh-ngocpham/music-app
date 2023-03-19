@@ -63,24 +63,6 @@ public class LyricsAppController implements Initializable {
 
     //    @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*
-        String fxmlName = location.toString();
-        if (fxmlName.contains("/lyricsappeng.fxml") || fxmlName.contains("/favoriseng.fxml") || fxmlName.contains("/playlisteng.fxml")) {
-            // set values for English search
-            searchChoiceBox.setValue("Title/Artist");
-            searchChoiceBox.getItems().addAll(searchSelectionEng);
-        } else {
-            // set values for French search
-            searchChoiceBox.setValue("Titre/Artiste");
-            searchChoiceBox.getItems().addAll(searchSelection);
-        }
-        */
-
-        //modeChoiceBox.getItems().addAll(modeSelection);
-        //modeChoiceBox.setValue("Mode 1");
-
-        //modeChoiceBox.setOnAction(event -> onModeSelected());
-
         languageSelectionLabel.setMouseTransparent(true);
         languageChoiceBox.setValue("Langage : FR");
         languageChoiceBox.getItems().addAll(languageSelection);
@@ -92,7 +74,6 @@ public class LyricsAppController implements Initializable {
 
         searchChoiceBox.setOnAction(this::searchTitleArtist);
         searchChoiceBox.setOnAction(this::searchLyrics);
-        //switchLanguage();
         backMenu.setVisible(false);
         favoritesLabel.setVisible(false);
         playlistLabel.setVisible(false);
@@ -241,14 +222,21 @@ public class LyricsAppController implements Initializable {
         presentationTile.setVisible(false);
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
+            Label title= new Label(line);
             Song song = songList.get(i);
             Button button = new Button();
             button.setPrefWidth(Double.MAX_VALUE);
             button.setAlignment(Pos.BASELINE_LEFT);
             button.setId("button"); // Set ID for the button
-            button.setStyle("-fx-background-radius: 10;"); // Set rounded corners
-            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: blue; -fx-border-radius: 9px; -fx-font-size: 20px; -fx-text-fill: darkblue;")); // Add this line to change the text color on hover
-            button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ")); // Add this line to change the text color on hover
+            button.setOnMouseEntered(e -> {
+                button.setStyle("-fx-text-fill: #912FBD; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: #912FBD; -fx-border-radius: 9px; -fx-font-size: 20px; ");
+                title.setStyle("-fx-text-fill: purple;");
+
+            }); // Add this line to change the text color on hover
+            button.setOnMouseExited(e -> {
+                button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ");
+                title.setStyle("-fx-text-fill: gray;");
+            }); // Add this line to change the text color on hover
             button.setPrefHeight(90);
 
             // Create a VBox container for the "Favorites" and "Playlist" buttons
@@ -298,7 +286,7 @@ public class LyricsAppController implements Initializable {
             imageView.setFitWidth(96);
             imageView.setFitHeight(96);
 
-            Label title= new Label(line);
+
             title.setStyle("-fx-text-fill: grey;");
 
             BorderPane borderPane = new BorderPane();
@@ -363,7 +351,7 @@ public class LyricsAppController implements Initializable {
                 labelTest.setText("You don't have any music in your favorites");
             }
             vbox.getChildren().clear();
-            return; // exit the method if there are no favorite songs
+            return;
         }
         labelTest.setText("");
         vbox.getChildren().clear();
@@ -377,9 +365,19 @@ public class LyricsAppController implements Initializable {
                 button.setPrefWidth(Double.MAX_VALUE);
                 button.setAlignment(Pos.BASELINE_LEFT);
                 button.setId("button");
-                button.setStyle("-fx-background-radius: 10;");
-                button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
-                button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
+                Label title= new Label(song.getArtist() + " - " + song.getSongName());
+
+                button.setOnMouseEntered(e -> {
+                    button.setStyle("-fx-text-fill: #912FBD; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: #912FBD; -fx-border-radius: 9px; -fx-font-size: 20px; ");
+                    title.setStyle("-fx-text-fill: purple;");
+
+                }); // Add this line to change the text color on hover
+                button.setOnMouseExited(e -> {
+                    button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; -fx-border-color: transparent");
+                    title.setStyle("-fx-text-fill: gray;");
+                });
+                labelTest.requestFocus();
+
                 button.setPrefHeight(90);
 
                 // Create a VBox container for the "Remove from favorites" button
@@ -432,7 +430,6 @@ public class LyricsAppController implements Initializable {
                 imageView.setFitWidth(96);
                 imageView.setFitHeight(96);
 
-                Label title= new Label(song.getArtist() + " - " + song.getSongName());
                 title.setStyle("-fx-text-fill: grey;");
 
                 BorderPane borderPane = new BorderPane();
@@ -501,7 +498,7 @@ public class LyricsAppController implements Initializable {
         });
         Label espace= new Label("");
         HBox header = new HBox(espace, back);
-        header.setSpacing(500);
+        header.setSpacing(700);
         HBox.setMargin(back, new Insets(-15, 0, 0, 0));
 
         Button renommer= new Button();
@@ -528,25 +525,19 @@ public class LyricsAppController implements Initializable {
         VBox.setMargin(stackPane, new Insets(10, 450, 0, 0));
         vbox.getChildren().addAll(new Label(""), header,stackPane);
 
-
-        //VBox.setMargin(hBox, new Insets(15, 0, 0, 0));
         if (playlist.isEmpty()) {
             if (mode.equals("Langage : FR")) {
-                labelTest.setText("Vous n'avez aucune musique dans cette playlist");
+                espace.setText("Vous n'avez aucune musique dans cette playlist");
             } else if (mode.equals("Language : ENG")) {
-                labelTest.setText("You don't have any music in this playlist");
+                espace.setText("You don't have any music in this playlist");
             }
-            espace.setText("Vous n'avez aucune musique dans cette playlist");
+
             header.setSpacing(400);
             HBox.setMargin(back, new Insets(-15, 0, 0, 0));
-           // vbox.getChildren().clear();
             return;
         }
         labelTest.setText("");
 
-
-       // vbox.getChildren().clear();
-      //  vbox.getChildren().addAll(name,renommer);
         Map<String, Integer> artistCounts = new HashMap<>();
         for (Song song : playlist.getList()) {
             if (playlist.contains(song)) {
@@ -557,12 +548,8 @@ public class LyricsAppController implements Initializable {
                 button.setPrefWidth(Double.MAX_VALUE);
                 button.setAlignment(Pos.BASELINE_LEFT);
                 button.setId("button");
-                button.setStyle("-fx-background-radius: 10;");
-                button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
-                button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
-                button.setPrefHeight(90);
-                //rename
 
+                button.setPrefHeight(90);
                 Button removeButton = new Button();
                 removeButton.setOnAction(e -> {
                     FavoriteList.removeFromPlaylist(playlist,song);
@@ -609,7 +596,15 @@ public class LyricsAppController implements Initializable {
                 BorderPane.setMargin(imageView, new Insets(0, 0, 0, 15));
                 BorderPane.setMargin(removeButton, new Insets(25, 10, 0, 0));
                 BorderPane.setMargin(title, new Insets(35, 0, 0, 0));
+                button.setOnMouseEntered(e -> {
+                    button.setStyle("-fx-text-fill: #912FBD; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: #912FBD; -fx-border-radius: 9px; -fx-font-size: 20px; ");
+                    title.setStyle("-fx-text-fill: purple;");
 
+                }); // Add this line to change the text color on hover
+                button.setOnMouseExited(e -> {
+                    button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ");
+                    title.setStyle("-fx-text-fill: gray;");
+                });
                 button.setGraphic(borderPane);
                 button.setOnAction(e -> {
                    vbox.getChildren().clear();
@@ -650,7 +645,6 @@ public class LyricsAppController implements Initializable {
     private void displayPlaylist(){
         String mode = languageChoiceBox.getValue();
         vbox.getChildren().clear();
-        // labelTest.setText("Vous n'avez aucune playlist, voulez vous créer une ?");
         Button create = new Button();
         TextField playListName= new TextField();
         Image imgc = new Image("file:src/main/java/app/lyricsapp/img/renommer.png");
@@ -677,7 +671,6 @@ public class LyricsAppController implements Initializable {
             playlists.add(list);
             vbox.getChildren().clear();
             displayPlaylist();
-           // System.out.println("new Playlist "+list.getPlaylistName());
         });
 
         HBox hBox = new HBox();
@@ -722,9 +715,7 @@ public class LyricsAppController implements Initializable {
             Button button = new Button();
             button.setPrefWidth(Double.MAX_VALUE);
             button.setAlignment(Pos.BASELINE_LEFT);
-            button.setStyle("-fx-background-radius: 10;");
-            button.setOnMouseEntered(e -> button.setStyle("-fx-text-fill: black; -fx-background-radius: 10; "));
-            button.setOnMouseExited(e -> button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; "));
+
             button.setPrefHeight(90);
 
             Image image = new Image("file:src/main/java/app/lyricsapp/img/music.png");
@@ -740,22 +731,29 @@ public class LyricsAppController implements Initializable {
             HBox hBox1 = new HBox();
             hBox1.setSpacing(10);
             hBox1.getChildren().addAll(imageView, title);
-            HBox.setMargin(title, new Insets(25, 0, 0, 0));
-
+            HBox.setMargin(title, new Insets(30, 0, 0, 0));
+            HBox.setMargin(imageView, new Insets(5, 0, 0, 0));
             borderPane.setLeft(hBox1);
             borderPane.setRight(removeButton);
 
-            BorderPane.setMargin(imageView, new Insets(0, 0, 0, 15));
-            BorderPane.setMargin(removeButton, new Insets(10, 10, 0, 0));
-            BorderPane.setMargin(title, new Insets(25, 0, 0, 0));
+            BorderPane.setMargin(imageView, new Insets(5, 0, 0, 15));
+            BorderPane.setMargin(removeButton, new Insets(20, 10, 0, 0));
+            BorderPane.setMargin(title, new Insets(30, 0, 0, 0));
 
             button.setGraphic(borderPane);
+            button.setOnMouseEntered(e -> {
+                button.setStyle("-fx-text-fill: #912FBD; -fx-background-radius: 10; -fx-border-width: 2.5px; -fx-border-color: #912FBD; -fx-border-radius: 9px; -fx-font-size: 20px; ");
+                title.setStyle("-fx-text-fill: purple;");
 
+            }); // Add this line to change the text color on hover
+            button.setOnMouseExited(e -> {
+                button.setStyle("-fx-text-fill: gray; -fx-background-radius: 10; ");
+                title.setStyle("-fx-text-fill: gray;");
+            });
             button.setOnAction(event -> {
                 System.out.println(list.getList());
                 vbox.getChildren().clear();
                 displayPlaylistContent(list);
-               // displayResults(list.getList().toString());
             });
 
             vbox.getChildren().add(button);
@@ -903,27 +901,6 @@ public class LyricsAppController implements Initializable {
         }
         return null;
     }
-    /*
-    public boolean switchLanguage() {
-        languageChoiceBox.setOnAction(event -> {
-            String language = languageChoiceBox.getValue();
-            String fxmlFile = "/app/lyricsapp/view/lyricsapp.fxml"; // par défaut "Langage : FR"
-            if (language.equals("Language : ENG")) {
-                fxmlFile = "/app/lyricsapp/view/lyricsappeng.fxml";
-            }
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-                Parent root = loader.load();
-                Scene scene = new Scene(root);
-                Stage window = (Stage) languageChoiceBox.getScene().getWindow();
-                window.setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        return true;
-    }
-    */
     private void clearSearchFields() {
         titleSearchField.setText("");
         artistSearchField.setText("");
@@ -959,49 +936,7 @@ public class LyricsAppController implements Initializable {
         labelTest.setText("");
         vbox.getChildren().clear();
     }
-    /*
-    public void switchToSceneFavoritesEng() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/lyricsapp/view/favoriseng.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage window = (Stage) favoritesButton.getScene().getWindow();
-            window.setScene(scene);
-        } catch (NullPointerException e) {
-            System.err.println("NullPointerException caught: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void switchToSceneLyricsAppEng() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/lyricsapp/view/lyricsappeng.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage window = (Stage) lyricsappButton.getScene().getWindow();
-            window.setScene(scene);
-        } catch (NullPointerException e) {
-            System.err.println("NullPointerException caught: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void switchToScenePlaylistEng() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/lyricsapp/view/playlisteng.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            Stage window = (Stage) playlistButton.getScene().getWindow();
-            window.setScene(scene);
-        } catch (NullPointerException e) {
-            System.err.println("NullPointerException caught: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    */
     @FXML
     private void onModeSelected() {
         String mode = languageChoiceBox.getValue();
@@ -1019,7 +954,6 @@ public class LyricsAppController implements Initializable {
             playlistLabel.setVisible(false);
             favoritesLabel.setVisible(false);
             goodSongCheckbox.setVisible(true);
-            label1.setText("Texte pour le mode 1");
             presentationLabel.setText("LyricsApp est une application de recherche de paroles qui permet aux utilisateurs de trouver facilement les paroles de leurs chansons préférées. Grâce à une base de données exhaustive, les utilisateurs peuvent rechercher les paroles d'une chanson en entrant simplement le titre de la chanson ou le nom de l'artiste. LyricsApp est l'outil parfait pour les amateurs de musique qui souhaitent découvrir les paroles de leurs chansons préférées.");
             titlePresentationLabel.setText("Présentation de l'application");
             favoritesLabel.setText("Vos Favoris");
@@ -1047,7 +981,6 @@ public class LyricsAppController implements Initializable {
             playlistLabel.setVisible(false);
             favoritesLabel.setVisible(false);
             goodSongCheckbox.setVisible(true);
-            label1.setText("Texte pour le mode 2");
             presentationLabel.setText("LyricsApp is a lyric search application that allows users to easily find the lyrics of their favorite songs. With a comprehensive database, users can search for lyrics to a song by simply entering the song title or the artist's name.  LyricsApp is the perfect tool for music lovers who want to discover the lyrics of their favorite songs.");
             titlePresentationLabel.setText("Application overview");
             favoritesLabel.setText("Your Favorites");
@@ -1064,34 +997,21 @@ public class LyricsAppController implements Initializable {
             searchChoiceBox.getItems().addAll(searchSelectionEng);
         }
     }
-    /*
-    public void clearAllText(){
-        label1.setText("");
-        presentationLabel.setText("");
-        titlePresentationLabel.setText("");
-        favoritesLabel.setText("");
-        displayFavoritesButton.setText("");
-        playlistLabel.setText("");
-        playlistButton.setText("");
-        languageSelectionLabel.setText("");
-        titleSearchField.setPromptText("");
-        artistSearchField.setPromptText("");
-        lyricsSearchField.setPromptText("");
-        searchChoiceBox.setValue("");
-    }
-    */
+
+
+
     public void fadeInOutText(MouseEvent event) {
         Button button = (Button) event.getSource();
-        FadeTransition ft = new FadeTransition(Duration.millis(1000), button);
+        FadeTransition ft = new FadeTransition(Duration.millis(300), button);
         ft.setCycleCount(1);
         if (event.getEventType() == MouseEvent.MOUSE_ENTERED) {
-            ft.setFromValue(0.5);
-            ft.setToValue(1.0);
-            button.setTextFill(Color.color(200,102,232));
-        } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
             ft.setFromValue(1.0);
             ft.setToValue(0.5);
-            button.setTextFill(Color.color(172,74,213));
+            button.setTextFill(Color.WHITE);
+        } else if (event.getEventType() == MouseEvent.MOUSE_EXITED) {
+            ft.setFromValue(0.5);
+            ft.setToValue(1.0);
+            button.setTextFill(Color.GRAY);
         }
         ft.setAutoReverse(true);
         ft.play();
@@ -1128,15 +1048,6 @@ public class LyricsAppController implements Initializable {
                     songList.add(song);
                     stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
-                //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
-                //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");
-                //stringBuilder.append("LyricId: ").append(song.getLyricId()).append("\n");
-                //stringBuilder.append("SongUrl: ").append(song.getSongUrl()).append("\n");
-                //stringBuilder.append("ArtistUrl: ").append(song.getArtistUrl()).append("\n");
-                //stringBuilder.append("Artist: ").append(song.getArtist()).append("\n");
-                //stringBuilder.append("Song: ").append(song.getSongName()).append("\n");
-                //stringBuilder.append("SongRank: ").append(song.getSongRank()).append("\n");
             }
         }
         return stringBuilder.toString();
@@ -1170,15 +1081,7 @@ public class LyricsAppController implements Initializable {
                     songList.add(song);
                     stringBuilder.append(song.getArtist()).append(" - ").append(song.getSongName()).append("    ").append(song.getSongRank()).append("/10\n");
                 }
-                //stringBuilder.append("NumÃ©ro : ").append(songList.indexOf(song) + 1).append("\n");
-                //stringBuilder.append("TrackId: ").append(song.getTrackId()).append("\n");
-                //stringBuilder.append("LyricChecksum: ").append(song.getLyricChecksum()).append("\n");
-                //stringBuilder.append("LyricId: ").append(song.getLyricId()).append("\n");
-                //stringBuilder.append("SongUrl: ").append(song.getSongUrl()).append("\n");
-                //stringBuilder.append("ArtistUrl: ").append(song.getArtistUrl()).append("\n");
-                //stringBuilder.append("Artist: ").append(song.getArtist()).append("\n");
-                //stringBuilder.append("Song: ").append(song.getSongName()).append("\n");
-                //stringBuilder.append("SongRank: ").append(song.getSongRank()).append("\n");
+
             }
         }
         return stringBuilder.toString();
