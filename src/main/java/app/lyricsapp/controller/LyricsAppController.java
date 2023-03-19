@@ -3,18 +3,12 @@ package app.lyricsapp.controller;
 import app.lyricsapp.model.FavoriteList;
 import app.lyricsapp.model.Song;
 import javafx.animation.FadeTransition;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -31,11 +25,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import javax.swing.text.html.ImageView;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -53,7 +45,7 @@ public class LyricsAppController implements Initializable {
     @FXML private Label labelTest, favoritesLabel, labelFavArtist, playlistLabel, titleArtistLabel;
     @FXML private VBox vbox;
     @FXML private CheckBox goodSongCheckbox;
-    @FXML private Label label1, presentationLabel, titlePresentationLabel, languageSelectionLabel;
+    @FXML private Label presentationLabel, titlePresentationLabel, languageSelectionLabel;
     private String[] searchSelection = {"Paroles", "Titre/Artiste"};
     private String[] searchSelectionEng = {"Lyrics", "Title/Artist"};
     private String[] languageSelection = {"Langage : FR", "Language : ENG"};
@@ -68,9 +60,7 @@ public class LyricsAppController implements Initializable {
         languageChoiceBox.getItems().addAll(languageSelection);
         onModeSelected();
 
-        languageChoiceBox.setOnAction(event -> {
-            onModeSelected();
-        });
+        languageChoiceBox.setOnAction(event -> onModeSelected());
 
         searchChoiceBox.setOnAction(this::searchTitleArtist);
         searchChoiceBox.setOnAction(this::searchLyrics);
@@ -488,9 +478,7 @@ public class LyricsAppController implements Initializable {
         vbox.setSpacing(10);
         labelFavArtist.setVisible(true);
         findFavoriteArtist(artistCounts);   // Find the artist with the highest count
-
     }
-
 
     public void displayPlaylistContent(FavoriteList playlist){
         String mode = languageChoiceBox.getValue();
@@ -796,7 +784,12 @@ public class LyricsAppController implements Initializable {
             }
         }
         if (!favArtist.isEmpty()) {
-            labelFavArtist.setText("Artiste Favoris: " + favArtist);
+            String mode = languageChoiceBox.getValue();
+            if (mode.equals("Langage : FR")) {
+                labelFavArtist.setText("Artiste Favoris: " + favArtist);
+            } else if (mode.equals("Language : ENG")) {
+                labelFavArtist.setText("Favorite Artist: " + favArtist);
+            }
         } else {
             labelFavArtist.setText("");
         }
@@ -1045,6 +1038,7 @@ public class LyricsAppController implements Initializable {
             searchChoiceBox.getItems().addAll(searchSelection);
             backMenu.setText("Retour à l'acceuil");
             backMenu.setLayoutX(33);
+            labelFavArtist.setVisible(false);
             clearSearchFields();
         } else if (mode.equals("Language : ENG")) {
             vbox.getChildren().clear();
@@ -1075,6 +1069,7 @@ public class LyricsAppController implements Initializable {
             searchChoiceBox.getItems().addAll(searchSelectionEng);
             backMenu.setText("Back to home");
             backMenu.setLayoutX(51);
+            labelFavArtist.setVisible(false);
             clearSearchFields();
         }
     }

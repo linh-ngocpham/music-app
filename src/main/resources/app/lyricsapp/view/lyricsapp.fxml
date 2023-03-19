@@ -40,7 +40,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill:#C866E8;" >
+            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill:#C866E8;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
