@@ -40,7 +40,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;" text="Retour à l'acceuil">
+            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
@@ -82,7 +82,7 @@
       <Label fx:id="favoritesLabel" contentDisplay="CENTER" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="330.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" textAlignment="CENTER" wrapText="true" />
       <Label fx:id="labelFavArtist" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="767.0" layoutY="52.0" style="-fx-font-size: 20px; -fx-text-fill: white;" />
       <Label fx:id="playlistLabel" layoutX="287.0" layoutY="-2.0" prefHeight="117.0" prefWidth="330.0" style="-fx-wrap-text: true; -fx-text-alignment: center; -fx-text-fill: white; -fx-font-size: 50; -fx-line-spacing: 8;" />
-      <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="59.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 30; -fx-text-fill: white; -fx-line-spacing: 8;" />
+      <Label fx:id="titleArtistLabel" layoutX="283.0" layoutY="20.0" style="-fx-background-color: transparent; -fx-wrap-text: true; -fx-font-size: 30; -fx-text-fill: white; -fx-line-spacing: 8;" />
       <CheckBox fx:id="goodSongCheckbox" layoutX="1000.0" layoutY="67.0" mnemonicParsing="false" scaleX="1.5" scaleY="1.5" scaleZ="1.5" text="&gt;7/10">
          <textFill>
             <LinearGradient endX="1.0" endY="1.0">
