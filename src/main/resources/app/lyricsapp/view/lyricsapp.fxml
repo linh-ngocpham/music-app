@@ -27,7 +27,7 @@
         </TextField>
         <AnchorPane prefHeight="477.0" prefWidth="260.0" style="-fx-background-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <ChoiceBox fx:id="languageChoiceBox" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-text-fill: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="22.0">
+                <ChoiceBox fx:id="languageChoiceBox" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-text-fill:#C866E8; -fx-text-fill: transparent;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="22.0">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -35,21 +35,21 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </ChoiceBox>
-                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
+                <Button id="playlistButton" fx:id="playlistButton" layoutX="22.0" layoutY="108.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" prefHeight="60.0" prefWidth="216.0" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill:#C866E8;">
                     <cursor>
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
+            <Button fx:id="backMenu" layoutX="33.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill:#C866E8;" >
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px;">
+            <Button fx:id="displayFavoritesButton" contentDisplay="CENTER" layoutX="60.0" layoutY="59.0" mnemonicParsing="false" onMouseEntered="#fadeInOutText" onMouseExited="#fadeInOutText" style="-fx-background-color: transparent; -fx-font-weight: bold; -fx-font-size: 20px; -fx-text-fill:#C866E8;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
             <Label fx:id="label1" layoutX="23.0" layoutY="361.0" prefHeight="60.0" prefWidth="226.0" style="-fx-text-fill: white;" />
-            <Label fx:id="languageSelectionLabel" layoutX="22.0" layoutY="573.0" prefHeight="60.0" prefWidth="191.0" style="-fx-text-fill: gray; -fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: black;" />
+            <Label fx:id="languageSelectionLabel" layoutX="22.0" layoutY="573.0" prefHeight="60.0" prefWidth="191.0" style="-fx-text-fill:#C866E8; -fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: black;" />
             </children>
       </AnchorPane>
         <TextField fx:id="artistSearchField" layoutX="283.0" layoutY="58.0" onKeyPressed="#onEnter" prefHeight="35.0" prefWidth="450.0" AnchorPane.leftAnchor="283.0" AnchorPane.rightAnchor="136.0">
