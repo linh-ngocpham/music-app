@@ -1029,7 +1029,6 @@ public class LyricsAppController implements Initializable {
             playlistLabel.setVisible(false);
             favoritesLabel.setVisible(false);
             goodSongCheckbox.setVisible(true);
-            label1.setText("Texte pour le mode 1");
             presentationLabel.setText("LyricsApp est une application de recherche de paroles qui permet aux utilisateurs de trouver facilement les paroles de leurs chansons préférées. Grâce à une base de données exhaustive, les utilisateurs peuvent rechercher les paroles d'une chanson en entrant simplement le titre de la chanson ou le nom de l'artiste. LyricsApp est l'outil parfait pour les amateurs de musique qui souhaitent découvrir les paroles de leurs chansons préférées.");
             titlePresentationLabel.setText("Présentation de l'application");
             favoritesLabel.setText("Vos Favoris");
