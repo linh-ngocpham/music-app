@@ -1,0 +1,10 @@
+oumaima
+Song:
+TrackId:0
+LyricChecksum:
+LyricId:3576
+SongUrl:http://www.chartlyrics.com/x5JcCqdKJEOCq46OczUHyw/Sweat+(A+La+La+La+La+Long).aspx
+ArtistUrl:http://www.chartlyrics.com/x5JcCqdKJEOCq46OczUHyw.aspx
+Artist:Inner Circle
+SongName:Sweat (A La La La La Long)
+SongRank:9
