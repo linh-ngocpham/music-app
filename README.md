@@ -8,6 +8,5 @@ une application de recherche de paroles de chansons.
 - BEN ELHABIB Oumaima
 - SEF Ahmed
 - DUBOIS Hugo
-
-MIMOUNI Djibril
-PHAM Linh
+- MIMOUNI Djibril
+- PHAM Linh
